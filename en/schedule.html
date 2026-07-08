@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Program · SSPCZ</title>
+<meta name="description" content="Program of the 3rd SSPCZ, Oct 2–5, 2026: student paper presentations, guest lectures and the philosophy hackathon.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23122736'/><text x='50' y='74' font-size='68' text-anchor='middle' fill='%23e8edf3' font-family='Georgia,serif'>%CE%A6</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
@@ -36,10 +38,10 @@
 <!-- ============ Tabs ============ -->
 <div class="pad-sec" style="padding:40px 36px 72px">
   <div id="tabs" class="tabs" style="display:flex;gap:0;border:1px solid #122736;width:fit-content">
-    <div class="tab-btn active" data-day="1">Oct 2</div>
-    <div class="tab-btn" data-day="2">Oct 3</div>
-    <div class="tab-btn" data-day="3">Oct 4</div>
-    <div class="tab-btn" data-day="4">Oct 5</div>
+    <div class="tab-btn active" data-day="1" role="button" tabindex="0">Oct 2</div>
+    <div class="tab-btn" data-day="2" role="button" tabindex="0">Oct 3</div>
+    <div class="tab-btn" data-day="3" role="button" tabindex="0">Oct 4</div>
+    <div class="tab-btn" data-day="4" role="button" tabindex="0">Oct 5</div>
   </div>
 
   <div id="events" style="border:1px solid #cfd6db;margin-top:28px"></div>
@@ -118,6 +120,13 @@
     tabsEl.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
     btn.classList.add('active');
     renderDay(btn.getAttribute('data-day'));
+  });
+
+  tabsEl.addEventListener('keydown', function (e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('tab-btn')) {
+      e.preventDefault();
+      e.target.click();
+    }
   });
 
   renderDay(1);

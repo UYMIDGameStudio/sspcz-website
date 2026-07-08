@@ -16,7 +16,8 @@
 
   function hrefFor(lang) {
     if (lang === pageLang) return null;
-    return lang === 'en' ? 'en/' + file : '../' + file;
+    var base = lang === 'en' ? 'en/' + file : '../' + file;
+    return base + location.search + location.hash;
   }
 
   // Header language switcher: remember the choice, then follow the link.
@@ -60,6 +61,14 @@
     if (e.target === overlay) {
       save(pageLang);
       overlay.remove();
+    }
+  });
+
+  document.addEventListener('keydown', function onEsc(e) {
+    if (e.key === 'Escape' && overlay.parentNode) {
+      save(pageLang);
+      overlay.remove();
+      document.removeEventListener('keydown', onEsc);
     }
   });
 
