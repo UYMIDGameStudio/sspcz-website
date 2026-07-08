@@ -1,0 +1,45 @@
+# Speaker records — atomic name units (ADR-001 Phase 2 directive).
+# zh is authoritative (SSOT); no HTML in values.
+
+issue: 3
+
+currentSpeakers: []
+
+pastSpeakers:
+  - familyName:
+      zh: "姜"
+      en: "Jiang"
+    givenName:
+      zh: "宇辉"
+      en: "Yuhui"
+    honorific:
+      zh: "教授"
+      en: "Prof."
+  - familyName:
+      zh: "魏"
+      en: "Wei"
+    givenName:
+      zh: "然"
+      en: "Ran"
+  - familyName:
+      zh: "吴"
+      en: "Wu"
+    givenName:
+      zh: "静"
+      en: "Jing"
+  - familyName:
+      zh: "胡"
+      en: "Hu"
+    givenName:
+      zh: "星铭"
+      en: "Xingming"
+  - familyName:
+      zh: "林"
+      en: "Lin"
+    givenName:
+      zh: "玮"
+      en: "Wei"
+
+pastSpeakersNote:
+  zh: "前两届大会特邀嘉宾（排名不分先后）。本届嘉宾信息将陆续公布。"
+  en: "Invited guests of the first two sessions (in no particular order). This session's guests will be announced."

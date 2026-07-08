@@ -1,0 +1,167 @@
+# Issue III program — atomic session records (ADR-001 Phase 2 directive).
+# timeStart/timeEnd are 24h local times. No HTML in values. Provisional
+# framework; final program announced by the committee.
+
+issue: 3
+provisional: true
+
+days:
+  - day: 1
+    date: 2026-10-02
+    sessions:
+      - timeStart: "09:00"
+        timeEnd: "09:40"
+        kind: opening
+        kindLabel:
+          zh: "开幕"
+          en: "Opening"
+        title:
+          zh: "开幕式"
+          en: "Opening Ceremony"
+        abstract:
+          zh: "组委会致辞，介绍大会宗旨、主题「变与不变」与本届安排。"
+          en: "Welcome from the organizing committee — the conference's mission, the theme \"Change & Invariance\" and the program."
+      - timeStart: "09:40"
+        timeEnd: "12:00"
+        kind: papers
+        kindLabel:
+          zh: "讲演"
+          en: "Papers"
+        title:
+          zh: "学生论文讲演（第一组）"
+          en: "Student Paper Presentations (Group 1)"
+        abstract:
+          zh: "发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。"
+          en: "25–30 minute presentations by presenting authors, guest comments, then a 15–20 minute open discussion."
+      - timeStart: "13:30"
+        timeEnd: "16:00"
+        kind: papers
+        kindLabel:
+          zh: "讲演"
+          en: "Papers"
+        title:
+          zh: "学生论文讲演（第二组）"
+          en: "Student Paper Presentations (Group 2)"
+        abstract:
+          zh: "发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。"
+          en: "25–30 minute presentations by presenting authors, guest comments, then a 15–20 minute open discussion."
+      - timeStart: "16:15"
+        timeEnd: "17:15"
+        kind: lecture
+        kindLabel:
+          zh: "讲座"
+          en: "Lecture"
+        title:
+          zh: "嘉宾专题讲座（一）"
+          en: "Guest Lecture I"
+        abstract:
+          zh: "嘉宾围绕小组主题开设 30–40 分钟讲座，讲座后自由交流。"
+          en: "A 30–40 minute lecture on the group's theme, followed by open exchange."
+
+  - day: 2
+    date: 2026-10-03
+    sessions:
+      - timeStart: "09:00"
+        timeEnd: "12:00"
+        kind: papers
+        kindLabel:
+          zh: "讲演"
+          en: "Papers"
+        title:
+          zh: "学生论文讲演（第三组）"
+          en: "Student Paper Presentations (Group 3)"
+        abstract:
+          zh: "发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。"
+          en: "25–30 minute presentations by presenting authors, guest comments, then a 15–20 minute open discussion."
+      - timeStart: "13:30"
+        timeEnd: "15:30"
+        kind: papers
+        kindLabel:
+          zh: "讲演"
+          en: "Papers"
+        title:
+          zh: "学生论文讲演（第四组）"
+          en: "Student Paper Presentations (Group 4)"
+        abstract:
+          zh: "发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。"
+          en: "25–30 minute presentations by presenting authors, guest comments, then a 15–20 minute open discussion."
+      - timeStart: "15:45"
+        timeEnd: "16:45"
+        kind: lecture
+        kindLabel:
+          zh: "讲座"
+          en: "Lecture"
+        title:
+          zh: "嘉宾专题讲座（二）"
+          en: "Guest Lecture II"
+        abstract:
+          zh: "嘉宾围绕小组主题开设 30–40 分钟讲座，讲座后自由交流。"
+          en: "A 30–40 minute lecture on the group's theme, followed by open exchange."
+
+  - day: 3
+    date: 2026-10-04
+    sessions:
+      - timeStart: "09:00"
+        timeEnd: "09:30"
+        kind: briefing
+        kindLabel:
+          zh: "说明"
+          en: "Briefing"
+        title:
+          zh: "哲学黑客马拉松 · 开题"
+          en: "Phil-Hackathon · Kickoff"
+        abstract:
+          zh: "公布议题与规则，参与者分组。"
+          en: "Topics and rules announced; participants form teams."
+      - timeStart: "09:30"
+        timeEnd: "17:00"
+        kind: hackathon
+        kindLabel:
+          zh: "协作"
+          en: "Hackathon"
+        title:
+          zh: "哲学黑客马拉松"
+          en: "Philosophy Hackathon"
+        abstract:
+          zh: "小组以「短时高强度协作」模式共同攻克哲学与伦理议题，在互主体性的对话中推进方案。"
+          en: "Teams tackle philosophical and ethical problems in short, intense collaboration, advancing their proposals through intersubjective dialogue."
+
+  - day: 4
+    date: 2026-10-05
+    sessions:
+      - timeStart: "09:00"
+        timeEnd: "11:30"
+        kind: demo
+        kindLabel:
+          zh: "展示"
+          en: "Demo"
+        title:
+          zh: "黑客马拉松成果展示"
+          en: "Hackathon Presentations"
+        abstract:
+          zh: "各小组展示成果，嘉宾与全体与会者点评交流。"
+          en: "Teams present their results, with comments from guests and all participants."
+      - timeStart: "13:30"
+        timeEnd: "15:00"
+        kind: awards
+        kindLabel:
+          zh: "颁奖"
+          en: "Awards"
+        title:
+          zh: "颁奖典礼"
+          en: "Award Ceremony"
+        abstract:
+          zh: "颁发最佳写作奖、最佳演讲奖、最佳主题奖、最佳原创奖。"
+          en: "Best Writing, Best Presentation, Best Theme and Best Originality awards."
+      - timeStart: "15:00"
+        timeEnd: "16:00"
+        kind: closing
+        kindLabel:
+          zh: "闭幕"
+          en: "Closing"
+        title:
+          zh: "闭幕式"
+          en: "Closing Ceremony"
+        abstract:
+          zh: "大会总结与致谢，合影留念。"
+          en: "Wrap-up, acknowledgements and group photo."

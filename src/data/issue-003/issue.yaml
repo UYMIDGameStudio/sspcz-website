@@ -1,0 +1,108 @@
+# Issue III — core facts. Chronology and logistics are data, not markup
+# (ADR-001 §2.1). No HTML in values. zh is authoritative (SSOT).
+
+issue: 3
+year: 2026
+
+theme:
+  zh: "变与不变"
+  en: "Change & Invariance" # EDR-001
+
+dates:
+  start: 2026-10-02
+  end: 2026-10-05
+  durationDays: 4
+
+location:
+  city:
+    zh: "杭州"
+    en: "Hangzhou"
+  venue:
+    status: pending
+    note:
+      zh: "具体地点待公布"
+      en: "Venue to be announced"
+
+audience:
+  primary:
+    zh: "初高中学生"
+    en: "Middle and high school students"
+  auditors:
+    zh: "大学生与教师可旁听"
+    en: "University students and teachers may audit"
+
+contact:
+  email: "sspcz2026@163.com"
+
+cfp:
+  open:
+    year: 2026
+    month: 6
+  deadline:
+    year: 2026
+    month: 9
+  presentations:
+    start: 2026-10-02
+    end: 2026-10-03
+
+pillars:
+  - id: papers
+    kicker:
+      zh: "论文分享"
+      en: "Student Papers"
+    name:
+      zh: "学生论文讲演"
+      en: "Student Paper Presentations"
+    summary:
+      zh: "发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。"
+      en: "Presenting authors give a 25–30 minute talk, followed by guest comments and a 15–20 minute open discussion."
+  - id: lectures
+    kicker:
+      zh: "讲座"
+      en: "Lectures"
+    name:
+      zh: "嘉宾讲座"
+      en: "Guest Lectures"
+    summary:
+      zh: "各领域专家学者围绕主题「变与不变」开设 30–40 分钟专题讲座，讲座后与学生自由交流。"
+      en: "Experts and scholars give 30–40 minute lectures around the theme \"Change & Invariance\", with open exchange afterwards."
+  - id: hackathon
+    kicker:
+      zh: "哲学黑客马拉松"
+      en: "Phil-Hackathon"
+    name:
+      zh: "哲学黑客马拉松"
+      en: "Philosophy Hackathon"
+    summary:
+      zh: "借用「短时高强度协作」模式的跨学科实践实验，小组共同攻克哲学与伦理议题。"
+      en: "A cross-disciplinary experiment borrowing the short, intense collaboration model: teams tackle philosophical and ethical problems together."
+
+participantCategories:
+  - id: presenting
+    name:
+      zh: "发言成员"
+      en: "Presenting Members"
+    description:
+      zh: "从投稿中评选出的「发言论文」作者，在大会上讲演自己的研究成果，接受嘉宾与同学的点评。"
+      en: "Authors of presenting papers selected from submissions, who present their research at the conference and receive comments from guests and peers."
+  - id: attending
+    name:
+      zh: "列席成员"
+      en: "Attending Members"
+    description:
+      zh: "递交论文入选「列席论文」的同学，全程参会并坐于大会前列，论文收入本届大会论文集。"
+      en: "Students whose submissions are selected as attending papers. They attend the full conference in the front rows, and their papers are included in this session's proceedings."
+  - id: auditing
+    name:
+      zh: "旁听成员"
+      en: "Auditing Members"
+    description:
+      zh: "对哲学感兴趣的中学生及任何年龄阶段的人，可全程参与提问、讲座、读书会与学者交流。"
+      en: "Secondary school students — and curious people of any age — interested in philosophy. Open to all Q&A sessions, lectures, reading groups and exchanges with scholars."
+  - id: guests
+    name:
+      zh: "嘉宾"
+      en: "Guests"
+    description:
+      zh: "各专业领域的专家学者，担任论文点评与专题讲座，带来前沿的学术动态与哲学思考。"
+      en: "Experts and scholars from various fields who comment on papers and deliver lectures, bringing current scholarship and philosophical reflection."

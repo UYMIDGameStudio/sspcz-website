@@ -1,0 +1,236 @@
+# Issue III organization — atomic records (ADR-001 Phase 2 directive).
+# Supporting societies are split into school + society units where the
+# legacy text fused them. zh is authoritative (SSOT); no HTML in values.
+
+issue: 3
+
+hosts:
+  - name:
+      zh: "第三届浙江中学生哲学大会组委会"
+      en: "Organizing Committee of the 3rd SSPCZ"
+  - name:
+      zh: "未竟计划"
+      en: "Weijing Initiative"
+
+coOrganizers:
+  - name:
+      zh: "杭州全球青年人才中心"
+      en: "Hangzhou Global Youth Talent Center"
+coOrganizersPending: true
+
+academicSupport:
+  - name:
+      zh: "南京师范大学「数字与人文」研究中心"
+      en: "\"Digital & Humanities\" Research Center, Nanjing Normal University"
+
+structure:
+  secretariat:
+    zh: "秘书处（秘书长、副秘书长）为组委会决策机构，负责总体统筹与制定方向。"
+    en: "The Secretariat (Secretary-General and Deputy Secretary-General) is the committee's decision-making body, responsible for overall coordination and direction."
+  teams:
+    - name:
+        zh: "宣传组"
+        en: "Publicity"
+    - name:
+        zh: "学术组"
+        en: "Academic"
+    - name:
+        zh: "会务组"
+        en: "Conference Affairs"
+    - name:
+        zh: "外联组"
+        en: "Outreach"
+    - name:
+        zh: "财务组"
+        en: "Finance"
+  teamNote:
+    zh: "每组由一位统筹（组长）负责，10–15 人协同工作。"
+    en: "Each team is led by one coordinator, with 10–15 members working together."
+
+supportingSocieties:
+  - school:
+      zh: "杭州外国语学校"
+      en: "Hangzhou Foreign Languages School"
+    society:
+      zh: "哲学社"
+      en: "Philosophy Society"
+  - school:
+      zh: "杭州外国语学校"
+      en: "Hangzhou Foreign Languages School"
+    society:
+      zh: "心理学社"
+      en: "Psychology Society"
+  - school:
+      zh: "杭州外国语学校"
+      en: "Hangzhou Foreign Languages School"
+    society:
+      zh: "历史学社"
+      en: "History Society"
+  - school:
+      zh: "杭州外国语学校"
+      en: "Hangzhou Foreign Languages School"
+    society:
+      zh: "跨学科社"
+      en: "Interdisciplinary Society"
+  - school:
+      zh: "杭州外国语学校"
+      en: "Hangzhou Foreign Languages School"
+    society:
+      zh: "古风社"
+      en: "Gufeng Society"
+  - school:
+      zh: "杭州外国语学校"
+      en: "Hangzhou Foreign Languages School"
+    society:
+      zh: "英辩社"
+      en: "English Debate Society"
+  - school:
+      zh: "杭州外国语学校"
+      en: "Hangzhou Foreign Languages School"
+    society:
+      zh: "艺术史社"
+      en: "Art History Society"
+  - school:
+      zh: "杭州外国语学校"
+      en: "Hangzhou Foreign Languages School"
+    society:
+      zh: "法学社"
+      en: "Law Society"
+  - school:
+      zh: "杭州外国语学校"
+      en: "Hangzhou Foreign Languages School"
+    society:
+      zh: "西溪水文学社"
+      en: "Xixi Literature Society"
+  - society:
+      zh: "杭州文学联盟"
+      en: "Hangzhou Literature Union"
+  - school:
+      zh: "杭州第十四中学"
+      en: "Hangzhou No.14 High School"
+    society:
+      zh: "正则国学社"
+      en: "Zhengze Chinese Classics Society"
+  - school:
+      zh: "杭州第二中学"
+      en: "Hangzhou No.2 High School"
+    society:
+      zh: "桃李文学社"
+      en: "Taoli Literature Society"
+  - school:
+      zh: "严州中学"
+      en: "Yanzhou High School"
+    society:
+      zh: "冰火文学社"
+      en: "Binghuo Literature Society"
+  - school:
+      zh: "学军中学"
+      en: "Xuejun High School"
+    society:
+      zh: "繁星文学社"
+      en: "Fanxing Literature Society"
+  - society:
+      zh: "山右浪青诗社"
+      en: "Shanyou Langqing Poetry Society"
+  - school:
+      zh: "温州鳌江中学"
+      en: "Aojiang High School, Wenzhou"
+    society:
+      zh: "文学社"
+      en: "Literature Society"
+  - school:
+      zh: "浙江平湖中学"
+      en: "Pinghu High School, Zhejiang"
+    society:
+      zh: "春秋文学社"
+      en: "Chunqiu Literature Society"
+
+pastSessions:
+  - session: 1
+    summary:
+      zh: "由杭州外国语学校 BOMB 哲学社主办，严州中学冰火文学社、杭州周行学社等十余个社团联合支持。"
+      en: "Hosted by the BOMB Philosophy Society of Hangzhou Foreign Languages School, with joint support from a dozen student societies across Zhejiang."
+    hosts:
+      - name:
+          zh: "杭州外国语学校 BOMB 哲学社"
+          en: "BOMB Philosophy Society, Hangzhou Foreign Languages School"
+    supporters:
+      - name:
+          zh: "严州中学冰火文学社"
+          en: "Binghuo Literature Society, Yanzhou High School"
+      - name:
+          zh: "杭州周行学社"
+          en: "Zhouxing Society, Hangzhou"
+      - name:
+          zh: "杭外剑高落镜学社"
+          en: "Luojing Society, HFLS Cambridge"
+      - name:
+          zh: "杭二中爱哲社"
+          en: "Aizhe Philosophy Society, Hangzhou No.2 High School"
+      - name:
+          zh: "杭二中桃李文学社"
+          en: "Taoli Literature Society, Hangzhou No.2 High School"
+      - name:
+          zh: "杭高鲁迅文学社"
+          en: "Luxun Literature Society, Hangzhou High School"
+      - name:
+          zh: "杭高钱江鲁迅文学社江上分社"
+          en: "Qianjiang Luxun Literature Society Jiangshang Branch, Hangzhou High School"
+      - name:
+          zh: "学军繁星文学社"
+          en: "Fanxing Literature Society, Xuejun High School"
+      - name:
+          zh: "杭四中文学社"
+          en: "Hangzhou No.4 High School Literature Society"
+      - name:
+          zh: "临安中学北极星哲学社"
+          en: "Polaris Philosophy Society, Lin'an High School"
+      - name:
+          zh: "杭外西溪水文学社"
+          en: "Xixi Literature Society, HFLS"
+      - name:
+          zh: "杭外国学社"
+          en: "Chinese Classics Society, HFLS"
+  - session: 2
+    summary:
+      zh: "由第八届全国中学生哲学大会组委会、第二届浙江中学生哲学大会组委会联合主办，杭州全球青年人才中心等联合协办。"
+      en: "Co-hosted by the organizing committees of the 8th National Secondary School Philosophy Conference and the 2nd SSPCZ, co-organized by Hangzhou Global Youth Talent Center and others."
+    hosts:
+      - name:
+          zh: "第八届全国中学生哲学大会组委会"
+          en: "Organizing Committee of the 8th National Secondary School Philosophy Conference"
+      - name:
+          zh: "第二届浙江中学生哲学大会组委会"
+          en: "Organizing Committee of the 2nd SSPCZ"
+    coOrganizers:
+      - name:
+          zh: "杭州全球青年人才中心"
+          en: "Hangzhou Global Youth Talent Center"
+      - name:
+          zh: "青松有余"
+          en: "Qingsong Youyu"
+      - name:
+          zh: "余杭区翡翠社区党群中心"
+          en: "Feicui Community Center, Yuhang District"
+    supporters:
+      - name:
+          zh: "杭州外国语学校哲学社"
+          en: "Philosophy Society, Hangzhou Foreign Languages School"
+      - name:
+          zh: "学军中学紫金港校区文心文学社"
+          en: "Wenxin Literature Society, Xuejun High School (Zijingang)"
+      - name:
+          zh: "杭州第七中学雁冰文学社"
+          en: "Yanbing Literature Society, Hangzhou No.7 High School"
+      - name:
+          zh: "杭州十四中学康桥校区正择国学社"
+          en: "Zheze Chinese Classics Society, Hangzhou No.14 High School (Kangqiao)"
+      - name:
+          zh: "未竟计划"
+          en: "Weijing Initiative"
+
+partnership:
+  email: "sspcz2026@163.com"
+  invitation:
+    zh: "欢迎各类社团、媒体与平台与我们合作，共同推动哲学在中学生群体中的普及与发展。"
+    en: "Student societies, media and platforms are all welcome to work with us to bring philosophy to more secondary school students."
