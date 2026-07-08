@@ -1,0 +1,38 @@
+name: QA
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: "RFC-400 red line: zero inline styles in src/"
+        run: |
+          if grep -rn 'style="' src --include='*.astro' --include='*.html'; then
+            echo "::error::Inline style attributes found in src/ (RFC-400 §1)."
+            exit 1
+          fi
+
+      - name: Stylelint (tokens-only colors)
+        run: npm run lint:css
+
+      - name: Astro check (types + content schemas)
+        run: npm run check
+
+      - name: Build
+        run: npm run build
+
+      # Lighthouse CI budget (>=95 x4, RFC-400 §3) activates in Phase 3
+      # once real pages exist to measure.

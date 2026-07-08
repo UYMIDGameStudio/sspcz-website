@@ -1,0 +1,63 @@
+---
+/**
+ * Phase 1 scaffold page — a thin wrapper proving the token system, the
+ * layout patterns and the QA gates. Replaced by the real current-issue
+ * front door in Phase 3 (ADR-001 §4). Not deployed: production still
+ * serves the legacy static site.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EditorialGrid from '../patterns/EditorialGrid.astro';
+import RunningHeader from '../patterns/RunningHeader.astro';
+import Marginalia from '../patterns/Marginalia.astro';
+import SectionCounter from '../components/SectionCounter.astro';
+import Dialectic from '../components/Dialectic.astro';
+import { t } from '../i18n';
+
+const dict = t('zh');
+---
+
+<BaseLayout title={`${dict.siteName} · ${dict.scaffoldTitle}`} lang="zh">
+  <EditorialGrid>
+    <RunningHeader publication="SSPCZ" issue={dict.issueLabel} year={2026} />
+
+    <main>
+      <Marginalia>
+        <Fragment slot="margin">
+          <SectionCounter label="Scaffold" />
+          <h2>{dict.scaffoldTitle}</h2>
+        </Fragment>
+
+        <p>{dict.scaffoldNote}</p>
+      </Marginalia>
+
+      <Marginalia>
+        <Fragment slot="margin">
+          <SectionCounter label="Patterns" />
+          <h2>版式模式验证</h2>
+        </Fragment>
+
+        <Dialectic cite="——《庄子·天下》">
+          「判天地之美，析万物之理。」
+        </Dialectic>
+      </Marginalia>
+    </main>
+
+    <footer class="colophon" slot="colophon">
+      <span>{dict.siteName}</span>
+      <span>ADR-001 · Phase 1</span>
+    </footer>
+  </EditorialGrid>
+</BaseLayout>
+
+<style>
+  .colophon {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-6) var(--page-gutter);
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-on-dark-muted);
+    background: var(--color-ink-deep);
+  }
+</style>

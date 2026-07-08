@@ -1,0 +1,38 @@
+---
+/**
+ * Pattern (layout-level): the annotated-page grid (RFC-300 §2.1).
+ * An asymmetric grid with a dedicated margin track for metadata, section
+ * marks and contextual notes; the body track carries the reading flow.
+ */
+---
+
+<section class="marginalia">
+  <aside class="marginalia__margin">
+    <slot name="margin" />
+  </aside>
+  <div class="marginalia__body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .marginalia {
+    display: grid;
+    grid-template-columns: var(--margin-track) 1fr;
+    gap: var(--space-12);
+    padding: var(--space-16) var(--page-gutter);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .marginalia__body {
+    max-width: var(--measure);
+  }
+
+  @media (width <= 56.25em) {
+    .marginalia {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+      padding: var(--space-12) var(--page-gutter-narrow);
+    }
+  }
+</style>

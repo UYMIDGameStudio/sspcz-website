@@ -1,0 +1,59 @@
+---
+/**
+ * Pattern (layout-level): persistent publication metadata framing the
+ * viewport like a physical journal page (RFC-300 §2.4). The year is
+ * chronological metadata drawn from issue frontmatter (ADR-001 §2.1).
+ */
+interface Props {
+  publication: string;
+  issue: string;
+  year: number | string;
+}
+
+const { publication, issue, year } = Astro.props;
+---
+
+<header class="running-header">
+  <span class="running-header__publication">{publication}</span>
+  <nav class="running-header__nav" aria-label="Site">
+    <slot />
+  </nav>
+  <span class="running-header__issue">{issue} · {year}</span>
+</header>
+
+<style>
+  .running-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    display: flex;
+    gap: var(--space-6);
+    align-items: baseline;
+    justify-content: space-between;
+    padding: var(--space-3) var(--page-gutter);
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    background: var(--color-paper);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .running-header__publication,
+  .running-header__issue {
+    white-space: nowrap;
+  }
+
+  .running-header__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+  }
+
+  @media (width <= 56.25em) {
+    .running-header {
+      flex-wrap: wrap;
+      padding: var(--space-3) var(--page-gutter-narrow);
+    }
+  }
+</style>

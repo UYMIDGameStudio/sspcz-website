@@ -84,8 +84,8 @@ architecture, not just a reskin.
 
 ## 2. Decision
 
-Rebuild as an **Astro (v5, fully static output) hybrid content publication
-system**, migrating all content out of markup first, then reconstructing
+Rebuild as an **Astro (v7 at scaffold time, fully static output) hybrid
+content publication system**, migrating all content out of markup first, then reconstructing
 pages from shared bilingual templates under the RFC-300 visual grammar.
 
 ### 2.1 Content keys: logical session IDs, not years

@@ -1,0 +1,32 @@
+---
+/**
+ * Component (semantic, stateless): marks a section within the document's
+ * logical progression using CSS counters (RFC-300 §2.2). Structure is the
+ * primary decoration; the counter is generated, never hardcoded.
+ */
+interface Props {
+  label?: string;
+}
+
+const { label } = Astro.props;
+---
+
+<p class="section-marker">
+  <span class="section-marker__index" aria-hidden="true"></span>
+  {label && <span class="section-marker__label">{label}</span>}
+</p>
+
+<style>
+  .section-marker {
+    counter-increment: section;
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-text-faint);
+    text-transform: uppercase;
+  }
+
+  .section-marker__index::before {
+    content: "§" counter(section) " — ";
+  }
+</style>

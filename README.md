@@ -1,5 +1,11 @@
 # 浙江中学生哲学大会 官网 · SSPCZ Website
 
+> **⚠ 平台迁移中 / Migration in progress** — 本仓库正按照 `docs/`
+> 宪章（RFC-000…400）与 `docs/adr/ADR-001-Initialization.md` 迁移为基于
+> Astro 的出版平台。根目录的 HTML 为遗留静态站（仍是当前部署版本）；
+> 新平台位于 `src/`，通过 `npm run dev / build / check / lint:css` 工作。
+> 遗留文件将在 Phase 4 打上 `legacy-static-site` 标签后删除。
+
 Official website of the **Secondary School Philosophy Conference of Zhejiang (SSPCZ)** — a student-organized philosophy conference for middle and high school students, held in Hangzhou.
 
 第三届浙江中学生哲学大会 · 主题「变与不变」 · 2026年10月2–5日 · 杭州

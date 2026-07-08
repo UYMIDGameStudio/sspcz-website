@@ -1,0 +1,26 @@
+---
+import '../styles/tokens.css';
+import '../styles/global.css';
+import type { Locale } from '../i18n';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: Locale;
+}
+
+const { title, description, lang = 'zh' } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

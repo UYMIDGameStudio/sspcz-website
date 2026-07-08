@@ -1,0 +1,51 @@
+/* Global document defaults. All values come from tokens.css. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Sectional numbering (RFC-300 §2.2) counts from the document root. */
+  counter-reset: section;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-text);
+  font-family: var(--font-sans-cjk);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-serif-cjk);
+  line-height: var(--leading-tight);
+}
+
+:lang(en) h1,
+:lang(en) h2,
+:lang(en) h3,
+:lang(en) h4 {
+  font-family: var(--font-serif-latin);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-accent);
+}

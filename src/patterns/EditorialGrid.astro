@@ -1,0 +1,27 @@
+---
+/**
+ * Pattern (layout-level): the page frame. Establishes the paper surface,
+ * a full-viewport column flow, and pins the colophon (footer slot) to the
+ * viewport bottom on short documents.
+ */
+---
+
+<div class="editorial-grid">
+  <slot />
+  <div class="editorial-grid__colophon">
+    <slot name="colophon" />
+  </div>
+</div>
+
+<style>
+  .editorial-grid {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--color-paper);
+  }
+
+  .editorial-grid__colophon {
+    margin-top: auto;
+  }
+</style>
