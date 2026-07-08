@@ -1,0 +1,185 @@
+/* 浙江中学生哲学大会 — shared site styles */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #f2f4f5;
+  font-family: "Noto Sans SC", system-ui, sans-serif;
+}
+
+a { color: #122736; text-decoration: none; }
+a:hover { color: #3e7ca6; }
+
+input, select, textarea {
+  font-family: "Noto Sans SC", system-ui, sans-serif;
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid #3e7ca6;
+  outline-offset: -1px;
+}
+
+/* ---------- header nav ---------- */
+.nav-cta:hover { background: #122736; color: #f2f4f5; }
+
+/* ---------- buttons ---------- */
+.btn-light:hover { background: #fff; }
+.btn-dark:hover { background: #3e7ca6; color: #f2f4f5; }
+.btn-outline-dark:hover { border-color: #8fa9c2; color: #e8edf3; }
+
+/* ---------- hover cards ---------- */
+.card-dark-hover:hover { background: #1a3550; }
+.card-light-hover:hover { background: #e9edef; }
+
+/* ---------- schedule tabs ---------- */
+.tab-btn {
+  padding: 13px 30px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  background: transparent;
+  color: #40505f;
+  cursor: pointer;
+  font-family: "Noto Serif SC", serif;
+  border: none;
+}
+.tab-btn.active {
+  font-weight: 600;
+  background: #122736;
+  color: #f2f4f5;
+}
+
+/* ---------- registration form chips ---------- */
+.chip {
+  padding: 12px 26px;
+  font-size: 14px;
+  background: #fff;
+  color: #40505f;
+  cursor: pointer;
+  border: 1px solid #b9c4cc;
+}
+.chip.active {
+  font-weight: 600;
+  background: #122736;
+  color: #f2f4f5;
+  border-color: #122736;
+}
+
+.submit-btn { cursor: pointer; }
+.submit-btn:hover { background: #3e7ca6; }
+
+/* ---------- language modal ---------- */
+.lang-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 21, 36, .78);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.lang-modal {
+  background: #f2f4f5;
+  border: 1px solid #cfd6db;
+  max-width: 420px;
+  width: 100%;
+  padding: 42px 36px 36px;
+  text-align: center;
+}
+.lang-modal .lang-phi {
+  font-family: "EB Garamond", serif;
+  font-size: 46px;
+  line-height: 1;
+  color: #3e7ca6;
+}
+.lang-modal .lang-title {
+  font-family: "Noto Serif SC", serif;
+  font-size: 21px;
+  color: #122736;
+  letter-spacing: 2px;
+  margin-top: 16px;
+}
+.lang-modal .lang-sub {
+  font-size: 12.5px;
+  color: #8194a3;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+.lang-modal .lang-opts {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+.lang-modal button {
+  flex: 1;
+  padding: 14px;
+  font-size: 15px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+.lang-zh-btn {
+  font-family: "Noto Serif SC", serif;
+  background: #122736;
+  color: #f2f4f5;
+  border: 1px solid #122736;
+}
+.lang-zh-btn:hover { background: #3e7ca6; border-color: #3e7ca6; }
+.lang-en-btn {
+  font-family: "EB Garamond", serif;
+  background: #fff;
+  color: #122736;
+  border: 1px solid #122736;
+}
+.lang-en-btn:hover { background: #122736; color: #f2f4f5; }
+
+/* ---------- header language switch ---------- */
+.lang-switch {
+  font-family: "EB Garamond", serif;
+  letter-spacing: 2px;
+  color: #40505f;
+  border-left: 1px solid #cfd6db;
+  padding-left: 20px;
+}
+
+/* ================= mobile ================= */
+@media (max-width: 900px) {
+  .site-header { flex-wrap: wrap; padding: 12px 20px !important; gap: 10px !important; }
+  .site-nav { flex-wrap: wrap; gap: 12px 16px !important; }
+  .lang-switch { border-left: none; padding-left: 0; }
+
+  .pad-sec { padding: 48px 20px !important; }
+  .section { grid-template-columns: 1fr !important; gap: 28px !important; padding: 48px 20px !important; }
+  .grid-2 { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .kv-row { grid-template-columns: 1fr !important; gap: 6px !important; }
+
+  .cards-3, .cards-2 { grid-template-columns: 1fr !important; }
+  .cards-3 > *, .cards-2 > * { border-right: none !important; }
+  .cards-3 > *:not(:last-child), .cards-2 > *:not(:last-child) { border-bottom: 1px solid #cfd6db !important; }
+
+  .info-band { grid-template-columns: 1fr !important; }
+  .info-band > div { border-right: none !important; }
+  .info-band > div:not(:last-child) { border-bottom: 1px solid #1c2f47; }
+
+  .h1-hero { font-size: 44px !important; letter-spacing: 1px !important; }
+  .h1-page { font-size: 38px !important; letter-spacing: 1px !important; }
+  h2 { font-size: 26px !important; }
+  .theme-big { font-size: 36px !important; letter-spacing: 4px !important; }
+  .phi-mark { display: none; }
+
+  .btn-row { flex-wrap: wrap; }
+  .ticker-band { padding: 14px 20px !important; }
+
+  .tabs { flex-wrap: wrap; }
+  .tab-btn { padding: 11px 14px !important; font-size: 13px !important; }
+  .ev-row { grid-template-columns: 1fr !important; gap: 8px !important; padding: 20px !important; }
+
+  .reg-grid { grid-template-columns: 1fr !important; gap: 40px !important; padding: 48px 20px !important; }
+  .form-grid { grid-template-columns: 1fr !important; }
+  .form-panel { padding: 28px 22px !important; }
+  .success-panel { padding: 48px 24px !important; }
+
+  .submit-box { flex-direction: column !important; align-items: flex-start !important; gap: 18px !important; }
+
+  .footer-top { display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 18px !important; }
+  .footer-links { flex-wrap: wrap; gap: 12px 18px !important; }
+}

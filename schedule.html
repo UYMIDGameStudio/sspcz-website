@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>日程安排 · 浙江中学生哲学大会</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- ============ Header ============ -->
+<div class="site-header" style="display:flex;align-items:center;justify-content:space-between;padding:14px 36px;background:#f2f4f5;border-bottom:1px solid #cfd6db;position:sticky;top:0;z-index:20">
+  <a href="index.html" style="display:block"><img src="assets/logo.jpg" alt="浙江中学生哲学大会" style="height:38px;display:block;mix-blend-mode:multiply"></a>
+  <div class="site-nav" style="display:flex;gap:28px;align-items:center;font-size:13px;color:#40505f;letter-spacing:1px">
+    <a href="index.html" style="color:#40505f">首页</a>
+    <a href="third-session.html" style="color:#40505f">第三届大会</a>
+    <a href="cfp.html" style="color:#40505f">征稿启事</a>
+    <a href="schedule.html" style="color:#122736;font-weight:700">日程安排</a>
+    <a href="committee.html" style="color:#40505f">组委会</a>
+    <a href="en/schedule.html" class="lang-switch" data-set-lang="en">EN</a>
+    <a href="register.html" class="nav-cta" style="border:1.5px solid #122736;color:#122736;padding:7px 16px;font-weight:600">注册报名 →</a>
+  </div>
+</div>
+
+<!-- ============ 页面标题 ============ -->
+<div class="pad-sec" style="padding:64px 36px 0">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid #b9c4cc;padding-bottom:8px;font-family:'EB Garamond',serif;font-size:14px;letter-spacing:3px;color:#5f7181">
+    <span>PROGRAM</span><span>THE THIRD SESSION · OCT 2–5, 2026</span>
+  </div>
+  <h1 class="h1-page" style="font-family:'Noto Serif SC',serif;font-weight:700;font-size:64px;line-height:1.2;margin:32px 0 0;letter-spacing:2px;color:#122736">日程<span style="color:#3e7ca6">安排</span></h1>
+  <p style="font-size:14.5px;line-height:1.95;color:#5f7181;margin:20px 0 0;max-width:640px">2026年10月2–5日，四日议程由学生论文讲演、嘉宾讲座与哲学黑客马拉松三大板块组成。以下为暂定框架，具体嘉宾与场次以组委会正式通知为准。</p>
+</div>
+
+<!-- ============ Tab 切换 ============ -->
+<div class="pad-sec" style="padding:40px 36px 72px">
+  <div id="tabs" class="tabs" style="display:flex;gap:0;border:1px solid #122736;width:fit-content">
+    <div class="tab-btn active" data-day="1">10月2日</div>
+    <div class="tab-btn" data-day="2">10月3日</div>
+    <div class="tab-btn" data-day="3">10月4日</div>
+    <div class="tab-btn" data-day="4">10月5日</div>
+  </div>
+
+  <div id="events" style="border:1px solid #cfd6db;margin-top:28px"></div>
+  <div style="font-size:12.5px;color:#8194a3;margin-top:16px;letter-spacing:1px">* 议程为暂定框架，最终以大会现场公布为准。</div>
+</div>
+
+<!-- ============ Footer ============ -->
+<div class="pad-sec" style="background:#0a1524;color:#9db4c6;padding:40px 36px 28px">
+  <div class="footer-top" style="display:flex;justify-content:space-between;align-items:center">
+    <div style="font-family:'Noto Serif SC',serif;font-size:17px;color:#e8edf3;letter-spacing:2px">浙江中学生哲学大会</div>
+    <div class="footer-links" style="display:flex;gap:24px;font-size:13px">
+      <a href="index.html" style="color:#9db4c6">首页</a>
+      <a href="third-session.html" style="color:#9db4c6">第三届大会</a>
+      <a href="cfp.html" style="color:#9db4c6">征稿启事</a>
+      <a href="committee.html" style="color:#9db4c6">组委会</a>
+      <a href="register.html" style="color:#9db4c6">注册报名</a>
+    </div>
+  </div>
+  <div style="border-top:1px solid #1c2f47;margin-top:24px;padding-top:16px;font-family:'EB Garamond',serif;font-size:12px;letter-spacing:2px;color:#54718c;display:flex;justify-content:space-between">
+    <span>© 2024–2026 SSPCZ 组委会</span><span>ΦΙΛΟΣΟΦΙΑ</span>
+  </div>
+</div>
+
+<script>
+  var DAYS = {
+    1: [
+      { time: '09:00 – 09:40', kind: '开幕 OPENING', title: '开幕式', desc: '组委会致辞，介绍大会宗旨、主题「变与不变」与本届安排。' },
+      { time: '09:40 – 12:00', kind: '讲演 PAPERS', title: '学生论文讲演（第一组）', desc: '发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。' },
+      { time: '13:30 – 16:00', kind: '讲演 PAPERS', title: '学生论文讲演（第二组）', desc: '发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。' },
+      { time: '16:15 – 17:15', kind: '讲座 LECTURE', title: '嘉宾专题讲座（一）', desc: '嘉宾围绕小组主题开设 30–40 分钟讲座，讲座后自由交流。' },
+    ],
+    2: [
+      { time: '09:00 – 12:00', kind: '讲演 PAPERS', title: '学生论文讲演（第三组）', desc: '发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。' },
+      { time: '13:30 – 15:30', kind: '讲演 PAPERS', title: '学生论文讲演（第四组）', desc: '发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。' },
+      { time: '15:45 – 16:45', kind: '讲座 LECTURE', title: '嘉宾专题讲座（二）', desc: '嘉宾围绕小组主题开设 30–40 分钟讲座，讲座后自由交流。' },
+    ],
+    3: [
+      { time: '09:00 – 09:30', kind: '说明 BRIEFING', title: '哲学黑客马拉松 · 开题', desc: '公布议题与规则，参与者分组。' },
+      { time: '09:30 – 17:00', kind: '协作 HACKATHON', title: '哲学黑客马拉松', desc: '小组以"短时高强度协作"模式共同攻克哲学与伦理议题，在互主体性的对话中推进方案。' },
+    ],
+    4: [
+      { time: '09:00 – 11:30', kind: '展示 DEMO', title: '黑客马拉松成果展示', desc: '各小组展示成果，嘉宾与全体与会者点评交流。' },
+      { time: '13:30 – 15:00', kind: '颁奖 AWARDS', title: '颁奖典礼', desc: '颁发最佳写作奖、最佳演讲奖、最佳主题奖、最佳原创奖。' },
+      { time: '15:00 – 16:00', kind: '闭幕 CLOSING', title: '闭幕式', desc: '大会总结与致谢，合影留念。' },
+    ],
+  };
+
+  var tabsEl = document.getElementById('tabs');
+  var eventsEl = document.getElementById('events');
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function renderDay(day) {
+    var rows = DAYS[day].map(function (ev) {
+      return (
+        '<div class="ev-row" style="display:grid;grid-template-columns:180px 200px 1fr;gap:24px;padding:26px 32px;border-bottom:1px solid #e0e6e9;background:#f7f9fa;align-items:baseline">' +
+          '<div style="font-family:\'EB Garamond\',serif;font-size:16px;color:#3e7ca6;letter-spacing:1px">' + escapeHtml(ev.time) + '</div>' +
+          '<div style="font-size:12px;color:#8194a3;letter-spacing:2px;padding-top:2px">' + escapeHtml(ev.kind) + '</div>' +
+          '<div>' +
+            '<div style="font-family:\'Noto Serif SC\',serif;font-size:19px;color:#122736">' + escapeHtml(ev.title) + '</div>' +
+            '<div style="font-size:13.5px;color:#5f7181;margin-top:6px;line-height:1.8">' + escapeHtml(ev.desc) + '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    });
+    eventsEl.innerHTML = rows.join('');
+  }
+
+  tabsEl.addEventListener('click', function (e) {
+    var btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    tabsEl.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    renderDay(btn.getAttribute('data-day'));
+  });
+
+  renderDay(1);
+</script>
+<script src="assets/lang.js"></script>
+</body>
+</html>
