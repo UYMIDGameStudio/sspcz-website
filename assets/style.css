@@ -6,7 +6,13 @@ body {
   margin: 0;
   background: #f2f4f5;
   font-family: "Noto Sans SC", system-ui, sans-serif;
+  /* sticky footer: on short pages the footer still reaches the viewport bottom */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+.site-footer { margin-top: auto; }
 
 a { color: #122736; text-decoration: none; }
 a:hover { color: #3e7ca6; }
@@ -87,7 +93,7 @@ input:focus, select:focus, textarea:focus {
   text-align: center;
 }
 .lang-modal .lang-phi {
-  font-family: "EB Garamond", serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: 46px;
   line-height: 1;
   color: #3e7ca6;
@@ -125,7 +131,7 @@ input:focus, select:focus, textarea:focus {
 }
 .lang-zh-btn:hover { background: #3e7ca6; border-color: #3e7ca6; }
 .lang-en-btn {
-  font-family: "EB Garamond", serif;
+  font-family: "Times New Roman", Times, serif;
   background: #fff;
   color: #122736;
   border: 1px solid #122736;
@@ -134,7 +140,7 @@ input:focus, select:focus, textarea:focus {
 
 /* ---------- header language switch ---------- */
 .lang-switch {
-  font-family: "EB Garamond", serif;
+  font-family: "Times New Roman", Times, serif;
   letter-spacing: 2px;
   color: #40505f;
   border-left: 1px solid #cfd6db;
