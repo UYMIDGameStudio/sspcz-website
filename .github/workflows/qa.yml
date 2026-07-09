@@ -34,5 +34,5 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Lighthouse CI budget (>=95 x4, RFC-400 §3) activates in Phase 3
-      # once real pages exist to measure.
+      - name: "Lighthouse budget (>=95 x4, RFC-400 §3)"
+        run: npx lhci autorun

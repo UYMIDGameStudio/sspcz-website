@@ -8,13 +8,16 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "lint:css": "stylelint \"src/**/*.css\""
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "qa:lh": "lhci autorun"
   },
   "dependencies": {
     "astro": "^7.0.6"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@lhci/cli": "^0.15.1",
+    "@rollup/plugin-yaml": "^5.0.0",
     "stylelint": "^17.14.0",
     "stylelint-config-standard": "^40.0.0",
     "typescript": "^6.0.3"

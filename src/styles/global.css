@@ -49,3 +49,108 @@ a {
 a:hover {
   color: var(--color-accent);
 }
+
+/* ---------- masthead (page opening) ---------- */
+
+.masthead {
+  padding: var(--space-16) var(--page-gutter) var(--space-12);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.masthead__kicker {
+  font-family: var(--font-serif-latin);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wider);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.masthead__title {
+  max-width: 22em;
+  margin-top: var(--space-4);
+  font-size: var(--text-2xl);
+}
+
+.masthead__theme {
+  margin-top: var(--space-4);
+  font-family: var(--font-serif-cjk);
+  font-size: var(--text-md);
+  color: var(--color-ink);
+}
+
+:lang(en) .masthead__theme {
+  font-family: var(--font-serif-latin);
+}
+
+.masthead__lead {
+  max-width: var(--measure);
+  margin-top: var(--space-6);
+  color: var(--color-text-muted);
+  line-height: var(--leading-loose);
+}
+
+.masthead__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-8);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  list-style: none;
+}
+
+@media (width <= 56.25em) {
+  .masthead {
+    padding: var(--space-12) var(--page-gutter-narrow);
+  }
+
+  .masthead__title {
+    font-size: var(--text-xl);
+  }
+}
+
+/* ---------- prose (rendered editorial documents) ---------- */
+
+.prose {
+  color: var(--color-text);
+  line-height: var(--leading-loose);
+}
+
+.prose > * + * {
+  margin-top: var(--space-4);
+}
+
+.prose h2 {
+  margin-top: var(--space-8);
+  font-size: var(--text-md);
+  letter-spacing: var(--tracking-wide);
+}
+
+.prose ol,
+.prose ul {
+  padding-left: 1.5em;
+}
+
+.prose li + li {
+  margin-top: var(--space-2);
+}
+
+.prose blockquote {
+  margin: var(--space-6) 0 0;
+  padding: var(--space-4) var(--space-6);
+  font-family: var(--font-serif-cjk);
+  color: var(--color-ink);
+  background: var(--color-paper-inset);
+  border-left: 2px solid var(--color-accent);
+}
+
+:lang(en) .prose blockquote {
+  font-family: var(--font-serif-latin);
+}
+
+.prose blockquote p + p {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

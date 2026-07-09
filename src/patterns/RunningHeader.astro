@@ -8,13 +8,22 @@ interface Props {
   publication: string;
   issue: string;
   year: number | string;
+  homeHref?: string;
 }
 
-const { publication, issue, year } = Astro.props;
+const { publication, issue, year, homeHref } = Astro.props;
 ---
 
 <header class="running-header">
-  <span class="running-header__publication">{publication}</span>
+  {
+    homeHref ? (
+      <a class="running-header__publication" href={homeHref}>
+        {publication}
+      </a>
+    ) : (
+      <span class="running-header__publication">{publication}</span>
+    )
+  }
   <nav class="running-header__nav" aria-label="Site">
     <slot />
   </nav>
@@ -42,6 +51,10 @@ const { publication, issue, year } = Astro.props;
   .running-header__publication,
   .running-header__issue {
     white-space: nowrap;
+  }
+
+  a.running-header__publication {
+    color: var(--color-ink);
   }
 
   .running-header__nav {

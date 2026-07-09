@@ -1,0 +1,59 @@
+---
+/**
+ * Template: the program. Days render sequentially in full document flow
+ * (ADR-001 Q2 — structure over interaction; zero JS). Each day is a
+ * counted section; sessions map to SessionEntry, whose `kind` selects the
+ * Dialectic voice.
+ */
+import EditorialLayout from '../layouts/EditorialLayout.astro';
+import Marginalia from '../patterns/Marginalia.astro';
+import SectionCounter from '../components/SectionCounter.astro';
+import SessionEntry from '../components/SessionEntry.astro';
+import { t } from '../i18n';
+import { schedule, type Locale } from '../lib/issueData';
+import { shortDate } from '../lib/format';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+const title = `${dict.nav.program} · ${dict.siteName}`;
+---
+
+<EditorialLayout locale={locale} route="program" title={title} description={dict.meta.program}>
+  <section class="masthead">
+    <p class="masthead__kicker">Program · {dict.issueLabel}</p>
+    <h1 class="masthead__title">{dict.nav.program}</h1>
+    <p class="masthead__lead">{dict.program.lead}</p>
+  </section>
+
+  {
+    schedule.days.map((day) => (
+      <Marginalia>
+        <Fragment slot="margin">
+          <SectionCounter label={`Day ${day.day}`} />
+          <h2>{shortDate(day.date, locale)}</h2>
+        </Fragment>
+        <div>
+          {day.sessions.map((session) => (
+            <SessionEntry session={session} locale={locale} />
+          ))}
+          {day.day === schedule.days.length && schedule.provisional && (
+            <p class="provisional">{dict.program.provisionalNote}</p>
+          )}
+        </div>
+      </Marginalia>
+    ))
+  }
+</EditorialLayout>
+
+<style>
+  .provisional {
+    margin-top: var(--space-6);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+/** Template: conference policies — a single editorial document. */
+import { getEntry, render } from 'astro:content';
+import EditorialLayout from '../layouts/EditorialLayout.astro';
+import Marginalia from '../patterns/Marginalia.astro';
+import SectionCounter from '../components/SectionCounter.astro';
+import { t } from '../i18n';
+import type { Locale } from '../lib/issueData';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+
+const entry = await getEntry('conference', `issue-003/policies.${locale}`);
+if (!entry) throw new Error('issue-003 policies document missing');
+const { Content } = await render(entry);
+
+const title = `${entry.data.title} · ${dict.siteName}`;
+---
+
+<EditorialLayout locale={locale} route="policies" title={title} description={dict.meta.policies}>
+  <section class="masthead">
+    <p class="masthead__kicker">Policies · Review &amp; Academic Integrity</p>
+    <h1 class="masthead__title">{entry.data.title}</h1>
+  </section>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Charter" />
+      <h2>{entry.data.title}</h2>
+    </Fragment>
+    <div class="prose"><Content /></div>
+  </Marginalia>
+</EditorialLayout>

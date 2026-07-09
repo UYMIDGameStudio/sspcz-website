@@ -1,0 +1,241 @@
+---
+/**
+ * Template: the issue front door. Rendered at both `/` (current issue,
+ * ADR-001 Q4) and `/issue-003/` (permanent home) in each locale.
+ */
+import { getEntry, render } from 'astro:content';
+import EditorialLayout from '../layouts/EditorialLayout.astro';
+import Marginalia from '../patterns/Marginalia.astro';
+import SectionCounter from '../components/SectionCounter.astro';
+import RecordRow from '../components/RecordRow.astro';
+import { t } from '../i18n';
+import { committee, issue, pick, type Locale } from '../lib/issueData';
+import { dateRange, quotedTheme, sessionLabel } from '../lib/format';
+import { path, type RouteKey } from '../lib/routes';
+
+interface Props {
+  locale: Locale;
+  route?: RouteKey;
+}
+
+const { locale, route = 'issue' } = Astro.props;
+const dict = t(locale);
+
+const aboutEntry = await getEntry('conference', `issue-003/about.${locale}`);
+const letterEntry = await getEntry('conference', `issue-003/theme-letter.${locale}`);
+if (!aboutEntry || !letterEntry) throw new Error('issue-003 editorial documents missing');
+const { Content: About } = await render(aboutEntry);
+const { Content: Letter } = await render(letterEntry);
+
+const title = `${dict.currentIssue.title} · ${pick(locale, issue.theme)}`;
+const hostNames = committee.hosts.map((h) => pick(locale, h.name));
+const joiner = locale === 'zh' ? ' · ' : ' · ';
+---
+
+<EditorialLayout locale={locale} route={route} title={title} description={dict.meta.home}>
+  <section class="masthead">
+    <p class="masthead__kicker">
+      {dict.issueLabel} · {dateRange(issue.dates.start, issue.dates.end, locale)} ·
+      {pick(locale, issue.location.city)}
+    </p>
+    <h1 class="masthead__title">{dict.currentIssue.title}</h1>
+    <p class="masthead__theme">
+      {dict.currentIssue.themeLabel} · {quotedTheme(locale, issue.theme)}
+    </p>
+    <p class="masthead__lead">{dict.currentIssue.heroLead}</p>
+    <ul class="masthead__facts">
+      <li>{dict.currentIssue.durationNote}</li>
+      <li>{pick(locale, issue.location.venue.note)}</li>
+      <li>{pick(locale, issue.audience.primary)} · {pick(locale, issue.audience.auditors)}</li>
+    </ul>
+  </section>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="About" />
+      <h2>{aboutEntry.data.title}</h2>
+    </Fragment>
+    <div class="prose"><About /></div>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Theme" />
+      <h2>{letterEntry.data.title}</h2>
+      <p class="theme-mark">{quotedTheme(locale, issue.theme)}</p>
+    </Fragment>
+    <div class="prose"><Letter /></div>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Format" />
+      <h2>{dict.currentIssue.pillarsTitle}</h2>
+    </Fragment>
+    <ol class="pillars">
+      {
+        issue.pillars.map((pillar) => (
+          <li class="pillars__item">
+            <p class="pillars__kicker">{pick(locale, pillar.kicker)}</p>
+            <h3 class="pillars__name">{pick(locale, pillar.name)}</h3>
+            <p class="pillars__summary">{pick(locale, pillar.summary)}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Participants" />
+      <h2>{dict.currentIssue.participantsTitle}</h2>
+    </Fragment>
+    <dl class="categories">
+      {
+        issue.participantCategories.map((cat) => (
+          <div class="categories__item">
+            <dt class="categories__name">{pick(locale, cat.name)}</dt>
+            <dd class="categories__desc">{pick(locale, cat.description)}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Organizers" />
+      <h2>{dict.currentIssue.organizersTitle}</h2>
+      <p class="margin-note">
+        <a href={path(locale, 'committee')}>{dict.currentIssue.fullListNote}</a>
+      </p>
+    </Fragment>
+    <div>
+      <RecordRow label={dict.committee.labels.hosts}>{hostNames.join(joiner)}</RecordRow>
+      <RecordRow label={dict.committee.labels.coOrganizers}>
+        {committee.coOrganizers.map((o) => pick(locale, o.name)).join(joiner)}
+        {committee.coOrganizersPending && (
+          <span class="pending">{dict.currentIssue.morePending}</span>
+        )}
+      </RecordRow>
+      <RecordRow label={dict.committee.labels.academicSupport}>
+        {committee.academicSupport.map((o) => pick(locale, o.name)).join(joiner)}
+      </RecordRow>
+    </div>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Sessions" />
+      <h2>{dict.currentIssue.pastSessionsTitle}</h2>
+    </Fragment>
+    <div>
+      {
+        committee.pastSessions.map((s) => (
+          <RecordRow label={sessionLabel(s.session, locale)}>
+            {pick(locale, s.summary)}
+          </RecordRow>
+        ))
+      }
+      <p class="closing-line">
+        {dict.closing.motto} — <a href={path(locale, 'register')}>{dict.actions.registerNow}</a> ·
+        <a href={path(locale, 'program')}>{dict.actions.viewProgram}</a>
+      </p>
+    </div>
+  </Marginalia>
+</EditorialLayout>
+
+<style>
+  .theme-mark {
+    margin-top: var(--space-6);
+    font-family: var(--font-serif-cjk);
+    font-size: var(--text-xl);
+    color: var(--color-accent);
+  }
+
+  :global(html:lang(en)) .theme-mark {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-lg);
+  }
+
+  .margin-note {
+    margin-top: var(--space-4);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .margin-note a {
+    color: var(--color-text-muted);
+    text-decoration: underline;
+  }
+
+  .pillars {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pillars__item {
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .pillars__kicker {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .pillars__name {
+    margin-top: var(--space-1);
+    font-size: var(--text-md);
+  }
+
+  .pillars__summary {
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+    line-height: var(--leading-loose);
+  }
+
+  .categories {
+    margin: 0;
+  }
+
+  .categories__item {
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .categories__name {
+    font-family: var(--font-serif-cjk);
+    font-size: var(--text-md);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .categories__name {
+    font-family: var(--font-serif-latin);
+  }
+
+  .categories__desc {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-muted);
+    line-height: var(--leading-loose);
+  }
+
+  .pending {
+    margin-left: var(--space-1);
+    color: var(--color-text-muted);
+  }
+
+  .closing-line {
+    margin-top: var(--space-8);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .closing-line a {
+    text-decoration: underline;
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+/** Template: Call for Papers — editorial document + timeline records. */
+import { getEntry, render } from 'astro:content';
+import EditorialLayout from '../layouts/EditorialLayout.astro';
+import Marginalia from '../patterns/Marginalia.astro';
+import SectionCounter from '../components/SectionCounter.astro';
+import RecordRow from '../components/RecordRow.astro';
+import { t } from '../i18n';
+import { issue, type Locale } from '../lib/issueData';
+import { dateRange, monthYear, quotedTheme } from '../lib/format';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+
+const entry = await getEntry('conference', `issue-003/cfp.${locale}`);
+if (!entry) throw new Error('issue-003 cfp document missing');
+const { Content } = await render(entry);
+
+const title = `${entry.data.title} · ${dict.siteName}`;
+---
+
+<EditorialLayout locale={locale} route="cfp" title={title} description={dict.meta.cfp}>
+  <section class="masthead">
+    <p class="masthead__kicker">Call for Papers · {dict.issueLabel}</p>
+    <h1 class="masthead__title">{entry.data.title}</h1>
+    <p class="masthead__theme">
+      {dict.currentIssue.themeLabel} · {quotedTheme(locale, issue.theme)}
+    </p>
+  </section>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Dates" />
+      <div>
+        <RecordRow label={dict.cfpMeta.open}>{monthYear(issue.cfp.open, locale)}</RecordRow>
+        <RecordRow label={dict.cfpMeta.deadline}>
+          {monthYear(issue.cfp.deadline, locale)}
+        </RecordRow>
+        <RecordRow label={dict.cfpMeta.presentations}>
+          {dateRange(issue.cfp.presentations.start, issue.cfp.presentations.end, locale)}
+        </RecordRow>
+        <RecordRow label={dict.register.contactLabel}>
+          <a href={`mailto:${issue.contact.email}`}>{issue.contact.email}</a>
+        </RecordRow>
+      </div>
+    </Fragment>
+    <div class="prose"><Content /></div>
+  </Marginalia>
+</EditorialLayout>

@@ -3,9 +3,18 @@ export default {
   siteNameLatin: 'Secondary School Philosophy Conference of Zhejiang',
   issueLabel: 'Issue III',
 
+  meta: {
+    home: 'The 3rd Secondary School Philosophy Conference of Zhejiang — theme "Change & Invariance": student paper presentations, guest lectures and a philosophy hackathon.',
+    cfp: 'Call for papers of the 3rd SSPCZ: philosophy papers by secondary school students on "Change & Invariance".',
+    program: 'Program of the 3rd SSPCZ: student paper presentations, guest lectures and the philosophy hackathon.',
+    committee: 'Organizing committee of the SSPCZ: hosts, co-organizers, academic support and supporting societies.',
+    policies: 'Paper review policy and academic integrity rules of the SSPCZ.',
+    register: 'Register for the 3rd Secondary School Philosophy Conference of Zhejiang.',
+  },
+
   nav: {
     home: 'Home',
-    currentIssue: 'The 3rd Session',
+    currentIssue: 'This Session',
     cfp: 'Call for Papers',
     program: 'Program',
     committee: 'Committee',
@@ -30,11 +39,17 @@ export default {
   },
 
   currentIssue: {
+    title: 'The 3rd Secondary School Philosophy Conference of Zhejiang',
     heroLead:
       'This session again focuses on middle and high school students across Zhejiang. Through three pillars — student paper presentations, guest lectures and a philosophy hackathon — it brings philosophy to every participant and kindles the spirit of inquiry in young minds.',
     themeLabel: "This year's theme",
     durationNote: 'four days',
     fullListNote: 'Full list on the Committee page',
+    pillarsTitle: 'Three Pillars',
+    participantsTitle: 'Who Attends',
+    organizersTitle: 'Hosts & Support',
+    pastSessionsTitle: 'Past Sessions',
+    morePending: '(more to be announced)',
   },
 
   program: {
@@ -43,9 +58,27 @@ export default {
       'Provisional framework; the final program will be announced on site.',
   },
 
+  cfpMeta: {
+    open: 'Submissions open',
+    deadline: 'Submissions close',
+    presentations: 'Presentations',
+  },
+
   committee: {
     lead: 'The conference is organized by students, with joint support from many secondary school societies across Zhejiang in every session.',
+    structureTitle: 'Structure of the 3rd Session',
+    pastTitle: 'Past Sessions',
+    speakersTitle: 'Past Guest Speakers',
     partnershipTitle: "We're looking for partners",
+    labels: {
+      hosts: 'Host',
+      coOrganizers: 'Co-organizer',
+      academicSupport: 'Academic support',
+      secretariat: 'Secretariat',
+      teams: 'Teams',
+      societies: 'Supporting societies',
+      supporters: 'Supporters',
+    },
   },
 
   register: {

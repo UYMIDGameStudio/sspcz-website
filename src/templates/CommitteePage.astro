@@ -1,0 +1,186 @@
+---
+/** Template: committee & support — organizational registers from YAML. */
+import EditorialLayout from '../layouts/EditorialLayout.astro';
+import Marginalia from '../patterns/Marginalia.astro';
+import SectionCounter from '../components/SectionCounter.astro';
+import RecordRow from '../components/RecordRow.astro';
+import { t } from '../i18n';
+import { committee, pick, speakerName, speakers, type Locale } from '../lib/issueData';
+import { sessionLabel } from '../lib/format';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+const title = `${dict.nav.committee} · ${dict.siteName}`;
+
+const joiner = ' · ';
+const listJoiner = locale === 'zh' ? '、' : ', ';
+
+const societyName = (s: (typeof committee.supportingSocieties)[number]): string => {
+  if (!s.school) return pick(locale, s.society);
+  return locale === 'zh'
+    ? `${s.school.zh}${s.society.zh}`
+    : `${s.society.en}, ${s.school.en}`;
+};
+---
+
+<EditorialLayout locale={locale} route="committee" title={title} description={dict.meta.committee}>
+  <section class="masthead">
+    <p class="masthead__kicker">Organizing Committee · {dict.issueLabel}</p>
+    <h1 class="masthead__title">{dict.nav.committee}</h1>
+    <p class="masthead__lead">{dict.committee.lead}</p>
+  </section>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Structure" />
+      <h2>{dict.committee.structureTitle}</h2>
+    </Fragment>
+    <div>
+      <RecordRow label={dict.committee.labels.hosts}>
+        {committee.hosts.map((o) => pick(locale, o.name)).join(joiner)}
+      </RecordRow>
+      <RecordRow label={dict.committee.labels.coOrganizers}>
+        {committee.coOrganizers.map((o) => pick(locale, o.name)).join(joiner)}
+        {committee.coOrganizersPending && (
+          <span class="pending">{dict.currentIssue.morePending}</span>
+        )}
+      </RecordRow>
+      <RecordRow label={dict.committee.labels.academicSupport}>
+        {committee.academicSupport.map((o) => pick(locale, o.name)).join(joiner)}
+      </RecordRow>
+      <RecordRow label={dict.committee.labels.secretariat}>
+        {pick(locale, committee.structure.secretariat)}
+      </RecordRow>
+      <RecordRow label={dict.committee.labels.teams}>
+        <p>{committee.structure.teams.map((o) => pick(locale, o.name)).join(joiner)}</p>
+        <p class="team-note">{pick(locale, committee.structure.teamNote)}</p>
+      </RecordRow>
+      <RecordRow label={dict.committee.labels.societies}>
+        {committee.supportingSocieties.map(societyName).join(joiner)}
+      </RecordRow>
+    </div>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Past Sessions" />
+      <h2>{dict.committee.pastTitle}</h2>
+    </Fragment>
+    <div>
+      {
+        committee.pastSessions.map((s) => (
+          <section class="past-session">
+            <h3 class="past-session__title">{sessionLabel(s.session, locale)}</h3>
+            <RecordRow label={dict.committee.labels.hosts}>
+              {s.hosts.map((o) => pick(locale, o.name)).join(listJoiner)}
+            </RecordRow>
+            {s.coOrganizers && (
+              <RecordRow label={dict.committee.labels.coOrganizers}>
+                {s.coOrganizers.map((o) => pick(locale, o.name)).join(listJoiner)}
+              </RecordRow>
+            )}
+            <RecordRow label={dict.committee.labels.supporters}>
+              {s.supporters.map((o) => pick(locale, o.name)).join(listJoiner)}
+            </RecordRow>
+          </section>
+        ))
+      }
+    </div>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Speakers" />
+      <h2>{dict.committee.speakersTitle}</h2>
+    </Fragment>
+    <div>
+      <ul class="speakers">
+        {speakers.pastSpeakers.map((s) => <li class="speakers__name">{speakerName(locale, s)}</li>)}
+      </ul>
+      <p class="speakers__note">{pick(locale, speakers.pastSpeakersNote)}</p>
+    </div>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Partnership" />
+      <h2>{dict.committee.partnershipTitle}</h2>
+    </Fragment>
+    <div>
+      <p class="partnership">{pick(locale, committee.partnership.invitation)}</p>
+      <p class="partnership__contact">
+        <a href={`mailto:${committee.partnership.email}`}>{committee.partnership.email}</a>
+      </p>
+    </div>
+  </Marginalia>
+</EditorialLayout>
+
+<style>
+  .pending {
+    margin-left: var(--space-1);
+    color: var(--color-text-muted);
+  }
+
+  .team-note {
+    margin-top: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .past-session {
+    padding-bottom: var(--space-6);
+  }
+
+  .past-session + .past-session {
+    margin-top: var(--space-6);
+  }
+
+  .past-session__title {
+    font-size: var(--text-md);
+  }
+
+  .speakers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .speakers__name {
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-serif-cjk);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-strong);
+  }
+
+  :global(html:lang(en)) .speakers__name {
+    font-family: var(--font-serif-latin);
+  }
+
+  .speakers__note {
+    margin-top: var(--space-4);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .partnership {
+    max-width: var(--measure);
+    line-height: var(--leading-loose);
+  }
+
+  .partnership__contact {
+    margin-top: var(--space-4);
+    font-family: var(--font-serif-latin);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .partnership__contact a {
+    text-decoration: underline;
+  }
+</style>

@@ -7,7 +7,13 @@ import { glob } from 'astro/loaders';
  * frontmatter metadata (ADR-001 §2.1).
  */
 const conference = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/conference' }),
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/conference',
+    // Deterministic IDs: the file path minus extension (`issue-003/cfp.en`),
+    // instead of the default slugger which strips the locale dot.
+    generateId: ({ entry }) => entry.replace(/\.md$/, ''),
+  }),
   schema: z.object({
     title: z.string(),
     lang: z.enum(['zh', 'en']),

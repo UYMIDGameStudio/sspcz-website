@@ -1,0 +1,130 @@
+---
+/**
+ * The publication document flow: running header (with site navigation),
+ * main matter, colophon pinned to the viewport bottom. Both locales render
+ * through this single layout — zero duplicated structure (RFC-400 §3).
+ */
+import BaseLayout from './BaseLayout.astro';
+import EditorialGrid from '../patterns/EditorialGrid.astro';
+import RunningHeader from '../patterns/RunningHeader.astro';
+import { t } from '../i18n';
+import { issue, type Locale } from '../lib/issueData';
+import { path, switchLocale, type RouteKey } from '../lib/routes';
+
+interface Props {
+  locale: Locale;
+  route: RouteKey;
+  title: string;
+  description: string;
+}
+
+const { locale, route, title, description } = Astro.props;
+const dict = t(locale);
+
+const navItems: Array<{ key: RouteKey; label: string }> = [
+  { key: 'issue', label: dict.nav.currentIssue },
+  { key: 'cfp', label: dict.nav.cfp },
+  { key: 'program', label: dict.nav.program },
+  { key: 'committee', label: dict.nav.committee },
+  { key: 'policies', label: dict.nav.policies },
+  { key: 'register', label: dict.nav.register },
+];
+
+const activeKey: RouteKey = route === 'home' ? 'issue' : route;
+const publication = locale === 'zh' ? `SSPCZ · ${dict.siteName}` : 'SSPCZ';
+---
+
+<BaseLayout title={title} description={description} lang={locale}>
+  <EditorialGrid>
+    <RunningHeader
+      publication={publication}
+      issue={dict.issueLabel}
+      year={issue.year}
+      homeHref={path(locale, 'home')}
+    >
+      {
+        navItems.map((item) => (
+          <a
+            href={path(locale, item.key)}
+            aria-current={item.key === activeKey ? 'page' : undefined}
+            class:list={['nav-link', { 'nav-link--active': item.key === activeKey }]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a class="nav-link nav-link--switch" href={switchLocale(locale, route)}>
+        {dict.nav.languageSwitch}
+      </a>
+    </RunningHeader>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="colophon" slot="colophon">
+      <div class="colophon__imprint">
+        <span class="colophon__name">{dict.siteName}</span>
+        {locale === 'zh' && <span class="colophon__latin">{dict.siteNameLatin}</span>}
+      </div>
+      <span class="colophon__rights">{dict.closing.copyright}</span>
+    </footer>
+  </EditorialGrid>
+</BaseLayout>
+
+<style>
+  .nav-link {
+    color: var(--color-text-muted);
+  }
+
+  .nav-link--active {
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-ink);
+  }
+
+  .nav-link--switch {
+    padding-left: var(--space-4);
+    border-left: 1px solid var(--color-line);
+  }
+
+  .colophon {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-8);
+    align-items: baseline;
+    justify-content: space-between;
+    padding: var(--space-6) var(--page-gutter);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-on-dark-muted);
+    background: var(--color-ink-deep);
+  }
+
+  .colophon__imprint {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+    align-items: baseline;
+  }
+
+  .colophon__name {
+    font-family: var(--font-serif-cjk);
+    color: var(--color-text-on-dark);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  :global(html:lang(en)) .colophon__name {
+    font-family: var(--font-serif-latin);
+  }
+
+  .colophon__latin,
+  .colophon__rights {
+    font-family: var(--font-serif-latin);
+  }
+
+  @media (width <= 56.25em) {
+    .colophon {
+      padding: var(--space-6) var(--page-gutter-narrow);
+    }
+  }
+</style>

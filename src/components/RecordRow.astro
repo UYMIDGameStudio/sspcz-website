@@ -1,0 +1,46 @@
+---
+/**
+ * Component (semantic, stateless): a labelled record in an organizational
+ * or factual register — label track + value track, no card chrome.
+ */
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div class="record">
+  <p class="record__label">{label}</p>
+  <div class="record__value"><slot /></div>
+</div>
+
+<style>
+  .record {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: var(--space-6);
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .record__label {
+    padding-top: var(--space-1);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .record__value {
+    color: var(--color-ink);
+    line-height: var(--leading-loose);
+  }
+
+  @media (width <= 56.25em) {
+    .record {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+    }
+  }
+</style>

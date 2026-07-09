@@ -3,9 +3,18 @@ export default {
   siteNameLatin: 'Secondary School Philosophy Conference of Zhejiang',
   issueLabel: '第三届',
 
+  meta: {
+    home: '第三届浙江中学生哲学大会——主题「变与不变」，学生论文讲演、嘉宾讲座与哲学黑客马拉松。',
+    cfp: '第三届浙江中学生哲学大会征稿启事：面向中学生征集哲学论文，主题「变与不变」。',
+    program: '第三届浙江中学生哲学大会日程：学生论文讲演、嘉宾讲座与哲学黑客马拉松。',
+    committee: '浙江中学生哲学大会组委会：主办、协办、学术支持与联合支持社团。',
+    policies: '浙江中学生哲学大会论文审核政策与学术不端处理办法。',
+    register: '注册报名参加第三届浙江中学生哲学大会。',
+  },
+
   nav: {
     home: '首页',
-    currentIssue: '第三届大会',
+    currentIssue: '本届大会',
     cfp: '征稿启事',
     program: '日程安排',
     committee: '组委会',
@@ -30,11 +39,17 @@ export default {
   },
 
   currentIssue: {
+    title: '第三届浙江中学生哲学大会',
     heroLead:
       '本届大会继续聚焦浙江地区的高中生和初中生，以学生论文讲演、嘉宾讲座、哲学黑客马拉松三大板块，向所有与会者传播哲学知识，激发中学生的精神探索。',
     themeLabel: '本届主题',
     durationNote: '会期四天',
     fullListNote: '完整名单见组委会页面',
+    pillarsTitle: '三大板块',
+    participantsTitle: '与会者类别',
+    organizersTitle: '主办与支持',
+    pastSessionsTitle: '历届大会',
+    morePending: '（更多待定）',
   },
 
   program: {
@@ -42,9 +57,27 @@ export default {
     provisionalNote: '议程为暂定框架，最终以大会现场公布为准。',
   },
 
+  cfpMeta: {
+    open: '投稿开通',
+    deadline: '投稿截止',
+    presentations: '大会讲演',
+  },
+
   committee: {
     lead: '浙江中学生哲学大会由学生自发组织，历届均获得省内众多中学社团的联合支持。',
+    structureTitle: '第三届组织架构',
+    pastTitle: '历届组织',
+    speakersTitle: '往届嘉宾学者',
     partnershipTitle: '我们招募合作组织',
+    labels: {
+      hosts: '主办',
+      coOrganizers: '协办',
+      academicSupport: '学术支持',
+      secretariat: '秘书处',
+      teams: '工作组',
+      societies: '联合社团支持',
+      supporters: '联合支持',
+    },
   },
 
   register: {
