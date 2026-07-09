@@ -1,134 +1,233 @@
 # ADR-003: Design System Maturation
 
-- **Status**: Proposed — awaiting approval (no code before an explicit "Approve")
+## 1. Status
+
+- **Status**: Proposed (finalized for sign-off)
+- **Decision Makers**: SSPCZ secretariat / repository owner (executive rulings Q1–Q6 incorporated)
 - **Date**: 2026-07-09
-- **Deciders**: SSPCZ secretariat / repository owner
 - **Charter basis**: `docs/000-VISION.md` … `docs/400-GOVERNANCE.md`
-- **Relationship to prior decisions**: Builds on ADR-001 (architecture), ADR-002 (IA & the three contextual layouts), EDR-001 (theme translation). This ADR does **not** change the content model, collections, routing, i18n, or the zero-JS baseline. It establishes the long-term *visual grammar*: brand lockup, a fixed layout taxonomy with a fourth layout, a strictly semantic component inventory, a semantic typography scale, a surface-token color system, and enforced material constraints.
+- **Supersedes / refines**: ADR-002 §2 (brand lockup emphasis reversed — see §3.1) and ADR-002's three-layout taxonomy (extended to four — see §3.2). Builds on ADR-001 (architecture) and EDR-001 (theme translation). No change to the content model, Astro Collections, routing, i18n, or the zero-JS baseline.
 
 ---
 
-## Context
+## 2. Context
 
-The platform is architecturally mature but its visual grammar is still implicit: type sizes are chosen per component from a raw numeric scale, "surfaces" are an ad-hoc mix of four near-identical greys, the header presents the acronym (`SSPCZ`) more prominently than the institution's name, and the homepage/edition covers share the same layout as text-heavy org pages. SSPCZ's identity is a **serious academic institution** — the reference points are an Oxford faculty page or a scholarly journal cover, not a startup landing page. This ADR fixes a durable grammar so that identity is legible and so future work cannot drift toward marketing patterns.
+### Why the current design system cannot support SSPCZ as a long-term academic institution
 
-**Non-negotiable framing:** this is *not* modernization or beautification. Every decision below encodes hierarchy and meaning; nothing is added for visual novelty.
+The platform is architecturally sound but its **visual grammar is implicit and short-termist**. Four specific failures prevent it from carrying SSPCZ as a durable institution rather than a single event:
 
----
+1. **The identity is inverted.** The running header presents the acronym `SSPCZ` as the visible wordmark while the institution's actual name (`浙江中学生哲学大会`) is buried inside a raster logo. A serious institution leads with its name; a startup leads with a compressed monogram. The current treatment reads as the latter.
 
-## 1. Brand Lockup Hierarchy
+2. **Surfaces carry no meaning.** The interface uses four near-identical greys (`#f2f4f5`, `#f7f9fa`, `#eef2f4`, `#fff`) chosen ad hoc. Physical academic publishing (Oxford University Press, MIT Press, academic yearbooks) uses paper stock and tint deliberately — to mark chapter transitions, section hierarchy, and contextual emphasis. Our greys encode nothing, so hierarchy leans entirely on lines and size.
 
-**Constraint.** The institution's name is the primary entity; the acronym is a secondary identifier. This **reverses ADR-002's** header treatment, which (for space) made `SSPCZ` the visible wordmark. ADR-002 §2 is superseded on this point.
+3. **Type has no semantic contract.** Sizes are picked per component from a raw numeric scale, so "a page title" or "an edition numeral" has no single definition. Without semantic roles, hierarchy drifts as the site grows and cannot be reasoned about institutionally.
 
-**Decision.** Define one formal Brand Lockup with a fixed visual hierarchy:
+4. **The homepage and covers behave like a portal, not a cover.** The homepage currently dumps About + current issue + full archive through the same layout as text-heavy org pages. An institution's front door should be a **ceremonial cover** (an academic yearbook cover), not an information dashboard.
 
-1. `[Logo Mark]`
-2. **浙江中学生哲学大会** — Primary (display/heading type, ink)
-3. Secondary School Philosophy Conference of Zhejiang — Secondary (metadata type, muted)
-4. `SSPCZ` — Tertiary (metadata/marginalia type, faint; an identifier, never dominant)
-
-**Placement.** The *full* four-level lockup is a journal-masthead element: it appears in the **colophon** and on **LandingLayout covers**. The **running header** carries a **compact lockup** — `[mark] + 浙江中学生哲学大会` (primary), with `SSPCZ` only as a small tertiary tag — so the name leads even in the constrained bar. No context may render the acronym larger or heavier than the name.
-
-**Asset caveat (Open Q1).** The current `public/logo.jpg` is a raster *horizontal lockup* that already bakes in mark + Chinese + English. A typographic lockup needs a **mark-only** asset to avoid duplicating the name. Resolution options are in Open Questions.
-
-## 2. Layout Taxonomy & Anti-Proliferation
-
-**Constraint (binding governance rule).** The layout set is **closed at four**. *Adding or removing a layout requires a new ADR.* Within a layout, express variation through **components and reading-mode classes**, never by forking a new layout. Reviewers must reject PRs that add a `*Layout.astro` without an approving ADR.
-
-**Decision.** Exactly four layouts:
-
-| Layout | Purpose | Serves (templates) | Change from today |
-|--------|---------|--------------------|-------------------|
-| `InstitutionLayout` | Text-heavy organizational pages | Archive listing; About *(if promoted, Q5)* | Loses the homepage & edition cover |
-| `PublicationLayout` | Academic reading | CFP, Policies, Guidelines | unchanged |
-| `DataLayout` | Dense data scanning | Schedule, Resources, Committee, Register | unchanged |
-| **`LandingLayout`** *(new)* | Homepage & edition covers | `InstitutionHome` (`/`), `IssueHome` (`/issue-XXX/`) | **split out** of InstitutionLayout |
-
-**`LandingLayout` critical rule.** It MUST read as a **scholarly journal cover**, not a marketing landing page. Explicitly:
-- **No** oversized marketing hero; the cover is a composed masthead (lockup + edition card + theme), sized like a journal cover plate, not a full-viewport banner.
-- **No** conversion-oriented patterns, urgency, or repeated/emphasized CTAs. Actions remain quiet inline links, subordinate to the masthead and content.
-- Restraint over persuasion: the cover states what the edition *is*, and lets the reader descend into the content.
-
-All four layouts continue to wrap the single shared `PageShell` chrome (ADR-002 §3); LandingLayout is a fourth specialization, not a second chrome.
-
-## 3. Component Inventory (strictly semantic)
-
-**Constraint (binding governance rule).** A component may exist **only if all three hold**: (1) it appears more than twice, (2) it represents a meaningful content type, (3) it improves content authoring. Decoration-named components (`ElegantBox`, `FancyDivider`, …) are prohibited. This restates RFC-400 §2 and ADR-001's boundaries as an inventory gate.
-
-**Decision.** Introduce/formalize three zero-JS semantic components, and reconcile existing ones against the gate:
-
-- **`EditionCard`** — an edition's archival identity: edition numeral (`03`), full title, theme, year. Appears on the LandingLayout cover, the homepage "current conference" block, and every Archive row (>2×). **Absorbs** the current ad-hoc `EditionNumeral` + hand-built archive/current-issue markup into one authored unit.
-- **`Timeline`** — the Schedule as pure-CSS node markers on a vertical rule (dots via `::before`, no images, no JS), replacing today's plain grid rows. Time/kind stay as a metadata column so scanning density is preserved (reconciles §2 DataLayout "dense scanning" with §3 "timeline" — see Q4).
-- **`StatementBlock`** — institutional manifestos and cited quotations (the theme letter's Su Shi passage, committee statements). Meaningful content type, appears in the theme letter and covers (>2×).
-
-**Reconciliation of existing components.** `SectionCounter`, `RecordRow`, `PublicationCard`, `Marginalia`, `Exhibition`, `SessionEntry` all pass the gate and remain. `EditionNumeral` is **absorbed** into `EditionCard`. `Dialectic` (currently doing double duty: schedule-abstract voicing *and* the theme quotation) is **split**: the quotation role moves to `StatementBlock`; the schedule voicing moves into `Timeline`. Whether `Dialectic` is then retired or retained for a genuine thesis/antithesis construct is Open Q3.
-
-## 4. Typography System (the core asset)
-
-**Constraint.** Typography — not color or decoration — creates hierarchy. Components must consume **semantic type roles**, not raw sizes.
-
-**Decision.** Add a layer of **semantic role tokens** over the existing raw scale (raw `--text-*` values stay as the palette; roles reference them, and components use only roles):
-
-| Role | Use | Character |
-|------|-----|-----------|
-| **Display** | Institutional identity, edition numerals (`03`), theme titles | Largest; serif; tight leading/tracking |
-| **Heading** | Page titles, structural section headings | Serif; clear H1→H4 steps |
-| **Body** | Long-form academic reading | Set to a **65–75 character measure**; loose leading |
-| **Metadata** | Dates, locations, credits, kickers | Small; Latin serif; wide tracking; muted |
-| **Marginalia** | Annotations, archival notes in the margin track | Smallest; muted; sits in the 340px track |
-
-Bilingual rule retained: CJK serif for Chinese, Latin serif (Times) for English, chosen per role via the existing `:lang()` mechanism. Body measure is enforced structurally (the `--measure` token), satisfying the 65–75ch requirement.
-
-## 5. Color Token Semantics (surfaces)
-
-**Constraint.** A surface color is a **semantic layer**, not a hue. `#D0E7F5` means "contextual paper," not "blue."
-
-**Decision.** Establish a surface-token system:
-
-- `--surface-primary: #FFFFFF;` — the default academic paper (the page canvas).
-- `--surface-secondary: #D0E7F5;` — muted ice-blue **contextual paper**.
-
-**Application rule (strict).** `--surface-secondary` is used **only** for (a) contextual paper layers — Marginalia backgrounds, StatementBlock, document-preview panels — or (b) spatial rhythm via alternating sections. It is **never** a decorative global background.
-
-**Reconciliation & consequences (visible; Open Q2).**
-- The page canvas moves from today's grey `--color-paper (#f2f4f5)` to `--surface-primary (#FFFFFF)` — a whiter, more journal-like field. The existing `--color-surface (#fff)` merges into `--surface-primary`.
-- `--surface-secondary (#D0E7F5)` replaces the current near-grey insets (`--color-paper-inset #eef2f4`, `--color-paper-raised #f7f9fa`) — a more saturated ice-blue than today.
-- **Contrast guard (required):** on `--surface-secondary`, body text must use `--color-text (#40505f)` (ratio ≈ 6.2:1, AA-pass), **not** `--color-text-muted` (≈ 3.8:1, fails small text). The migration must audit every muted-on-secondary pairing; the Lighthouse budget enforces it.
-- Ink, accent, and line tokens are unchanged. No new *accent* colors are introduced — only the surface layer is formalized.
-
-## 6. Absolute Constraints (binding, CI-enforced)
-
-- **Zero JavaScript** preserved (no exceptions; hover/`:focus`/`:target` state changes are CSS and allowed).
-- **Content schemas & Astro Collections** unchanged.
-- **No gradients.** **No** `box-shadow` / drop-shadows. **No** glassmorphism (`backdrop-filter`). **No** decorative CSS animations (`@keyframes`/`animation`); plain state changes on hover/focus are fine.
-
-**Enforcement (new).** Add stylelint rules so these are mechanically rejected, not just conventions:
-- `declaration-property-value-disallowed-list`: forbid `linear-gradient`/`radial-gradient`/`conic-gradient` in `background`/`background-image`; forbid non-`none` `box-shadow`; forbid `backdrop-filter`.
-- `at-rule-disallowed-list`: forbid `keyframes`.
-These run in the existing CI `lint:css` gate alongside the tokens-only-color and BEM rules.
+Left unaddressed, every future edition compounds these into drift toward commercial/event aesthetics. This ADR fixes a **permanent grammar** so the institution's character is legible and future work is constrained from drifting.
 
 ---
 
-## Migration Plan (phased; each phase one reviewable PR; QA green at every step)
+## 3. Decision
 
-- **Phase 7.0 — this ADR** (docs only). Exit: approval + answers to open questions.
-- **Phase 7.1 — Tokens.** Add semantic typography roles and the surface tokens; migrate components to roles; apply the surface system (canvas → `--surface-primary`, insets → `--surface-secondary`) with the contrast guard; add the CI constraint rules. This phase carries the visible color shift (Q2) and is reviewed on screenshots.
-- **Phase 7.2 — Brand lockup.** Compact name-primary lockup in the header; full four-level lockup in the colophon and (7.3) the cover. Requires the mark asset decision (Q1).
-- **Phase 7.3 — LandingLayout.** Introduce the fourth layout; move `InstitutionHome` and `IssueHome` onto it as journal covers; document the anti-proliferation rule in `CLAUDE.md`.
-- **Phase 7.4 — Components.** `EditionCard`, `Timeline`, `StatementBlock`; absorb `EditionNumeral`, split `Dialectic`. Content/authoring unchanged (components read the same collection data).
+The following incorporates executive rulings Q1–Q6 exactly.
 
-## Consequences
+### 3.1 Brand Lockup Hierarchy & the SVG Brand System (Q1)
 
-**Positive:** a durable, documented grammar; the institution's name leads; four layers of hierarchy come from type before color; surfaces carry meaning; covers read as journal plates, not marketing; material constraints are CI-enforced so drift is impossible; adding editions/assets stays content-only.
+The institution's name is the primary entity; the acronym is a secondary identifier. The formal lockup hierarchy is fixed:
 
-**Negative / accepted:** a visible palette shift (grey canvas → white, greyish insets → ice-blue) needs a taste sign-off at 7.1; a one-time component refactor (EditionCard/Timeline/StatementBlock) touching the schedule, covers, and archive; dependence on a mark-only logo asset for the ideal lockup.
+1. `[Logo Symbol]`
+2. **浙江中学生哲学大会** — Institution Wordmark (primary)
+3. Secondary School Philosophy Conference of Zhejiang — full English name (secondary)
+4. `SSPCZ` — abbreviation (tertiary; an identifier, never dominant)
 
-**Risks & mitigations:** contrast regressions from `#D0E7F5` → the mandated contrast guard + the 18-URL Lighthouse budget each phase; layout proliferation → the ADR-gated rule enforced in review; scope creep into decoration → the CI "NO" rules + the semantic-component gate.
+**Ruling (Q1):** Retain the current complete **JPG** logo for the short term, but establish a formal **SVG Brand System** as the approved long-term architecture:
 
-## Open Questions (please rule before Phase 7.1)
+```
+public/brand/
+  logo-symbol.svg     ── the symbol/mark alone (no baked-in text)
+  logo-lockup.svg     ── full composed lockup (symbol + wordmarks)
+  wordmark.svg        ── typographic wordmark
+```
 
-1. **Logo mark asset.** Is a **mark-only** logo (no baked-in text) available? If yes, we build the true typographic lockup. If no, options: (a) I extract/trim the mark from the existing raster, (b) you supply a mark-only file later and we ship an interim compact lockup using the full image with the name *not* duplicated, or (c) treat the current full-lockup image as the mark on covers and set only a tertiary `SSPCZ` tag. Which?
-2. **Surface shift confirmation.** Adopt `--surface-primary #FFFFFF` as the global canvas (today it's `#f2f4f5`) and `--surface-secondary #D0E7F5` for all contextual layers (today `#eef2f4`)? This is a real, site-wide visual change — confirm the whiter canvas + ice-blue contextual paper is intended.
-3. **`Dialectic` disposition.** After moving quotations to `StatementBlock` and schedule voicing to `Timeline`, retire `Dialectic`, or retain it for a genuine thesis/antithesis pairing (e.g., speaker vs. discussant)?
-4. **Timeline vs. density.** DataLayout is "dense scanning," yet §3 asks the Schedule to become a timeline. Proposed: a left vertical rule with CSS node markers, keeping time/kind as a metadata column so density is preserved. Accept, or keep the current tabular rows and add nodes only as a marginal marker?
-5. **About page.** Now that InstitutionLayout is freed from covers, promote **About** to a standalone institutional route (rendering the edition-independent about text), or keep About as a homepage section (ADR-002 Q3 default)?
+**Header application:** do **not** compress the existing JPG into a small icon. The visual lockup conceptually separates:
+
+```
+[Logo Symbol]  +  Institution Wordmark  +  SSPCZ Abbreviation
+```
+
+Long-term migration toward a pure SVG brand system is **approved**; the JPG is an interim asset. Until the SVG symbol exists, the header renders the name-primary lockup with the acronym as a subordinate tertiary tag, and the full four-level lockup anchors the colophon and the LandingLayout cover.
+
+### 3.2 Layout Taxonomy & Anti-Proliferation
+
+**Binding governance rule:** the layout set is **closed at four**. *Adding or removing a layout requires a new ADR.* Within a layout, variation is expressed through **components and reading-mode classes only** — never by forking a new layout. Reviewers must reject any PR that adds a `*Layout.astro` without an approving ADR.
+
+| Layout | Purpose | Serves |
+|--------|---------|--------|
+| `InstitutionLayout` | Text-heavy organizational pages | **About** (§3.5), Archive listing |
+| `PublicationLayout` | Academic reading | CFP, Policies, Guidelines |
+| `DataLayout` | Dense data scanning | Schedule, Resources, Committee, Register |
+| **`LandingLayout`** *(new)* | Homepage & edition covers | Institutional Cover (`/`), edition covers (`/issue-00X/`) |
+
+**`LandingLayout` critical rule:** it MUST read as a **scholarly journal / yearbook cover**, never a marketing landing page — no oversized hero, no conversion patterns, no CTA emphasis. It composes a masthead (lockup + edition card + theme) sized like a cover plate. All four layouts continue to wrap the single shared `PageShell` chrome (ADR-002 §3).
+
+### 3.3 Component Inventory (strictly semantic)
+
+**Binding governance rule (component gate):** a component may exist **only if all three hold** — (1) it appears more than twice, (2) it represents a meaningful content type, (3) it improves content authoring. Decoration-named components (`ElegantBox`, `FancyDivider`, …) are prohibited.
+
+Formalized zero-JS semantic components:
+
+- **`EditionCard`** — an edition's archival identity: edition numeral (`03`), full title, theme, year. Used on the cover, the homepage current-issue entry, and every Archive row. Absorbs the ad-hoc `EditionNumeral`.
+- **`Timeline`** — the Schedule as a semantic, pure-CSS node list (§3.4). Replaces plain-text schedule lists.
+- **`StatementBlock`** — institutional manifestos and cited quotations (the theme letter's Su Shi passage, committee statements).
+
+**`Dialectic` (Q3):** **Retained as a semantic component — it is NOT a layout system.** Dialectic exists because SSPCZ is a philosophical institution.
+- **Allowed:** Speaker vs Discussant, Thesis vs Antithesis, debate sessions, philosophical dialogue.
+- **Forbidden:** standard schedule entries, generic paper presentations, ordinary speaker profiles.
+- Consequence: the Schedule's per-session abstract voicing (a generic use) moves out of `Dialectic` into `Timeline`; `Dialectic` is reserved for genuine dialogical constructs.
+
+### 3.4 Timeline System (Q4)
+
+**Approved: a hybrid pure-CSS timeline.** Semantic structure:
+
+```
+<ol class="timeline">
+  <li> … <time> … </time> … </li>
+```
+
+Each node is drawn with **`border-left` + pseudo-elements (`::before`)** and semantic `<time>` elements. Requirements:
+
+- **Zero JavaScript.**
+- **Desktop:** preserve metadata density (time/kind held as a metadata column beside the node rule).
+- **Mobile:** elegant vertical stacking.
+
+The timeline replaces plain-text schedule lists.
+
+### 3.5 About Route Promotion & Information Architecture (Q5)
+
+**Promote About into a standalone institutional route.** The IA cleanly separates **institution identity** from **individual conference issues**:
+
+```
+/            Institutional Cover (LandingLayout)
+/about/      Institution history, mission, organization (InstitutionLayout)
+/archive/    Past editions (InstitutionLayout)
+/issue-00X/  Specific conference editions (LandingLayout cover + edition pages)
+```
+
+### 3.6 Homepage Positioning (Q6)
+
+**The Homepage must become an Institutional Cover.** It is **not** a web portal, an encyclopedia, or a content dashboard; it resembles an **academic yearbook cover**.
+
+Required content, and only this:
+- SSPCZ brand lockup
+- Founding year
+- Current issue entry
+- Large thematic typography
+- Minimal navigation to Archive and About
+
+Conceptual hierarchy:
+
+```
+SSPCZ
+Since 2024
+
+Current Issue
+CHANGE & INVARIANCE
+Explore →
+
+Archive   About
+```
+
+**Constraint:** prevent information dumping. The homepage remains **sparse and ceremonial**. (The full About prose and archive listing live on their own routes per §3.5, not on the cover.)
+
+### 3.7 Typography System (the core asset)
+
+Typography — not color or decoration — creates hierarchy. Components consume **semantic type roles**, not raw sizes. Semantic roles layer over the existing raw scale (raw `--text-*` values remain the palette; roles reference them):
+
+| Role | Use |
+|------|-----|
+| **Display** | Institutional identity, edition numerals (`03`), theme titles |
+| **Heading** | Page titles, structural section headings |
+| **Body** | Long-form academic reading, held to a **65–75 character measure** |
+| **Metadata** | Dates, locations, credits, kickers |
+| **Marginalia** | Annotations and archival info in the 340px margin track |
+
+Bilingual rule retained (CJK serif for Chinese, Latin serif for English, selected per role via `:lang()`).
+
+### 3.8 Color Token Semantics — the "Paper System" (Q2)
+
+**Approved as a "Paper System", NOT a global blue theme.** The system imitates physical academic publishing (Oxford University Press, MIT Press, academic yearbooks): surfaces represent **chapter transitions, section hierarchy, and contextual emphasis** — never decorative backgrounds.
+
+```
+--surface-primary:   #FFFFFF   /* main paper canvas */
+--surface-secondary: #D0E7F5   /* ice-blue contextual paper */
+--surface-tertiary:  <reserved>  /* citation blocks, metadata, marginalia */
+```
+
+Allowed palette, total: **White · Ice Blue · one tertiary surface · black / dark-navy typography.** No gradients. No excessive color systems.
+
+**Application rules:**
+- `--surface-secondary` is used only for contextual paper (Marginalia backgrounds, StatementBlock, preview panels) or spatial rhythm (alternating sections / chapter transitions). Never a decorative global background.
+- `--surface-tertiary` is reserved for citation blocks, metadata panels, and marginalia; its exact value is set during Phase 7.1 within the allowed palette (a single additional paper tint), not invented ad hoc.
+- **Contrast guard (required):** on `--surface-secondary`/`--surface-tertiary`, body text uses the dark ink token, not muted grey (muted drops below AA on the tinted paper). The Lighthouse budget enforces this.
+
+The page canvas moves from today's grey to `--surface-primary (#FFFFFF)`; existing greyish insets consolidate onto the two/three paper tints above. Ink, accent, and line tokens are unchanged; **no new accent colors** are introduced.
+
+---
+
+## 4. Design Constraints (permanent boundaries)
+
+### Technical (must preserve)
+- Zero JavaScript baseline (hover/`:focus`/`:target` state changes are CSS and allowed).
+- Astro static architecture.
+- Existing content collections.
+- Existing schema compatibility.
+
+### Visual — Forbidden
+- Gradients.
+- Drop shadows / `box-shadow`.
+- Glassmorphism (`backdrop-filter`).
+- Decorative animations (`@keyframes` / `animation`).
+- SaaS-style dashboard cards.
+
+### Visual — Allowed
+- Typography hierarchy.
+- CSS Grid.
+- CSS borders.
+- Negative space.
+- Editorial layouts.
+- Paper-like surfaces.
+
+**CI enforcement (new):** stylelint rules make the forbidden list mechanical, not conventional — `declaration-property-value-disallowed-list` forbids gradient functions in `background`/`background-image`, non-`none` `box-shadow`, and `backdrop-filter`; `at-rule-disallowed-list` forbids `keyframes`. These run in the existing `lint:css` CI gate beside the tokens-only-color and BEM rules.
+
+---
+
+## 5. Migration Impact
+
+Implementation proceeds only after approval, in phased, individually reviewable PRs; every phase keeps the full QA suite green (inline-style red line, stylelint incl. the new constraint rules, `astro check`, build, and the 18-URL Lighthouse ≥95×4 budget).
+
+- **Phase 7.1 — Tokens & Paper System.** Add semantic typography roles and the surface tokens; migrate components off raw sizes onto roles; apply the Paper System (canvas → `--surface-primary`, insets → `--surface-secondary`/`--surface-tertiary`) with the contrast guard; add the CI constraint rules. Carries the visible palette shift — reviewed on screenshots.
+- **Phase 7.2 — Brand lockup.** Name-primary compact lockup in the header; full four-level lockup in the colophon. Establish `public/brand/` and begin the JPG→SVG path (interim JPG retained until `logo-symbol.svg` exists).
+- **Phase 7.3 — LandingLayout & IA.** Introduce the fourth layout; rebuild `/` as the sparse Institutional Cover (Q6) and `/issue-00X/` as edition covers; promote **About** to `/about/` (Q5); document the anti-proliferation and component-gate rules in `CLAUDE.md`.
+- **Phase 7.4 — Components.** `EditionCard`, `Timeline`, `StatementBlock`; absorb `EditionNumeral`; move the schedule's generic voicing into `Timeline` and reserve `Dialectic` for dialogical use (Q3). Content and authoring are unchanged — components read the same collection data.
+
+Ordering rationale: tokens first (everything references them), then identity, then the cover/IA that showcases it, then the components that consume the finished grammar.
+
+---
+
+## 6. Non-goals
+
+This ADR explicitly does **not**:
+
+- redesign the entire website immediately (it defines a grammar and a phased migration, not a big-bang rewrite);
+- introduce JavaScript or any JS/UI framework (the zero-JS baseline is preserved);
+- replace or alter Astro Collections or their schemas;
+- create commercial / SaaS dashboard aesthetics (dashboard cards, shadows, gradients, glassmorphism are forbidden);
+- optimize for event-marketing style (no conversion-oriented heroes or CTA emphasis);
+- introduce new accent colors or an expanded color system (the Paper System is white + ice-blue + one tertiary paper tint + ink);
+- finalize the SVG brand assets themselves (the architecture is approved; producing `logo-symbol.svg` etc. is future work);
+- change deployment, the registration backend, analytics, or font self-hosting (out of scope per ADR-001 §6 / ADR-002).
+
+---
+
+*Implementation may begin only after explicit approval of this finalized ADR.*
