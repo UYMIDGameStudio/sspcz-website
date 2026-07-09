@@ -61,6 +61,11 @@ export default {
     provisionalNote: '议程为暂定框架，最终以大会现场公布为准。',
   },
 
+  about: {
+    metaDescription: '关于浙江中学生哲学大会：大会宗旨、历届档案与往届嘉宾学者。',
+    missionTitle: '大会宗旨',
+  },
+
   archive: {
     metaDescription: '浙江中学生哲学大会历届档案：各届主题、年份与主办方一览。',
     lead: '浙江中学生哲学大会自 2024 年创办以来的历届档案。每届大会作为一份可长期查阅的出版物存档，主题、年份与组织沿革一并保留。',

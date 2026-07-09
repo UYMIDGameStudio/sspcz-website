@@ -62,6 +62,12 @@ export default {
       'Provisional framework; the final program will be announced on site.',
   },
 
+  about: {
+    metaDescription:
+      'About the SSPCZ: our mission, the archive of past editions, and past guest speakers.',
+    missionTitle: 'Mission',
+  },
+
   archive: {
     metaDescription: 'Archive of the SSPCZ: theme, year and hosts of every edition.',
     lead: 'The archive of the Secondary School Philosophy Conference of Zhejiang since its founding in 2024. Each edition is preserved as a permanently readable publication, with its theme, year and organizational lineage intact.',

@@ -1,0 +1,295 @@
+---
+/**
+ * Template: the institution's About page (ADR-003 §3.5, Q5) — the standalone
+ * L1 surface the sparse cover links to. Uses the predefined InstitutionLayout
+ * (cover/overview reading mode). Three sections, every value derived from the
+ * content model (no hardcoded prose):
+ *   §01 Mission  — the About markdown (SSOT for the institution's purpose)
+ *   §02 Archive  — the current edition (live pointer) plus the committee's
+ *                  pastSessions record, the SSOT for editions that predate the
+ *                  content collection (id="archive" is the cover's deep link)
+ *   §03 Speakers — the past guest scholars from speakers.yaml
+ */
+import { getEntry, render } from 'astro:content';
+import InstitutionLayout from '../layouts/InstitutionLayout.astro';
+import Marginalia from '../patterns/Marginalia.astro';
+import SectionCounter from '../components/SectionCounter.astro';
+import { t } from '../i18n';
+import {
+  currentIssue,
+  currentIssueId,
+  institution,
+  pick,
+  type Locale,
+  type Speaker,
+} from '../lib/issueData';
+import { issueTitle, paddedIssue, quotedTheme } from '../lib/format';
+import { path } from '../lib/routes';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+
+/* §01 — the canonical About prose. */
+const aboutEntry = await getEntry('conference', `${currentIssueId}/about.${locale}`);
+if (!aboutEntry) throw new Error(`${currentIssueId} about document missing`);
+const { Content: About } = await render(aboutEntry);
+
+/* §02 — every edition, newest first, with its narrative summary. The current
+   edition is the live pointer (its lineage is its host list); past editions
+   are the committee's pastSessions record — the SSOT for editions that predate
+   the content collection. Years run annually from the founding year. */
+const currentHosts = currentIssue.committee.hosts.map((h) => pick(locale, h.name)).join(' · ');
+
+const currentEdition = {
+  n: currentIssue.issue.issue,
+  year: currentIssue.issue.year,
+  id: currentIssueId,
+  current: true,
+  theme: currentIssue.issue.theme as { zh: string; en: string } | undefined,
+  description: currentHosts,
+};
+const pastEditions = currentIssue.committee.pastSessions.map((s) => ({
+  n: s.session,
+  year: institution.founded + (s.session - 1),
+  id: '',
+  current: false,
+  theme: undefined as { zh: string; en: string } | undefined,
+  description: pick(locale, s.summary),
+}));
+const editions = [currentEdition, ...pastEditions].sort((a, b) => b.n - a.n);
+
+/* §03 — past guest scholars, composed from atomic name units. */
+const fullName = (s: Speaker): string => {
+  const fam = pick(locale, s.familyName);
+  const giv = pick(locale, s.givenName);
+  const name = locale === 'en' ? `${fam} ${giv}` : `${fam}${giv}`;
+  if (!s.honorific) return name;
+  const hon = pick(locale, s.honorific);
+  return locale === 'en' ? `${name}, ${hon}` : `${name} ${hon}`;
+};
+const speakers = currentIssue.speakers.pastSpeakers;
+
+const title = `${dict.nav.home} · ${dict.siteName}`;
+---
+
+<InstitutionLayout
+  locale={locale}
+  route="about"
+  issueId={currentIssueId}
+  title={title}
+  description={dict.about.metaDescription}
+>
+  <section class="masthead">
+    <p class="masthead__kicker">About the Institution</p>
+    <h1 class="masthead__title">{dict.nav.home}</h1>
+    <p class="masthead__lead">{dict.home.heroLead}</p>
+  </section>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Mission" />
+      <h2>{dict.about.missionTitle}</h2>
+    </Fragment>
+    <div class="prose"><About /></div>
+  </Marginalia>
+
+  <div id="archive" class="about-archive">
+    <Marginalia>
+      <Fragment slot="margin">
+        <SectionCounter label="Archive" />
+        <h2>{dict.nav.archive}</h2>
+      </Fragment>
+      <ol class="editions">
+        {
+          editions.map((e) => (
+            <li class:list={['editions__item', { 'editions__item--current': e.current }]}>
+              {e.current ? (
+                <a class="editions__link" href={path(locale, 'issue', e.id)}>
+                  <span class="editions__numeral" aria-hidden="true">
+                    {paddedIssue(e.n)}
+                  </span>
+                  <span class="editions__body">
+                    <span class="editions__label">
+                      {issueTitle(e.n, locale, dict.siteName)}
+                      {e.theme && (
+                        <span class="editions__theme">{quotedTheme(locale, e.theme)}</span>
+                      )}
+                    </span>
+                    {e.description && <span class="editions__desc">{e.description}</span>}
+                  </span>
+                  <span class="editions__status editions__status--current">
+                    {dict.home.currentMark} →
+                  </span>
+                </a>
+              ) : (
+                <div class="editions__link">
+                  <span class="editions__numeral editions__numeral--past" aria-hidden="true">
+                    {paddedIssue(e.n)}
+                  </span>
+                  <span class="editions__body">
+                    <span class="editions__label">
+                      {issueTitle(e.n, locale, dict.siteName)}
+                      {e.theme && (
+                        <span class="editions__theme">{quotedTheme(locale, e.theme)}</span>
+                      )}
+                    </span>
+                    {e.description && <span class="editions__desc">{e.description}</span>}
+                  </span>
+                  <span class="editions__status">{e.year}</span>
+                </div>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </Marginalia>
+  </div>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Speakers" />
+      <h2>{dict.committee.speakersTitle}</h2>
+    </Fragment>
+    <div>
+      <ul class="speakers">
+        {speakers.map((s) => <li class="speakers__chip">{fullName(s)}</li>)}
+      </ul>
+      <p class="speakers__note">{pick(locale, currentIssue.speakers.pastSpeakersNote)}</p>
+    </div>
+  </Marginalia>
+</InstitutionLayout>
+
+<style>
+  /* The cover deep-links to #archive; clear the sticky running header. */
+  .about-archive {
+    scroll-margin-top: var(--space-16);
+  }
+
+  .editions {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .editions__item {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .editions__item--current {
+    background: var(--surface-secondary);
+    border-bottom: 0;
+  }
+
+  .editions__link {
+    display: grid;
+    grid-template-columns: 4rem 1fr auto;
+    gap: var(--space-4) var(--space-6);
+    align-items: baseline;
+    padding: var(--space-6) 0;
+    color: inherit;
+  }
+
+  .editions__item--current .editions__link {
+    padding: var(--space-6) var(--space-6) var(--space-6) var(--space-4);
+  }
+
+  .editions__numeral {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-2xl);
+    line-height: var(--leading-none);
+    color: var(--color-ink);
+  }
+
+  .editions__numeral--past {
+    /* De-emphasized vs the current edition, but --color-line-strong (the
+       design's faint grey) fails the 3:1 large-text bar; --color-text-faint
+       reads as "past" and clears it. */
+    color: var(--color-text-faint);
+  }
+
+  .editions__label {
+    font-family: var(--font-serif-cjk);
+    font-size: var(--type-heading-sub);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .editions__label {
+    font-family: var(--font-serif-latin);
+  }
+
+  .editions__theme {
+    margin-left: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .editions__item--current .editions__theme {
+    color: var(--color-text);
+  }
+
+  .editions__desc {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+  }
+
+  .editions__item--current .editions__desc {
+    color: var(--color-text);
+  }
+
+  .editions__status {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .editions__status--current {
+    color: var(--color-accent-deep);
+  }
+
+  .speakers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .speakers__chip {
+    padding: var(--space-3) var(--space-6);
+    font-family: var(--font-serif-cjk);
+    font-size: var(--type-heading-sub);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-strong);
+  }
+
+  :global(html:lang(en)) .speakers__chip {
+    font-family: var(--font-serif-latin);
+  }
+
+  .speakers__note {
+    margin-top: var(--space-6);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+  }
+
+  @media (width <= 56.25em) {
+    .editions__link {
+      grid-template-columns: 3rem 1fr;
+    }
+
+    .editions__status {
+      grid-column: 2;
+    }
+  }
+</style>
