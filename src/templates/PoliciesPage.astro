@@ -9,19 +9,20 @@ import type { Locale } from '../lib/issueData';
 
 interface Props {
   locale: Locale;
+  issueId: string;
 }
 
-const { locale } = Astro.props;
+const { locale, issueId } = Astro.props;
 const dict = t(locale);
 
-const entry = await getEntry('conference', `issue-003/policies.${locale}`);
-if (!entry) throw new Error('issue-003 policies document missing');
+const entry = await getEntry('conference', `${issueId}/policies.${locale}`);
+if (!entry) throw new Error(`${issueId} policies document missing`);
 const { Content } = await render(entry);
 
 const title = `${entry.data.title} · ${dict.siteName}`;
 ---
 
-<EditorialLayout locale={locale} route="policies" title={title} description={dict.meta.policies}>
+<EditorialLayout locale={locale} route="policies" issueId={issueId} title={title} description={dict.meta.policies}>
   <section class="masthead">
     <p class="masthead__kicker">Policies · Review &amp; Academic Integrity</p>
     <h1 class="masthead__title">{entry.data.title}</h1>

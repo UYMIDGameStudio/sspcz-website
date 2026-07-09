@@ -10,27 +10,29 @@ import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import SessionEntry from '../components/SessionEntry.astro';
 import { t } from '../i18n';
-import { schedule, type Locale } from '../lib/issueData';
-import { shortDate } from '../lib/format';
+import { getIssueBundle, type Locale } from '../lib/issueData';
+import { issueMark, shortDate } from '../lib/format';
 
 interface Props {
   locale: Locale;
+  issueId: string;
 }
 
-const { locale } = Astro.props;
+const { locale, issueId } = Astro.props;
 const dict = t(locale);
+const bundle = getIssueBundle(issueId);
 const title = `${dict.nav.program} · ${dict.siteName}`;
 ---
 
-<EditorialLayout locale={locale} route="program" title={title} description={dict.meta.program}>
+<EditorialLayout locale={locale} route="program" issueId={issueId} title={title} description={dict.meta.program}>
   <section class="masthead">
-    <p class="masthead__kicker">Program · {dict.issueLabel}</p>
+    <p class="masthead__kicker">Program · {issueMark(bundle.issue.issue, locale)}</p>
     <h1 class="masthead__title">{dict.nav.program}</h1>
     <p class="masthead__lead">{dict.program.lead}</p>
   </section>
 
   {
-    schedule.days.map((day) => (
+    bundle.schedule.days.map((day) => (
       <Marginalia>
         <Fragment slot="margin">
           <SectionCounter label={`Day ${day.day}`} />
@@ -40,7 +42,7 @@ const title = `${dict.nav.program} · ${dict.siteName}`;
           {day.sessions.map((session) => (
             <SessionEntry session={session} locale={locale} />
           ))}
-          {day.day === schedule.days.length && schedule.provisional && (
+          {day.day === bundle.schedule.days.length && bundle.schedule.provisional && (
             <p class="provisional">{dict.program.provisionalNote}</p>
           )}
         </div>

@@ -82,3 +82,17 @@ export function sessionLabel(n: number, locale: Locale): string {
 export function quotedTheme(locale: Locale, theme: { zh: string; en: string }): string {
   return locale === 'zh' ? `「${theme.zh}」` : `“${theme.en}”`;
 }
+
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
+
+/** Running-header edition mark: 第三届 / Issue III. */
+export function issueMark(n: number, locale: Locale): string {
+  return locale === 'zh' ? `第${CN_NUMERALS[n - 1]}届` : `Issue ${ROMAN[n - 1]}`;
+}
+
+/** Full edition title composed from the session number and site name. */
+export function issueTitle(n: number, locale: Locale, siteName: string): string {
+  return locale === 'zh'
+    ? `${sessionLabel(n, locale)}${siteName}`
+    : `The ${EN_ORDINALS[n - 1]} ${siteName}`;
+}

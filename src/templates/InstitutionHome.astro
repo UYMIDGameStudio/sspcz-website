@@ -1,0 +1,208 @@
+---
+/**
+ * Template: the institutional root (`/`, `/en/`) — the ongoing academic
+ * institution, not any single edition (ADR-001 Phase 3.5).
+ *
+ * Zero-code-change constraint: the current conference is resolved through
+ * the `currentIssue` pointer in src/data/institution.yaml, and the archive
+ * is derived from getCollection('conference') — publishing a new edition
+ * never touches this template.
+ */
+import { getCollection, getEntry, render } from 'astro:content';
+import EditorialLayout from '../layouts/EditorialLayout.astro';
+import Marginalia from '../patterns/Marginalia.astro';
+import SectionCounter from '../components/SectionCounter.astro';
+import RecordRow from '../components/RecordRow.astro';
+import { t } from '../i18n';
+import {
+  currentIssueId,
+  getIssueBundle,
+  institution,
+  issueIdFor,
+  issueIds,
+  pick,
+  type Locale,
+} from '../lib/issueData';
+import { dateRange, issueTitle, quotedTheme, sessionLabel } from '../lib/format';
+import { path } from '../lib/routes';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+
+/* Current conference — resolved dynamically via the institutional pointer. */
+const current = getIssueBundle(currentIssueId);
+const currentTitle = issueTitle(current.issue.issue, locale, dict.siteName);
+
+const aboutEntry = await getEntry('conference', `${currentIssueId}/about.${locale}`);
+if (!aboutEntry) throw new Error(`${currentIssueId} about document missing`);
+const { Content: About } = await render(aboutEntry);
+
+/* Archive — automatically derived from the content collection, newest first. */
+const docs = await getCollection('conference');
+const editionYears = new Map<number, number>();
+for (const doc of docs) {
+  if (!editionYears.has(doc.data.issue)) editionYears.set(doc.data.issue, doc.data.year);
+}
+const archive = [...editionYears.entries()]
+  .map(([n, year]) => {
+    const id = issueIdFor(n);
+    const published = issueIds.includes(id);
+    return {
+      n,
+      year,
+      id,
+      published,
+      theme: published ? getIssueBundle(id).issue.theme : undefined,
+    };
+  })
+  .sort((a, b) => b.n - a.n);
+
+const title = `${dict.siteName} · ${dict.siteNameLatin}`;
+---
+
+<EditorialLayout
+  locale={locale}
+  route="home"
+  issueId={currentIssueId}
+  title={title}
+  description={dict.meta.home}
+>
+  <section class="masthead">
+    <p class="masthead__kicker">SSPCZ — Since {institution.founded}</p>
+    <h1 class="masthead__title">{dict.siteName}</h1>
+    {locale === 'zh' && <p class="masthead__theme">{dict.siteNameLatin}</p>}
+    <p class="masthead__lead">{dict.home.heroLead}</p>
+  </section>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Now" />
+      <h2>{dict.home.currentTitle}</h2>
+    </Fragment>
+    <div>
+      <h3 class="current__title">
+        <a href={path(locale, 'issue', currentIssueId)}>{currentTitle}</a>
+      </h3>
+      <RecordRow label={dict.currentIssue.themeLabel}>
+        {quotedTheme(locale, current.issue.theme)}
+      </RecordRow>
+      <RecordRow label={dict.cfpMeta.presentations}>
+        {dateRange(current.issue.dates.start, current.issue.dates.end, locale)} ·
+        {pick(locale, current.issue.location.city)}
+      </RecordRow>
+      <RecordRow label={dict.committee.labels.hosts}>
+        {current.committee.hosts.map((o) => pick(locale, o.name)).join(' · ')}
+      </RecordRow>
+      <p class="closing-line">
+        <a href={path(locale, 'issue', currentIssueId)}>{dict.actions.viewDetails}</a> ·
+        <a href={path(locale, 'cfp', currentIssueId)}>{dict.actions.readCfp}</a> ·
+        <a href={path(locale, 'register', currentIssueId)}>{dict.actions.registerNow}</a>
+      </p>
+    </div>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="About" />
+      <h2>{aboutEntry.data.title}</h2>
+    </Fragment>
+    <div class="prose"><About /></div>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Archive" />
+      <h2>{dict.home.archiveTitle}</h2>
+    </Fragment>
+    <ol class="archive">
+      {
+        archive.map((edition) => (
+          <li class="archive__item">
+            <span class="archive__year">{edition.year}</span>
+            <span class="archive__label">
+              {edition.published ? (
+                <a href={path(locale, 'issue', edition.id)}>
+                  {issueTitle(edition.n, locale, dict.siteName)}
+                </a>
+              ) : (
+                issueTitle(edition.n, locale, dict.siteName)
+              )}
+              {edition.theme && (
+                <span class="archive__theme">{quotedTheme(locale, edition.theme)}</span>
+              )}
+            </span>
+            {edition.id === currentIssueId && (
+              <span class="archive__mark">{dict.home.currentMark}</span>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+  </Marginalia>
+</EditorialLayout>
+
+<style>
+  .current__title {
+    padding-bottom: var(--space-4);
+    font-size: var(--text-md);
+  }
+
+  .closing-line {
+    margin-top: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .closing-line a {
+    text-decoration: underline;
+  }
+
+  .archive {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .archive__item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    align-items: baseline;
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .archive__year {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+  }
+
+  .archive__label {
+    font-family: var(--font-serif-cjk);
+    font-size: var(--text-md);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .archive__label {
+    font-family: var(--font-serif-latin);
+  }
+
+  .archive__theme {
+    margin-left: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .archive__mark {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-line-strong);
+  }
+</style>

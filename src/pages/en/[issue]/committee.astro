@@ -1,0 +1,10 @@
+---
+import CommitteePage from '../../../templates/CommitteePage.astro';
+import { issueStaticPaths } from '../../../lib/issueData';
+
+export const getStaticPaths = issueStaticPaths;
+
+const { issue } = Astro.params;
+---
+
+<CommitteePage locale="en" issueId={issue!} />

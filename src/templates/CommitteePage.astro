@@ -5,21 +5,23 @@ import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import RecordRow from '../components/RecordRow.astro';
 import { t } from '../i18n';
-import { committee, pick, speakerName, speakers, type Locale } from '../lib/issueData';
-import { sessionLabel } from '../lib/format';
+import { getIssueBundle, pick, speakerName, type Locale } from '../lib/issueData';
+import { issueMark, sessionLabel } from '../lib/format';
 
 interface Props {
   locale: Locale;
+  issueId: string;
 }
 
-const { locale } = Astro.props;
+const { locale, issueId } = Astro.props;
 const dict = t(locale);
+const bundle = getIssueBundle(issueId);
 const title = `${dict.nav.committee} · ${dict.siteName}`;
 
 const joiner = ' · ';
 const listJoiner = locale === 'zh' ? '、' : ', ';
 
-const societyName = (s: (typeof committee.supportingSocieties)[number]): string => {
+const societyName = (s: (typeof bundle.committee.supportingSocieties)[number]): string => {
   if (!s.school) return pick(locale, s.society);
   return locale === 'zh'
     ? `${s.school.zh}${s.society.zh}`
@@ -27,9 +29,9 @@ const societyName = (s: (typeof committee.supportingSocieties)[number]): string 
 };
 ---
 
-<EditorialLayout locale={locale} route="committee" title={title} description={dict.meta.committee}>
+<EditorialLayout locale={locale} route="committee" issueId={issueId} title={title} description={dict.meta.committee}>
   <section class="masthead">
-    <p class="masthead__kicker">Organizing Committee · {dict.issueLabel}</p>
+    <p class="masthead__kicker">Organizing Committee · {issueMark(bundle.issue.issue, locale)}</p>
     <h1 class="masthead__title">{dict.nav.committee}</h1>
     <p class="masthead__lead">{dict.committee.lead}</p>
   </section>
@@ -41,26 +43,26 @@ const societyName = (s: (typeof committee.supportingSocieties)[number]): string 
     </Fragment>
     <div>
       <RecordRow label={dict.committee.labels.hosts}>
-        {committee.hosts.map((o) => pick(locale, o.name)).join(joiner)}
+        {bundle.committee.hosts.map((o) => pick(locale, o.name)).join(joiner)}
       </RecordRow>
       <RecordRow label={dict.committee.labels.coOrganizers}>
-        {committee.coOrganizers.map((o) => pick(locale, o.name)).join(joiner)}
-        {committee.coOrganizersPending && (
+        {bundle.committee.coOrganizers.map((o) => pick(locale, o.name)).join(joiner)}
+        {bundle.committee.coOrganizersPending && (
           <span class="pending">{dict.currentIssue.morePending}</span>
         )}
       </RecordRow>
       <RecordRow label={dict.committee.labels.academicSupport}>
-        {committee.academicSupport.map((o) => pick(locale, o.name)).join(joiner)}
+        {bundle.committee.academicSupport.map((o) => pick(locale, o.name)).join(joiner)}
       </RecordRow>
       <RecordRow label={dict.committee.labels.secretariat}>
-        {pick(locale, committee.structure.secretariat)}
+        {pick(locale, bundle.committee.structure.secretariat)}
       </RecordRow>
       <RecordRow label={dict.committee.labels.teams}>
-        <p>{committee.structure.teams.map((o) => pick(locale, o.name)).join(joiner)}</p>
-        <p class="team-note">{pick(locale, committee.structure.teamNote)}</p>
+        <p>{bundle.committee.structure.teams.map((o) => pick(locale, o.name)).join(joiner)}</p>
+        <p class="team-note">{pick(locale, bundle.committee.structure.teamNote)}</p>
       </RecordRow>
       <RecordRow label={dict.committee.labels.societies}>
-        {committee.supportingSocieties.map(societyName).join(joiner)}
+        {bundle.committee.supportingSocieties.map(societyName).join(joiner)}
       </RecordRow>
     </div>
   </Marginalia>
@@ -72,7 +74,7 @@ const societyName = (s: (typeof committee.supportingSocieties)[number]): string 
     </Fragment>
     <div>
       {
-        committee.pastSessions.map((s) => (
+        bundle.committee.pastSessions.map((s) => (
           <section class="past-session">
             <h3 class="past-session__title">{sessionLabel(s.session, locale)}</h3>
             <RecordRow label={dict.committee.labels.hosts}>
@@ -99,9 +101,9 @@ const societyName = (s: (typeof committee.supportingSocieties)[number]): string 
     </Fragment>
     <div>
       <ul class="speakers">
-        {speakers.pastSpeakers.map((s) => <li class="speakers__name">{speakerName(locale, s)}</li>)}
+        {bundle.speakers.pastSpeakers.map((s) => <li class="speakers__name">{speakerName(locale, s)}</li>)}
       </ul>
-      <p class="speakers__note">{pick(locale, speakers.pastSpeakersNote)}</p>
+      <p class="speakers__note">{pick(locale, bundle.speakers.pastSpeakersNote)}</p>
     </div>
   </Marginalia>
 
@@ -111,9 +113,9 @@ const societyName = (s: (typeof committee.supportingSocieties)[number]): string 
       <h2>{dict.committee.partnershipTitle}</h2>
     </Fragment>
     <div>
-      <p class="partnership">{pick(locale, committee.partnership.invitation)}</p>
+      <p class="partnership">{pick(locale, bundle.committee.partnership.invitation)}</p>
       <p class="partnership__contact">
-        <a href={`mailto:${committee.partnership.email}`}>{committee.partnership.email}</a>
+        <a href={`mailto:${bundle.committee.partnership.email}`}>{bundle.committee.partnership.email}</a>
       </p>
     </div>
   </Marginalia>

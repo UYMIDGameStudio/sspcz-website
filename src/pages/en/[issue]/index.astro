@@ -1,0 +1,10 @@
+---
+import IssueHome from '../../../templates/IssueHome.astro';
+import { issueStaticPaths } from '../../../lib/issueData';
+
+export const getStaticPaths = issueStaticPaths;
+
+const { issue } = Astro.params;
+---
+
+<IssueHome locale="en" issueId={issue!} />

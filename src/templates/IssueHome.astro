@@ -1,7 +1,7 @@
 ---
 /**
- * Template: the issue front door. Rendered at both `/` (current issue,
- * ADR-001 Q4) and `/issue-003/` (permanent home) in each locale.
+ * Template: an edition's front door at its permanent home (`/issue-XXX/`).
+ * Fully parametrized by edition ID — no hardcoded issue anywhere.
  */
 import { getEntry, render } from 'astro:content';
 import EditorialLayout from '../layouts/EditorialLayout.astro';
@@ -9,36 +9,45 @@ import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import RecordRow from '../components/RecordRow.astro';
 import { t } from '../i18n';
-import { committee, issue, pick, type Locale } from '../lib/issueData';
-import { dateRange, quotedTheme, sessionLabel } from '../lib/format';
-import { path, type RouteKey } from '../lib/routes';
+import { getIssueBundle, pick, type Locale } from '../lib/issueData';
+import { dateRange, issueMark, issueTitle, quotedTheme, sessionLabel } from '../lib/format';
+import { path } from '../lib/routes';
 
 interface Props {
   locale: Locale;
-  route?: RouteKey;
+  issueId: string;
 }
 
-const { locale, route = 'issue' } = Astro.props;
+const { locale, issueId } = Astro.props;
 const dict = t(locale);
+const bundle = getIssueBundle(issueId);
+const { issue, committee } = bundle;
 
-const aboutEntry = await getEntry('conference', `issue-003/about.${locale}`);
-const letterEntry = await getEntry('conference', `issue-003/theme-letter.${locale}`);
-if (!aboutEntry || !letterEntry) throw new Error('issue-003 editorial documents missing');
+const aboutEntry = await getEntry('conference', `${issueId}/about.${locale}`);
+const letterEntry = await getEntry('conference', `${issueId}/theme-letter.${locale}`);
+if (!aboutEntry || !letterEntry) throw new Error(`${issueId} editorial documents missing`);
 const { Content: About } = await render(aboutEntry);
 const { Content: Letter } = await render(letterEntry);
 
-const title = `${dict.currentIssue.title} · ${pick(locale, issue.theme)}`;
-const hostNames = committee.hosts.map((h) => pick(locale, h.name));
-const joiner = locale === 'zh' ? ' · ' : ' · ';
+const fullTitle = issueTitle(issue.issue, locale, dict.siteName);
+const title = `${fullTitle} · ${pick(locale, issue.theme)}`;
+const description = `${fullTitle} · ${quotedTheme(locale, issue.theme)} · ${dateRange(issue.dates.start, issue.dates.end, locale)}`;
+const joiner = ' · ';
 ---
 
-<EditorialLayout locale={locale} route={route} title={title} description={dict.meta.home}>
+<EditorialLayout
+  locale={locale}
+  route="issue"
+  issueId={issueId}
+  title={title}
+  description={description}
+>
   <section class="masthead">
     <p class="masthead__kicker">
-      {dict.issueLabel} · {dateRange(issue.dates.start, issue.dates.end, locale)} ·
+      {issueMark(issue.issue, locale)} · {dateRange(issue.dates.start, issue.dates.end, locale)} ·
       {pick(locale, issue.location.city)}
     </p>
-    <h1 class="masthead__title">{dict.currentIssue.title}</h1>
+    <h1 class="masthead__title">{fullTitle}</h1>
     <p class="masthead__theme">
       {dict.currentIssue.themeLabel} · {quotedTheme(locale, issue.theme)}
     </p>
@@ -107,11 +116,13 @@ const joiner = locale === 'zh' ? ' · ' : ' · ';
       <SectionCounter label="Organizers" />
       <h2>{dict.currentIssue.organizersTitle}</h2>
       <p class="margin-note">
-        <a href={path(locale, 'committee')}>{dict.currentIssue.fullListNote}</a>
+        <a href={path(locale, 'committee', issueId)}>{dict.currentIssue.fullListNote}</a>
       </p>
     </Fragment>
     <div>
-      <RecordRow label={dict.committee.labels.hosts}>{hostNames.join(joiner)}</RecordRow>
+      <RecordRow label={dict.committee.labels.hosts}>
+        {committee.hosts.map((o) => pick(locale, o.name)).join(joiner)}
+      </RecordRow>
       <RecordRow label={dict.committee.labels.coOrganizers}>
         {committee.coOrganizers.map((o) => pick(locale, o.name)).join(joiner)}
         {committee.coOrganizersPending && (
@@ -138,8 +149,9 @@ const joiner = locale === 'zh' ? ' · ' : ' · ';
         ))
       }
       <p class="closing-line">
-        {dict.closing.motto} — <a href={path(locale, 'register')}>{dict.actions.registerNow}</a> ·
-        <a href={path(locale, 'program')}>{dict.actions.viewProgram}</a>
+        {dict.closing.motto} —
+        <a href={path(locale, 'register', issueId)}>{dict.actions.registerNow}</a> ·
+        <a href={path(locale, 'program', issueId)}>{dict.actions.viewProgram}</a>
       </p>
     </div>
   </Marginalia>

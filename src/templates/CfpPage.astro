@@ -6,29 +6,31 @@ import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import RecordRow from '../components/RecordRow.astro';
 import { t } from '../i18n';
-import { issue, type Locale } from '../lib/issueData';
-import { dateRange, monthYear, quotedTheme } from '../lib/format';
+import { getIssueBundle, type Locale } from '../lib/issueData';
+import { dateRange, issueMark, monthYear, quotedTheme } from '../lib/format';
 
 interface Props {
   locale: Locale;
+  issueId: string;
 }
 
-const { locale } = Astro.props;
+const { locale, issueId } = Astro.props;
 const dict = t(locale);
+const bundle = getIssueBundle(issueId);
 
-const entry = await getEntry('conference', `issue-003/cfp.${locale}`);
-if (!entry) throw new Error('issue-003 cfp document missing');
+const entry = await getEntry('conference', `${issueId}/cfp.${locale}`);
+if (!entry) throw new Error(`${issueId} cfp document missing`);
 const { Content } = await render(entry);
 
 const title = `${entry.data.title} · ${dict.siteName}`;
 ---
 
-<EditorialLayout locale={locale} route="cfp" title={title} description={dict.meta.cfp}>
+<EditorialLayout locale={locale} route="cfp" issueId={issueId} title={title} description={dict.meta.cfp}>
   <section class="masthead">
-    <p class="masthead__kicker">Call for Papers · {dict.issueLabel}</p>
+    <p class="masthead__kicker">Call for Papers · {issueMark(bundle.issue.issue, locale)}</p>
     <h1 class="masthead__title">{entry.data.title}</h1>
     <p class="masthead__theme">
-      {dict.currentIssue.themeLabel} · {quotedTheme(locale, issue.theme)}
+      {dict.currentIssue.themeLabel} · {quotedTheme(locale, bundle.issue.theme)}
     </p>
   </section>
 
@@ -36,15 +38,15 @@ const title = `${entry.data.title} · ${dict.siteName}`;
     <Fragment slot="margin">
       <SectionCounter label="Dates" />
       <div>
-        <RecordRow label={dict.cfpMeta.open}>{monthYear(issue.cfp.open, locale)}</RecordRow>
+        <RecordRow label={dict.cfpMeta.open}>{monthYear(bundle.issue.cfp.open, locale)}</RecordRow>
         <RecordRow label={dict.cfpMeta.deadline}>
-          {monthYear(issue.cfp.deadline, locale)}
+          {monthYear(bundle.issue.cfp.deadline, locale)}
         </RecordRow>
         <RecordRow label={dict.cfpMeta.presentations}>
-          {dateRange(issue.cfp.presentations.start, issue.cfp.presentations.end, locale)}
+          {dateRange(bundle.issue.cfp.presentations.start, bundle.issue.cfp.presentations.end, locale)}
         </RecordRow>
         <RecordRow label={dict.register.contactLabel}>
-          <a href={`mailto:${issue.contact.email}`}>{issue.contact.email}</a>
+          <a href={`mailto:${bundle.issue.contact.email}`}>{bundle.issue.contact.email}</a>
         </RecordRow>
       </div>
     </Fragment>

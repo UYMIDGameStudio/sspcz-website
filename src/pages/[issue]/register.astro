@@ -1,0 +1,10 @@
+---
+import RegisterPage from '../../templates/RegisterPage.astro';
+import { issueStaticPaths } from '../../lib/issueData';
+
+export const getStaticPaths = issueStaticPaths;
+
+const { issue } = Astro.params;
+---
+
+<RegisterPage locale="zh" issueId={issue!} />

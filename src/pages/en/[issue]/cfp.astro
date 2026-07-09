@@ -1,0 +1,10 @@
+---
+import CfpPage from '../../../templates/CfpPage.astro';
+import { issueStaticPaths } from '../../../lib/issueData';
+
+export const getStaticPaths = issueStaticPaths;
+
+const { issue } = Astro.params;
+---
+
+<CfpPage locale="en" issueId={issue!} />

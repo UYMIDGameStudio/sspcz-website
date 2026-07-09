@@ -1,15 +1,13 @@
 export default {
   siteName: '浙江中学生哲学大会',
   siteNameLatin: 'Secondary School Philosophy Conference of Zhejiang',
-  issueLabel: '第三届',
-
   meta: {
-    home: '第三届浙江中学生哲学大会——主题「变与不变」，学生论文讲演、嘉宾讲座与哲学黑客马拉松。',
-    cfp: '第三届浙江中学生哲学大会征稿启事：面向中学生征集哲学论文，主题「变与不变」。',
-    program: '第三届浙江中学生哲学大会日程：学生论文讲演、嘉宾讲座与哲学黑客马拉松。',
+    home: '浙江中学生哲学大会——面向初高中学生的哲学学术共同体：学生论文讲演、嘉宾讲座与哲学黑客马拉松。',
+    cfp: '浙江中学生哲学大会征稿启事：面向中学生征集哲学论文。',
+    program: '浙江中学生哲学大会日程：学生论文讲演、嘉宾讲座与哲学黑客马拉松。',
     committee: '浙江中学生哲学大会组委会：主办、协办、学术支持与联合支持社团。',
     policies: '浙江中学生哲学大会论文审核政策与学术不端处理办法。',
-    register: '注册报名参加第三届浙江中学生哲学大会。',
+    register: '注册报名参加浙江中学生哲学大会。',
   },
 
   nav: {
@@ -34,12 +32,12 @@ export default {
   home: {
     heroLead:
       '为对哲学充满热情的初高中学生提供开放的学术交流平台——学生论文讲演、嘉宾讲座、哲学黑客马拉松，一场思想碰撞与知识交流的盛会。让年轻的心灵在哲学的海洋中自由翱翔。',
-    currentIssueCard:
-      '由第三届浙江中学生哲学大会组委会、未竟计划主办。查看本届详情、征稿与报名。',
+    currentTitle: '当前会议',
+    archiveTitle: '会议档案',
+    currentMark: '进行中',
   },
 
   currentIssue: {
-    title: '第三届浙江中学生哲学大会',
     heroLead:
       '本届大会继续聚焦浙江地区的高中生和初中生，以学生论文讲演、嘉宾讲座、哲学黑客马拉松三大板块，向所有与会者传播哲学知识，激发中学生的精神探索。',
     themeLabel: '本届主题',
@@ -65,7 +63,7 @@ export default {
 
   committee: {
     lead: '浙江中学生哲学大会由学生自发组织，历届均获得省内众多中学社团的联合支持。',
-    structureTitle: '第三届组织架构',
+    structureTitle: '本届组织架构',
     pastTitle: '历届组织',
     speakersTitle: '往届嘉宾学者',
     partnershipTitle: '我们招募合作组织',
@@ -124,7 +122,4 @@ export default {
     copyright: '© 2024–2026 SSPCZ 组委会',
   },
 
-  scaffoldTitle: '出版平台 · 脚手架',
-  scaffoldNote:
-    '这是 ADR-001 Phase 1 的空壳脚手架页面，用于验证设计令牌、版式模式与质量门槛。正式内容在 Phase 2–3 迁移。',
 } as const;

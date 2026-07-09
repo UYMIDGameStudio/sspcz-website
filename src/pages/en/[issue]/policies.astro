@@ -1,0 +1,10 @@
+---
+import PoliciesPage from '../../../templates/PoliciesPage.astro';
+import { issueStaticPaths } from '../../../lib/issueData';
+
+export const getStaticPaths = issueStaticPaths;
+
+const { issue } = Astro.params;
+---
+
+<PoliciesPage locale="en" issueId={issue!} />

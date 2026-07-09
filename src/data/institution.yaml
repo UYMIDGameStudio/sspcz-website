@@ -1,0 +1,6 @@
+# Institutional configuration — the ONLY place that knows which edition is
+# current (ADR-001 Phase 3.5). Publishing a new edition = add its content
+# and data folders, update this pointer, rebuild. Never touch templates.
+
+currentIssue: issue-003
+founded: 2024

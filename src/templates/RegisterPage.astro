@@ -8,27 +8,29 @@ import EditorialLayout from '../layouts/EditorialLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import { t } from '../i18n';
-import { issue, type Locale } from '../lib/issueData';
-import { dateRange, quotedTheme } from '../lib/format';
+import { getIssueBundle, type Locale } from '../lib/issueData';
+import { dateRange, issueMark, quotedTheme } from '../lib/format';
 import { path } from '../lib/routes';
 
 interface Props {
   locale: Locale;
+  issueId: string;
 }
 
-const { locale } = Astro.props;
+const { locale, issueId } = Astro.props;
 const dict = t(locale);
+const bundle = getIssueBundle(issueId);
 const r = dict.register;
 const title = `${dict.nav.register} · ${dict.siteName}`;
 ---
 
-<EditorialLayout locale={locale} route="register" title={title} description={dict.meta.register}>
+<EditorialLayout locale={locale} route="register" issueId={issueId} title={title} description={dict.meta.register}>
   <section class="masthead">
-    <p class="masthead__kicker">Registration · {dict.issueLabel}</p>
+    <p class="masthead__kicker">Registration · {issueMark(bundle.issue.issue, locale)}</p>
     <h1 class="masthead__title">{dict.nav.register}</h1>
     <p class="masthead__theme">
-      {dateRange(issue.dates.start, issue.dates.end, locale)} ·
-      {quotedTheme(locale, issue.theme)}
+      {dateRange(bundle.issue.dates.start, bundle.issue.dates.end, locale)} ·
+      {quotedTheme(locale, bundle.issue.theme)}
     </p>
     <p class="masthead__lead">{r.lead}</p>
   </section>
@@ -39,11 +41,11 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
       <h2>{dict.nav.register}</h2>
       <p class="margin-note">
         {r.cfpNote}
-        <a href={path(locale, 'cfp')}>{dict.nav.cfp}</a>
+        <a href={path(locale, 'cfp', issueId)}>{dict.nav.cfp}</a>
       </p>
       <p class="margin-note">
         {r.contactLabel} ·
-        <a href={`mailto:${issue.contact.email}`}>{issue.contact.email}</a>
+        <a href={`mailto:${bundle.issue.contact.email}`}>{bundle.issue.contact.email}</a>
       </p>
     </Fragment>
 

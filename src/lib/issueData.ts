@@ -1,19 +1,29 @@
 /**
- * Typed, schema-validated access to the issue-003 structured data
- * (RFC-100 §2.2). The build fails if any YAML drifts from its schema —
- * the same guarantee content collections give editorial documents.
+ * Typed, schema-validated access to institutional configuration and
+ * per-edition structured data (RFC-100 §2.2). Editions are DISCOVERED from
+ * the filesystem via import.meta.glob — adding `src/data/issue-XXX/` makes
+ * a new edition exist with zero code changes (ADR-001 Phase 3.5). The
+ * build fails if any YAML drifts from its schema.
  */
 import { z } from 'astro/zod';
-import rawIssue from '../data/issue-003/issue.yaml';
-import rawSchedule from '../data/issue-003/schedule.yaml';
-import rawCommittee from '../data/issue-003/committee.yaml';
-import rawSpeakers from '../data/issue-003/speakers.yaml';
+import rawInstitution from '../data/institution.yaml';
 
 const localized = z.object({ zh: z.string(), en: z.string() });
 export type Localized = z.infer<typeof localized>;
 export type Locale = keyof Localized;
 
 export const pick = (locale: Locale, value: Localized): string => value[locale];
+
+/* ---------- institution ---------- */
+
+const institutionSchema = z.object({
+  currentIssue: z.string().regex(/^issue-\d{3}$/),
+  founded: z.number().int(),
+});
+
+export const institution = institutionSchema.parse(rawInstitution);
+
+/* ---------- per-edition schemas ---------- */
 
 const issueSchema = z.object({
   issue: z.number().int().positive(),
@@ -114,13 +124,74 @@ const speakersSchema = z.object({
   pastSpeakersNote: localized,
 });
 
-export const issue = issueSchema.parse(rawIssue);
-export const schedule = scheduleSchema.parse(rawSchedule);
-export const committee = committeeSchema.parse(rawCommittee);
-export const speakers = speakersSchema.parse(rawSpeakers);
-
+export type Issue = z.infer<typeof issueSchema>;
+export type Schedule = z.infer<typeof scheduleSchema>;
+export type Committee = z.infer<typeof committeeSchema>;
+export type Speakers = z.infer<typeof speakersSchema>;
 export type Session = z.infer<typeof sessionSchema>;
 export type Speaker = z.infer<typeof speakerSchema>;
+
+export interface IssueBundle {
+  id: string;
+  issue: Issue;
+  schedule: Schedule;
+  committee: Committee;
+  speakers: Speakers;
+}
+
+/* ---------- edition discovery ---------- */
+
+const yamlFiles = import.meta.glob('../data/issue-*/*.yaml', {
+  eager: true,
+  import: 'default',
+});
+
+const rawByEdition = new Map<string, Record<string, unknown>>();
+for (const [file, raw] of Object.entries(yamlFiles)) {
+  const match = file.match(/(issue-\d{3})\/([a-z]+)\.yaml$/);
+  if (!match) continue;
+  const [, editionId, name] = match;
+  const bucket = rawByEdition.get(editionId) ?? {};
+  bucket[name] = raw;
+  rawByEdition.set(editionId, bucket);
+}
+
+const bundles = new Map<string, IssueBundle>();
+for (const [id, raw] of rawByEdition) {
+  for (const required of ['issue', 'schedule', 'committee', 'speakers']) {
+    if (!(required in raw)) {
+      throw new Error(`Edition ${id} is missing src/data/${id}/${required}.yaml`);
+    }
+  }
+  bundles.set(id, {
+    id,
+    issue: issueSchema.parse(raw.issue),
+    schedule: scheduleSchema.parse(raw.schedule),
+    committee: committeeSchema.parse(raw.committee),
+    speakers: speakersSchema.parse(raw.speakers),
+  });
+}
+
+/** Edition IDs, newest first. */
+export const issueIds: string[] = [...bundles.keys()].sort().reverse();
+
+export function getIssueBundle(id: string): IssueBundle {
+  const bundle = bundles.get(id);
+  if (!bundle) throw new Error(`Unknown edition: ${id} (have: ${issueIds.join(', ')})`);
+  return bundle;
+}
+
+export const currentIssueId = institution.currentIssue;
+export const currentIssue = getIssueBundle(currentIssueId);
+
+export function issueIdFor(n: number): string {
+  return `issue-${String(n).padStart(3, '0')}`;
+}
+
+/** Shared getStaticPaths for the dynamic [issue] routes. */
+export function issueStaticPaths() {
+  return issueIds.map((issue) => ({ params: { issue } }));
+}
 
 export function speakerName(locale: Locale, s: Speaker): string {
   if (locale === 'zh') {

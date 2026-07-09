@@ -1,15 +1,13 @@
 export default {
   siteName: 'Secondary School Philosophy Conference of Zhejiang',
   siteNameLatin: 'Secondary School Philosophy Conference of Zhejiang',
-  issueLabel: 'Issue III',
-
   meta: {
-    home: 'The 3rd Secondary School Philosophy Conference of Zhejiang — theme "Change & Invariance": student paper presentations, guest lectures and a philosophy hackathon.',
-    cfp: 'Call for papers of the 3rd SSPCZ: philosophy papers by secondary school students on "Change & Invariance".',
-    program: 'Program of the 3rd SSPCZ: student paper presentations, guest lectures and the philosophy hackathon.',
+    home: 'The Secondary School Philosophy Conference of Zhejiang — a philosophical academic community for secondary school students: paper presentations, guest lectures and a philosophy hackathon.',
+    cfp: 'Call for papers of the SSPCZ: philosophy papers by secondary school students.',
+    program: 'Program of the SSPCZ: student paper presentations, guest lectures and the philosophy hackathon.',
     committee: 'Organizing committee of the SSPCZ: hosts, co-organizers, academic support and supporting societies.',
     policies: 'Paper review policy and academic integrity rules of the SSPCZ.',
-    register: 'Register for the 3rd Secondary School Philosophy Conference of Zhejiang.',
+    register: 'Register for the Secondary School Philosophy Conference of Zhejiang.',
   },
 
   nav: {
@@ -34,12 +32,12 @@ export default {
   home: {
     heroLead:
       'An open academic forum for middle and high school students passionate about philosophy — student paper presentations, guest lectures and a philosophy hackathon. A festival of ideas, where young minds roam free in the ocean of philosophy.',
-    currentIssueCard:
-      'Hosted by the 3rd SSPCZ Organizing Committee and the Weijing Initiative. Details, call for papers and registration.',
+    currentTitle: 'Current Conference',
+    archiveTitle: 'Archive',
+    currentMark: 'Current',
   },
 
   currentIssue: {
-    title: 'The 3rd Secondary School Philosophy Conference of Zhejiang',
     heroLead:
       'This session again focuses on middle and high school students across Zhejiang. Through three pillars — student paper presentations, guest lectures and a philosophy hackathon — it brings philosophy to every participant and kindles the spirit of inquiry in young minds.',
     themeLabel: "This year's theme",
@@ -66,7 +64,7 @@ export default {
 
   committee: {
     lead: 'The conference is organized by students, with joint support from many secondary school societies across Zhejiang in every session.',
-    structureTitle: 'Structure of the 3rd Session',
+    structureTitle: 'Structure of this Session',
     pastTitle: 'Past Sessions',
     speakersTitle: 'Past Guest Speakers',
     partnershipTitle: "We're looking for partners",
@@ -125,7 +123,4 @@ export default {
     copyright: '© 2024–2026 SSPCZ Organizing Committee',
   },
 
-  scaffoldTitle: 'Publication Platform · Scaffold',
-  scaffoldNote:
-    'This is the empty Phase 1 scaffold of ADR-001, verifying design tokens, layout patterns and QA gates. Real content arrives in Phases 2–3.',
 } as const;

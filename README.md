@@ -1,61 +1,68 @@
-# 浙江中学生哲学大会 官网 · SSPCZ Website
+# SSPCZ Digital Publication Platform · 浙江中学生哲学大会
 
-> **⚠ 平台迁移中 / Migration in progress** — 本仓库正按照 `docs/`
-> 宪章（RFC-000…400）与 `docs/adr/ADR-001-Initialization.md` 迁移为基于
-> Astro 的出版平台。根目录的 HTML 为遗留静态站（仍是当前部署版本）；
-> 新平台位于 `src/`，通过 `npm run dev / build / check / lint:css` 工作。
-> 遗留文件将在 Phase 4 打上 `legacy-static-site` 标签后删除。
+The publication platform of the **Secondary School Philosophy Conference of
+Zhejiang (SSPCZ)** — an ongoing student-organized academic institution. Each
+conference edition is an archivable *Issue*; the site is built with Astro as
+a fully static, zero-JS publication.
 
-Official website of the **Secondary School Philosophy Conference of Zhejiang (SSPCZ)** — a student-organized philosophy conference for middle and high school students, held in Hangzhou.
+Governance: `docs/` (RFC-000…400) · decisions: `docs/adr/`, `docs/edr/` ·
+AI context: `.ai/context.md` · the legacy static site lives at the git tag
+**`legacy-static-site`**.
 
-第三届浙江中学生哲学大会 · 主题「变与不变」 · 2026年10月2–5日 · 杭州
-
-## 结构 · Structure
+## Architecture (3 tiers)
 
 ```
-index.html            首页 (Chinese)
-third-session.html    第三届大会
-cfp.html              征稿启事
-schedule.html         日程安排（分日 tab 切换）
-committee.html        组委会
-register.html         注册报名（前端校验表单，可配置提交后端）
-policies.html         会议政策（论文审核政策 + 学术不端处理）
-en/                   English versions of all seven pages
-sitemap.xml           站点地图（换自定义域名后需更新其中的 base URL）
-robots.txt
-assets/
-  style.css           共享样式 + sticky footer + 移动端适配 (breakpoint 900px)
-  lang.js             语言选择弹窗 + cookie 记忆 + 自动跳转
-  logo.jpg            大会 logo
+Institution  /            src/data/institution.yaml (currentIssue pointer)
+Editions     /issue-XXX/  src/content/conference/issue-XXX/ + src/data/issue-XXX/
+Design       tokens.css → patterns/ → layouts/ → components/ → templates/
 ```
 
-## 语言 · Language
+- `src/pages/` contains only hollow routing wrappers; `[issue]` routes are
+  generated from the editions discovered on disk.
+- Both locales (zh at root, en under `/en/`) render through the same
+  templates — no duplicated markup anywhere.
+- The institutional homepage resolves the current conference through the
+  `currentIssue` pointer and derives the archive from
+  `getCollection('conference')` automatically.
 
-- 首次访问弹窗选择 中文 / English，选择通过 cookie（`sspcz_lang`，一年有效）记住。
-- 已有偏好时访问另一语言的页面会自动跳转；页眉的 EN / 中文 开关可随时切换并更新偏好。
-- First visit shows a language picker; the choice is remembered via cookie and pages auto-redirect to the preferred language. The EN / 中文 switch in the header updates the preference.
+## Publishing a new conference edition
 
-## 本地预览 · Local preview
+> **Never modify templates when adding a new conference edition. A new
+> edition only requires: 1. creating `src/content/conference/issue-XXX/`,
+> 2. updating the `currentIssue` pointer, 3. running `astro build`.**
 
-纯静态站点，任意静态服务器即可（cookie 需要 http，不要直接用 file:// 打开）：
+Concretely, for Issue IV:
+
+1. Create `src/content/conference/issue-004/` with the eight editorial
+   documents (`about`/`cfp`/`theme-letter`/`policies` × `zh`/`en`) and
+   `src/data/issue-004/` with the four data files
+   (`issue`/`schedule`/`committee`/`speakers` `.yaml`) — copy the
+   `issue-003` files as the schema reference.
+2. Set `currentIssue: issue-004` in `src/data/institution.yaml`.
+3. `npm run build`.
+
+The homepage, navigation, archive list, routes and sitemap all update
+themselves. `issue-003` remains frozen at its permanent URLs. Schema
+validation (Zod) fails the build if any file drifts from the content model.
+
+## Commands
 
 ```bash
-python3 -m http.server 8000
-# open http://localhost:8000
+npm run dev        # local dev server
+npm run build      # static build to dist/
+npm run check      # types + content schemas
+npm run lint:css   # stylelint (tokens-only colors, BEM class names)
+npm run qa:lh      # Lighthouse CI budget (>=95 x4)
 ```
 
-## 报名表单后端 · Form backend
+CI (`.github/workflows/qa.yml`) enforces all of the above plus the
+zero-inline-style red line on every push and pull request.
 
-`register.html` 与 `en/register.html` 顶部各有一个 `FORM_ENDPOINT` 常量：
+## Deployment
 
-- 留空（默认）＝纯前端演示模式，只显示成功页、不实际提交；
-- 填入表单收集端点（如 Formspree `https://formspree.io/f/xxxx`，或自建云函数 URL）后，
-  表单将以 JSON POST 提交 `{name, school, grade, contact, note, mode, role, lang}`，
-  失败时向用户展示邮件报名的兜底提示。
-
-## 备注 · Notes
-
-- 具体活动地点、部分协办方等信息在源策划案中为"待定"，确认后需更新页面内容。
-- 英文正文衬线字体为 Times New Roman（系统字体，无需网络加载）；中文使用 Google Fonts 的
-  Noto Serif/Sans SC，大陆访问不稳定时会回退到系统字体，正式部署国内可改为自托管字体。
-- 会议政策页依据第二届《会议论文审核政策》（公开版）整理；第三届正式章程发布后需同步更新。
+`astro.config.mjs` sets `site`/`base` for GitHub Pages
+(`https://uymidgamestudio.github.io/sspcz-website/`). When a custom domain
+is adopted: change `SITE`, set `BASE` to `''`, and update
+`public/robots.txt`. Legacy URLs (`/third-session.html`, …) are preserved
+by redirect stubs. The registration form posts to `/api/register`; the
+backend behind it is a separate decision (ADR-001 §6 non-goals).
