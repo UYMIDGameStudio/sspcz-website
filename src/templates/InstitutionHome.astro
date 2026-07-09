@@ -1,29 +1,26 @@
 ---
 /**
- * Template: the institutional root (`/`, `/en/`) — the ongoing academic
- * institution, not any single edition (ADR-001 Phase 3.5).
+ * Template: the Institutional Cover (`/`, `/en/`) — the institution's front
+ * door (ADR-003 §3.6, Q6). It is a ceremonial, sparse scholarly cover, not
+ * a portal or content dashboard: the institutional lockup, the current
+ * edition's identity plate (EditionCard on ice-blue contextual paper), and
+ * a minimal set of portals. The full About prose and archive listing live
+ * on their own routes (ADR-003 §3.5/§3.6), never on the cover.
  *
- * Zero-code-change constraint: the current conference is resolved through
- * the `currentIssue` pointer in src/data/institution.yaml, and the archive
- * is derived from getCollection('conference') — publishing a new edition
- * never touches this template.
+ * Zero-code-change constraint: the current edition is resolved through the
+ * `currentIssue` pointer in src/data/institution.yaml — publishing a new
+ * edition never touches this template.
  */
-import { getCollection, getEntry, render } from 'astro:content';
-import InstitutionLayout from '../layouts/InstitutionLayout.astro';
-import Marginalia from '../patterns/Marginalia.astro';
-import SectionCounter from '../components/SectionCounter.astro';
-import RecordRow from '../components/RecordRow.astro';
+import LandingLayout from '../layouts/LandingLayout.astro';
+import EditionCard from '../components/EditionCard.astro';
 import { t } from '../i18n';
 import {
   currentIssueId,
   getIssueBundle,
   institution,
-  issueIdFor,
-  issueIds,
-  pick,
   type Locale,
 } from '../lib/issueData';
-import { dateRange, issueTitle, quotedTheme } from '../lib/format';
+import { issueTitle } from '../lib/format';
 import { path } from '../lib/routes';
 
 interface Props {
@@ -33,176 +30,180 @@ interface Props {
 const { locale } = Astro.props;
 const dict = t(locale);
 
-/* Current conference — resolved dynamically via the institutional pointer. */
+/* Current edition — resolved dynamically via the institutional pointer. */
 const current = getIssueBundle(currentIssueId);
-const currentTitle = issueTitle(current.issue.issue, locale, dict.siteName);
-
-const aboutEntry = await getEntry('conference', `${currentIssueId}/about.${locale}`);
-if (!aboutEntry) throw new Error(`${currentIssueId} about document missing`);
-const { Content: About } = await render(aboutEntry);
-
-/* Archive — automatically derived from the content collection, newest first. */
-const docs = await getCollection('conference');
-const editionYears = new Map<number, number>();
-for (const doc of docs) {
-  if (!editionYears.has(doc.data.issue)) editionYears.set(doc.data.issue, doc.data.year);
-}
-const archive = [...editionYears.entries()]
-  .map(([n, year]) => {
-    const id = issueIdFor(n);
-    const published = issueIds.includes(id);
-    return {
-      n,
-      year,
-      id,
-      published,
-      theme: published ? getIssueBundle(id).issue.theme : undefined,
-    };
-  })
-  .sort((a, b) => b.n - a.n);
 
 const title = `${dict.siteName} · ${dict.siteNameLatin}`;
 ---
 
-<InstitutionLayout
+<LandingLayout
   locale={locale}
   route="home"
   issueId={currentIssueId}
   title={title}
   description={dict.meta.home}
 >
-  <section class="masthead">
-    <p class="masthead__kicker">SSPCZ — Since {institution.founded}</p>
-    <h1 class="masthead__title">{dict.siteName}</h1>
-    {locale === 'zh' && <p class="masthead__theme">{dict.siteNameLatin}</p>}
-    <p class="masthead__lead">{dict.home.heroLead}</p>
-  </section>
-
-  <Marginalia>
-    <Fragment slot="margin">
-      <SectionCounter label="Now" />
-      <h2>{dict.home.currentTitle}</h2>
-    </Fragment>
-    <div>
-      <h3 class="current__title">
-        <a href={path(locale, 'issue', currentIssueId)}>{currentTitle}</a>
-      </h3>
-      <RecordRow label={dict.currentIssue.themeLabel}>
-        {quotedTheme(locale, current.issue.theme)}
-      </RecordRow>
-      <RecordRow label={dict.cfpMeta.presentations}>
-        {dateRange(current.issue.dates.start, current.issue.dates.end, locale)} ·
-        {pick(locale, current.issue.location.city)}
-      </RecordRow>
-      <RecordRow label={dict.committee.labels.hosts}>
-        {current.committee.hosts.map((o) => pick(locale, o.name)).join(' · ')}
-      </RecordRow>
-      <p class="closing-line">
-        <a href={path(locale, 'issue', currentIssueId)}>{dict.actions.viewDetails}</a> ·
-        <a href={path(locale, 'cfp', currentIssueId)}>{dict.actions.readCfp}</a> ·
-        <a href={path(locale, 'register', currentIssueId)}>{dict.actions.registerNow}</a>
+  <section class="cover">
+    <div class="cover__masthead">
+      <p class="cover__kicker">{dict.home.coverKicker}</p>
+      <h1 class="cover__title">{dict.siteName}</h1>
+      <p class="cover__identity">
+        <span class="cover__est">EST. {institution.founded}</span>
+        <span class="cover__rule" aria-hidden="true"></span>
+        <span class="cover__tagline">{dict.home.tagline}</span>
       </p>
     </div>
-  </Marginalia>
 
-  <Marginalia>
-    <Fragment slot="margin">
-      <SectionCounter label="About" />
-      <h2>{aboutEntry.data.title}</h2>
-    </Fragment>
-    <div class="prose"><About /></div>
-  </Marginalia>
+    <EditionCard
+      n={current.issue.issue}
+      locale={locale}
+      href={path(locale, 'issue', currentIssueId)}
+      theme={current.issue.theme}
+      year={current.issue.year}
+      title={issueTitle(current.issue.issue, locale, dict.siteName)}
+      cta={dict.actions.viewDetails}
+    />
 
-  <Marginalia>
-    <Fragment slot="margin">
-      <SectionCounter label="Archive" />
-      <h2>{dict.home.archiveTitle}</h2>
-    </Fragment>
-    <ol class="archive">
-      {
-        archive.map((edition) => (
-          <li class="archive__item">
-            <span class="archive__year">{edition.year}</span>
-            <span class="archive__label">
-              {edition.published ? (
-                <a href={path(locale, 'issue', edition.id)}>
-                  {issueTitle(edition.n, locale, dict.siteName)}
-                </a>
-              ) : (
-                issueTitle(edition.n, locale, dict.siteName)
-              )}
-              {edition.theme && (
-                <span class="archive__theme">{quotedTheme(locale, edition.theme)}</span>
-              )}
-            </span>
-            {edition.id === currentIssueId && (
-              <span class="archive__mark">{dict.home.currentMark}</span>
-            )}
-          </li>
-        ))
-      }
-    </ol>
-  </Marginalia>
-</InstitutionLayout>
+    <nav class="cover__portals" aria-label={dict.home.currentTitle}>
+      <a class="cover__portal" href={path(locale, 'issue', currentIssueId)}>
+        <span class="cover__portal-tag">About</span>
+        <span class="cover__portal-label">{dict.nav.home} →</span>
+      </a>
+      <a class="cover__portal" href={path(locale, 'archive')}>
+        <span class="cover__portal-tag">Archive</span>
+        <span class="cover__portal-label">{dict.nav.archive} →</span>
+      </a>
+      <a class="cover__portal" href={path(locale, 'register', currentIssueId)}>
+        <span class="cover__portal-tag">Register</span>
+        <span class="cover__portal-label">{dict.nav.register} →</span>
+      </a>
+    </nav>
+  </section>
+</LandingLayout>
 
 <style>
-  .current__title {
-    padding-bottom: var(--space-4);
-    font-size: var(--text-md);
+  .cover {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--space-24) var(--page-gutter);
   }
 
-  .closing-line {
-    margin-top: var(--space-6);
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-  }
-
-  .closing-line a {
-    text-decoration: underline;
-  }
-
-  .archive {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .archive__item {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-6);
-    align-items: baseline;
-    padding: var(--space-4) 0;
-    border-bottom: 1px solid var(--color-line);
-  }
-
-  .archive__year {
+  /* --- masthead: institutional identity --- */
+  .cover__kicker {
     font-family: var(--font-serif-latin);
-    font-size: var(--text-md);
+    font-size: var(--type-marginalia);
+    letter-spacing: var(--tracking-wider);
     color: var(--color-text-muted);
+    text-transform: uppercase;
   }
 
-  .archive__label {
+  .cover__title {
+    max-width: 11em;
+    margin-top: var(--space-6);
     font-family: var(--font-serif-cjk);
-    font-size: var(--text-md);
+    font-weight: var(--weight-bold);
+    font-size: var(--type-display);
+    line-height: var(--leading-none);
     color: var(--color-ink);
   }
 
-  :global(html:lang(en)) .archive__label {
+  :global(html:lang(en)) .cover__title {
     font-family: var(--font-serif-latin);
   }
 
-  .archive__theme {
-    margin-left: var(--space-2);
-    font-size: var(--text-sm);
+  .cover__identity {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+    margin-top: var(--space-8);
     color: var(--color-text-muted);
   }
 
-  .archive__mark {
-    padding: var(--space-1) var(--space-2);
-    font-size: var(--text-xs);
+  .cover__est {
+    font-family: var(--font-serif-latin);
+    font-size: var(--type-metadata);
     letter-spacing: var(--tracking-wide);
+  }
+
+  .cover__rule {
+    width: 7.5rem;
+    height: 1px;
+    background: var(--color-line-strong);
+  }
+
+  .cover__tagline {
+    font-size: var(--type-metadata);
+  }
+
+  :global(html:lang(en)) .cover__tagline {
+    font-family: var(--font-serif-latin);
+  }
+
+  /* --- portals: minimal navigation to the institution's other surfaces --- */
+  .cover__portals {
+    display: flex;
+    margin-top: var(--space-16);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .cover__portal {
+    flex: 1;
+    padding: var(--space-8) var(--space-8) 0 var(--space-8);
+    border-left: 1px solid var(--color-line);
+  }
+
+  .cover__portal:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .cover__portal-tag {
+    display: block;
+    font-family: var(--font-serif-latin);
+    font-size: var(--type-marginalia);
+    letter-spacing: var(--tracking-wider);
     color: var(--color-text-muted);
-    border: 1px solid var(--color-line-strong);
+    text-transform: uppercase;
+  }
+
+  .cover__portal-label {
+    display: block;
+    margin-top: var(--space-3);
+    font-family: var(--font-serif-cjk);
+    font-size: var(--type-heading-sub);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .cover__portal-label {
+    font-family: var(--font-serif-latin);
+  }
+
+  .cover__portal:hover .cover__portal-label {
+    color: var(--color-accent);
+  }
+
+  @media (width <= 56.25em) {
+    .cover {
+      padding: var(--space-16) var(--page-gutter-narrow);
+    }
+
+    .cover__title {
+      font-size: var(--text-2xl);
+    }
+
+    .cover__portals {
+      flex-direction: column;
+    }
+
+    .cover__portal {
+      padding: var(--space-6) 0 0;
+      border-left: 0;
+    }
+
+    .cover__portal + .cover__portal {
+      margin-top: var(--space-6);
+      border-top: 1px solid var(--color-line);
+    }
   }
 </style>

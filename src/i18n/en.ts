@@ -36,6 +36,8 @@ export default {
   home: {
     heroLead:
       'An open academic forum for middle and high school students passionate about philosophy — student paper presentations, guest lectures and a philosophy hackathon. A festival of ideas, where young minds roam free in the ocean of philosophy.',
+    coverKicker: 'SSPCZ · Since 2024',
+    tagline: 'A philosophical academic community for secondary school students',
     currentTitle: 'Current Conference',
     archiveTitle: 'Archive',
     currentMark: 'Current',
