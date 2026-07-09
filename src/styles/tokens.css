@@ -1,21 +1,34 @@
 /*
  * Design tokens — the single source of every visual decision (RFC-400 §3).
  * The only file in the codebase where raw color values may appear.
- * Values inherit the legacy site's cold palette (ink / grey-cyan / paper);
- * final visual design is a non-goal of ADR-001 and is reviewed at Phase 3.
+ * The visual grammar is governed by ADR-003 (Design System): the Paper
+ * System surfaces (§3.8) and the semantic type roles (§3.7) below are the
+ * institutional API; components consume tokens/roles, never raw values.
  */
 
 :root {
-  /* ---- color · ink & paper ---- */
+  /* ---- Paper System (ADR-003 §3.8) ----
+     Surfaces are semantic paper layers, not hues — imitating academic
+     publishing (chapter transitions, section hierarchy, contextual
+     emphasis), never decorative backgrounds. The whole palette is:
+     white · ice-blue · one tertiary paper tint · ink typography. */
+  --surface-primary: #fff;   /* the academic paper canvas */
+  --surface-secondary: #d0e7f5; /* ice-blue contextual paper (emphasis / chapter) */
+  --surface-tertiary: #eef3f7;  /* low-interference paper (citation / metadata / marginalia) */
+
+  /* ---- color · ink & paper ----
+     Legacy paper tokens are now aliases onto the Paper System so existing
+     component CSS adopts it without edits. Contrast guard: on the tinted
+     surfaces, body text must use --color-text (not --color-text-muted). */
   --color-ink: #122736;
   --color-ink-deep: #0a1524;
   --color-ink-raised: #1a3550;
   --color-accent: #3e7ca6;
   --color-accent-bright: #6fa3cc;
-  --color-paper: #f2f4f5;
-  --color-paper-raised: #f7f9fa;
-  --color-paper-inset: #eef2f4;
-  --color-surface: #fff;
+  --color-paper: var(--surface-primary);
+  --color-paper-raised: var(--surface-tertiary);
+  --color-paper-inset: var(--surface-secondary);
+  --color-surface: var(--surface-primary);
   --color-line: #cfd6db;
   --color-line-strong: #b9c4cc;
   --color-line-dark: #1c2f47;
@@ -52,6 +65,18 @@
   --tracking-wide: 0.125em;
   --tracking-wider: 0.25em;
   --weight-light: 300;
+
+  /* ---- semantic type roles (ADR-003 §3.7) ----
+     The raw --text-* scale above is the palette; components consume these
+     roles, not raw sizes, so "a page title" or "an edition numeral" has a
+     single institutional definition. Bilingual family is chosen per role
+     at the element via :lang(); these tokens carry size only. */
+  --type-display: var(--text-display); /* identity, edition numerals, theme titles */
+  --type-heading: var(--text-xl);      /* page titles, structural sections */
+  --type-heading-sub: var(--text-md);  /* sub-headings within a section */
+  --type-body: var(--text-base);       /* long-form reading (65–75ch measure) */
+  --type-metadata: var(--text-sm);     /* dates, locations, credits */
+  --type-marginalia: var(--text-xs);   /* annotations, archival info */
 
   /* ---- spacing scale ---- */
   --space-1: 0.25rem;

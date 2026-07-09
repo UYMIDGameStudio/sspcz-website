@@ -8,6 +8,22 @@
     "selector-class-pattern": [
       "^[a-z]([a-z0-9-]+)?(__([a-z0-9]+-?)+)?(--([a-z0-9]+-?)+)?$",
       { "message": "Class names must be semantic BEM (block__element--modifier) — RFC-400 §2" }
+    ],
+    "property-disallowed-list": [
+      ["box-shadow", "-webkit-box-shadow", "backdrop-filter", "-webkit-backdrop-filter"],
+      { "message": "Forbidden material (ADR-003 §4): no shadows or glassmorphism." }
+    ],
+    "declaration-property-value-disallowed-list": [
+      {
+        "background": ["/gradient/"],
+        "background-image": ["/gradient/"],
+        "/^animation/": ["/.+/"]
+      },
+      { "message": "Forbidden material (ADR-003 §4): no gradients or decorative animation." }
+    ],
+    "at-rule-disallowed-list": [
+      ["keyframes"],
+      { "message": "Forbidden material (ADR-003 §4): no @keyframes animation. State transitions (hover/focus) are allowed." }
     ]
   },
   "overrides": [
