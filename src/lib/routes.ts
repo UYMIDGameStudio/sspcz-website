@@ -2,6 +2,7 @@ import type { Locale } from './issueData';
 
 export type RouteKey =
   | 'home'
+  | 'resources'
   | 'issue'
   | 'cfp'
   | 'program'
@@ -19,9 +20,15 @@ const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
 export function path(locale: Locale, key: RouteKey, issueId?: string): string {
   const prefix = `${BASE}${locale === 'en' ? '/en' : ''}`;
   if (key === 'home') return `${prefix}/`;
+  if (key === 'resources') return `${prefix}/resources/`;
   if (!issueId) throw new Error(`Route "${key}" requires an edition ID`);
   if (key === 'issue') return `${prefix}/${issueId}/`;
   return `${prefix}/${issueId}/${key}/`;
+}
+
+/** Prefix site-absolute asset URLs with the deployment base path. */
+export function withBase(url: string): string {
+  return url.startsWith('/') ? `${BASE}${url}` : url;
 }
 
 export function switchLocale(locale: Locale, key: RouteKey, issueId?: string): string {

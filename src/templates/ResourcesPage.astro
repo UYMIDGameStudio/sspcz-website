@@ -1,0 +1,108 @@
+---
+/**
+ * Template: the institutional Resources hub (Phase 5). Lists permanent
+ * documents from getCollection('documents') and past-session media from
+ * getCollection('media') — assets that outlive any single edition. This is
+ * an institution-level page; edition-scoped nav links resolve to the
+ * current issue via the pointer, exactly like the institutional homepage.
+ */
+import { getCollection, render } from 'astro:content';
+import EditorialLayout from '../layouts/EditorialLayout.astro';
+import Marginalia from '../patterns/Marginalia.astro';
+import Exhibition from '../patterns/Exhibition.astro';
+import SectionCounter from '../components/SectionCounter.astro';
+import PublicationCard from '../components/PublicationCard.astro';
+import { t } from '../i18n';
+import { currentIssueId, type Locale } from '../lib/issueData';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+const d = dict.resources;
+
+/* Documents for this locale, ordered; md bodies rendered for inline preview. */
+const docEntries = (await getCollection('documents'))
+  .filter((entry) => entry.data.lang === locale)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const documents = await Promise.all(
+  docEntries.map(async (entry) => ({
+    data: entry.data,
+    Content: entry.data.type === 'md' ? (await render(entry)).Content : null,
+  })),
+);
+
+/* Media across all editions, newest first. */
+const media = (await getCollection('media'))
+  .map((entry) => entry.data)
+  .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+const title = `${d.title} · ${dict.siteName}`;
+---
+
+<EditorialLayout
+  locale={locale}
+  route="resources"
+  issueId={currentIssueId}
+  title={title}
+  description={dict.meta.resources}
+>
+  <section class="masthead">
+    <p class="masthead__kicker">Resources · Knowledge Assets</p>
+    <h1 class="masthead__title">{d.title}</h1>
+    <p class="masthead__lead">{d.lead}</p>
+  </section>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Documents" />
+      <h2>{d.documentsTitle}</h2>
+    </Fragment>
+    <div>
+      {
+        documents.length === 0 ? (
+          <p class="empty">{d.empty}</p>
+        ) : (
+          documents.map(({ data, Content }) => (
+            <PublicationCard
+              locale={locale}
+              type={data.type}
+              title={data.title}
+              description={data.description}
+              version={data.version}
+              updatedDate={data.updatedDate}
+              fileUrl={data.fileUrl}
+            >
+              {Content && <Content />}
+            </PublicationCard>
+          ))
+        )
+      }
+    </div>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Exhibition" />
+      <h2>{d.exhibitionTitle}</h2>
+    </Fragment>
+    <div>
+      {
+        media.length === 0 ? (
+          <p class="empty">{d.empty}</p>
+        ) : (
+          <Exhibition locale={locale} items={media} />
+        )
+      }
+    </div>
+  </Marginalia>
+</EditorialLayout>
+
+<style>
+  .empty {
+    color: var(--color-text-muted);
+  }
+</style>

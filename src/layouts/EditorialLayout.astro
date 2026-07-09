@@ -11,7 +11,7 @@ import RunningHeader from '../patterns/RunningHeader.astro';
 import { t } from '../i18n';
 import { getIssueBundle, type Locale } from '../lib/issueData';
 import { issueMark } from '../lib/format';
-import { path, switchLocale, type RouteKey } from '../lib/routes';
+import { path, switchLocale, withBase, type RouteKey } from '../lib/routes';
 
 interface Props {
   locale: Locale;
@@ -32,10 +32,13 @@ const navItems: Array<{ key: RouteKey; label: string }> = [
   { key: 'program', label: dict.nav.program },
   { key: 'committee', label: dict.nav.committee },
   { key: 'policies', label: dict.nav.policies },
+  { key: 'resources', label: dict.nav.resources },
   { key: 'register', label: dict.nav.register },
 ];
 
-const publication = locale === 'zh' ? `SSPCZ · ${dict.siteName}` : 'SSPCZ';
+// The logo lockup already carries the full bilingual name, so the wordmark
+// beside it stays the short acronym.
+const publication = 'SSPCZ';
 
 const alternates = Astro.site
   ? {
@@ -52,6 +55,7 @@ const alternates = Astro.site
       issue={issueMark(bundle.issue.issue, locale)}
       year={bundle.issue.year}
       homeHref={path(locale, 'home')}
+      logoSrc={withBase('/logo.jpg')}
     >
       {
         navItems.map((item) => (

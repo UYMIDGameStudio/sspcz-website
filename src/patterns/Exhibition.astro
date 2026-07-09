@@ -1,0 +1,116 @@
+---
+/**
+ * Pattern (layout-level): the Exhibition — a pure CSS Grid of media items
+ * (images, videos, slides) future-proofed beyond a simple photo gallery
+ * (Phase 5). Each item's metadata (caption, credit, date) maps to the
+ * established 340px margin track: on wide viewports the caption sits in a
+ * marginal column beside the media; on narrow viewports it stacks beneath.
+ */
+import { t } from '../i18n';
+import type { Locale } from '../lib/issueData';
+import { withBase } from '../lib/routes';
+import { longDate } from '../lib/format';
+
+interface MediaItem {
+  type: 'image' | 'video' | 'slide';
+  src: string;
+  caption: { zh: string; en: string };
+  credit: { zh: string; en: string };
+  date: Date;
+}
+
+interface Props {
+  locale: Locale;
+  items: MediaItem[];
+}
+
+const { locale, items } = Astro.props;
+const d = t(locale).resources.exhibition;
+---
+
+<div class="exhibition">
+  {
+    items.map((item) => (
+      <figure class="exhibit">
+        <div class="exhibit__frame">
+          {item.type === 'video' ? (
+            <video class="exhibit__media" src={withBase(item.src)} controls preload="none" />
+          ) : (
+            <img class="exhibit__media" src={withBase(item.src)} alt={item.caption[locale]} loading="lazy" />
+          )}
+        </div>
+        <figcaption class="exhibit__caption">
+          <p class="exhibit__type">{d.typeLabels[item.type]}</p>
+          <p class="exhibit__text">{item.caption[locale]}</p>
+          <p class="exhibit__meta">
+            {d.credit}: {item.credit[locale]} · <time>{longDate(item.date, locale)}</time>
+          </p>
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>
+
+<style>
+  .exhibition {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  /* Wide viewports: media + a marginal caption column echoing the 340px
+     Marginalia side-track. */
+  .exhibit {
+    display: grid;
+    grid-template-columns: 1fr var(--margin-track);
+    gap: var(--space-6);
+    margin: 0;
+    align-items: start;
+  }
+
+  .exhibit__frame {
+    overflow: hidden;
+    background: var(--color-ink-deep);
+    border: 1px solid var(--color-line);
+  }
+
+  .exhibit__media {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .exhibit__type {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .exhibit__text {
+    margin-top: var(--space-2);
+    font-family: var(--font-serif-cjk);
+    font-size: var(--text-md);
+    color: var(--color-ink);
+    line-height: var(--leading-normal);
+  }
+
+  :global(html:lang(en)) .exhibit__text {
+    font-family: var(--font-serif-latin);
+  }
+
+  .exhibit__meta {
+    margin-top: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    line-height: var(--leading-loose);
+  }
+
+  @media (width <= 56.25em) {
+    .exhibit {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+  }
+</style>

@@ -1,0 +1,219 @@
+---
+/**
+ * Component (semantic, stateless): a permanent institutional document
+ * (Phase 5). Actions are entirely zero-JS:
+ *   - pdf  → a <details>/<summary> inline preview wrapping a native
+ *            <iframe> (the browser's own PDF renderer), plus a direct
+ *            <a download>.
+ *   - md   → a <details> preview of the rendered document body (slotted).
+ *   - docx → a direct <a download> (browsers cannot preview docx inline).
+ *   - link → an <a> that opens the target.
+ * No JavaScript participates in any of this.
+ */
+import { t } from '../i18n';
+import type { Locale } from '../lib/issueData';
+import { withBase } from '../lib/routes';
+import { isoDate, longDate } from '../lib/format';
+
+interface Props {
+  locale: Locale;
+  type: 'pdf' | 'docx' | 'md' | 'link';
+  title: string;
+  description: string;
+  version: string;
+  updatedDate: Date;
+  fileUrl?: string;
+}
+
+const { locale, type, title, description, version, updatedDate, fileUrl } = Astro.props;
+const d = t(locale).resources;
+const href = fileUrl ? withBase(fileUrl) : undefined;
+---
+
+<article class="publication">
+  <header class="publication__head">
+    <span class="publication__type">{d.typeLabels[type]}</span>
+    <h3 class="publication__title">{title}</h3>
+    <p class="publication__desc">{description}</p>
+  </header>
+
+  <dl class="publication__meta">
+    <div>
+      <dt>{d.doc.version}</dt>
+      <dd>{version}</dd>
+    </div>
+    <div>
+      <dt>{d.doc.updated}</dt>
+      <dd><time datetime={isoDate(updatedDate)}>{longDate(updatedDate, locale)}</time></dd>
+    </div>
+  </dl>
+
+  <div class="publication__actions">
+    {
+      type === 'pdf' && href && (
+        <>
+          <details class="preview">
+            <summary class="publication__btn publication__btn--ghost">{d.doc.preview}</summary>
+            <iframe class="preview__frame" src={href} title={title} loading="lazy" />
+          </details>
+          <a class="publication__btn" href={href} download>
+            {d.doc.download}
+          </a>
+        </>
+      )
+    }
+
+    {
+      type === 'md' && (
+        <details class="preview">
+          <summary class="publication__btn publication__btn--ghost">{d.doc.preview}</summary>
+          <div class="preview__prose prose">
+            <slot />
+          </div>
+        </details>
+      )
+    }
+
+    {
+      type === 'docx' && href && (
+        <a class="publication__btn" href={href} download>
+          {d.doc.download}
+        </a>
+      )
+    }
+
+    {
+      type === 'link' && href && (
+        <a class="publication__btn" href={href}>
+          {d.doc.openLink}
+        </a>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .publication {
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .publication__type {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .publication__title {
+    margin-top: var(--space-2);
+    font-size: var(--text-md);
+  }
+
+  .publication__desc {
+    margin-top: var(--space-2);
+    max-width: var(--measure);
+    color: var(--color-text-muted);
+    line-height: var(--leading-loose);
+  }
+
+  .publication__meta {
+    display: flex;
+    gap: var(--space-8);
+    margin: var(--space-4) 0 0;
+  }
+
+  .publication__meta dt {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .publication__meta dd {
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-sm);
+    color: var(--color-ink);
+  }
+
+  .publication__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: flex-start;
+    margin-top: var(--space-4);
+  }
+
+  .publication__btn {
+    display: inline-block;
+    padding: var(--space-2) var(--space-6);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-on-dark);
+    cursor: pointer;
+    background: var(--color-ink);
+    border: 1px solid var(--color-ink);
+  }
+
+  .publication__btn:hover {
+    color: var(--color-text-on-dark);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .publication__btn--ghost {
+    color: var(--color-ink);
+    background: var(--color-surface);
+    border-color: var(--color-line-strong);
+  }
+
+  .publication__btn--ghost:hover {
+    color: var(--color-text-on-dark);
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+
+  /* display:contents lets the summary sit inline with the other action
+     buttons while the expanded panel wraps full-width beneath them. */
+  .preview {
+    display: contents;
+  }
+
+  .preview > summary {
+    order: 0;
+  }
+
+  .preview__frame {
+    order: 2;
+    flex-basis: 100%;
+    width: 100%;
+    height: 60vh;
+    margin-top: var(--space-2);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line-strong);
+  }
+
+  .preview__prose {
+    order: 2;
+    flex-basis: 100%;
+    margin-top: var(--space-2);
+    padding: var(--space-6);
+    background: var(--color-paper-raised);
+    border: 1px solid var(--color-line);
+  }
+
+  summary {
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+</style>

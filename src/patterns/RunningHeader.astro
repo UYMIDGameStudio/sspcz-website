@@ -1,7 +1,8 @@
 ---
 /**
  * Pattern (layout-level): persistent publication metadata framing the
- * viewport like a physical journal page (RFC-300 §2.4). The year is
+ * viewport like a physical journal page (RFC-300 §2.4). The masthead pairs
+ * the official SSPCZ logo with the publication wordmark; the year is
  * chronological metadata drawn from issue frontmatter (ADR-001 §2.1).
  */
 interface Props {
@@ -9,21 +10,18 @@ interface Props {
   issue: string;
   year: number | string;
   homeHref?: string;
+  logoSrc?: string;
 }
 
-const { publication, issue, year, homeHref } = Astro.props;
+const { publication, issue, year, homeHref, logoSrc } = Astro.props;
+const Tag = homeHref ? 'a' : 'span';
 ---
 
 <header class="running-header">
-  {
-    homeHref ? (
-      <a class="running-header__publication" href={homeHref}>
-        {publication}
-      </a>
-    ) : (
-      <span class="running-header__publication">{publication}</span>
-    )
-  }
+  <Tag class="masthead" href={homeHref}>
+    {logoSrc && <img class="masthead__logo" src={logoSrc} alt={publication} width="120" height="27" />}
+    <span class="masthead__wordmark" aria-hidden="true">{publication}</span>
+  </Tag>
   <nav class="running-header__nav" aria-label="Site">
     <slot />
   </nav>
@@ -37,7 +35,7 @@ const { publication, issue, year, homeHref } = Astro.props;
     z-index: var(--z-header);
     display: flex;
     gap: var(--space-6);
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     padding: var(--space-3) var(--page-gutter);
     font-family: var(--font-serif-latin);
@@ -48,25 +46,45 @@ const { publication, issue, year, homeHref } = Astro.props;
     border-bottom: 1px solid var(--color-line);
   }
 
-  .running-header__publication,
-  .running-header__issue {
+  .masthead {
+    display: inline-flex;
+    gap: var(--space-3);
+    align-items: center;
+    color: var(--color-ink);
     white-space: nowrap;
   }
 
-  a.running-header__publication {
-    color: var(--color-ink);
+  .masthead__logo {
+    display: block;
+    width: auto;
+    height: 1.7em;
+    mix-blend-mode: multiply;
+  }
+
+  .masthead__wordmark {
+    white-space: nowrap;
+  }
+
+  .running-header__issue {
+    white-space: nowrap;
   }
 
   .running-header__nav {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-6);
+    align-items: center;
   }
 
   @media (width <= 56.25em) {
     .running-header {
       flex-wrap: wrap;
       padding: var(--space-3) var(--page-gutter-narrow);
+    }
+
+    /* The wordmark is verbose on small screens; the logo carries identity. */
+    .masthead__logo + .masthead__wordmark {
+      display: none;
     }
   }
 </style>

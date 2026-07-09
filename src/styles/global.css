@@ -152,5 +152,7 @@ a:hover {
 .prose blockquote p + p {
   margin-top: var(--space-2);
   font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  /* --color-text (not muted): the citation sits on the inset surface,
+     where muted grey drops below the 4.5:1 AA ratio for small text. */
+  color: var(--color-text);
 }

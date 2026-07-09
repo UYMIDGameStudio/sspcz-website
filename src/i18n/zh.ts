@@ -8,6 +8,7 @@ export default {
     committee: '浙江中学生哲学大会组委会：主办、协办、学术支持与联合支持社团。',
     policies: '浙江中学生哲学大会论文审核政策与学术不端处理办法。',
     register: '注册报名参加浙江中学生哲学大会。',
+    resources: '浙江中学生哲学大会资源库：论文指南、模板、审核政策与行为准则等常设文档与影像。',
   },
 
   nav: {
@@ -17,6 +18,7 @@ export default {
     program: '日程安排',
     committee: '组委会',
     policies: '会议政策',
+    resources: '资源库',
     register: '注册报名',
     languageSwitch: 'EN',
   },
@@ -114,6 +116,36 @@ export default {
     successVocativeFallback: '同学',
     fillAnother: '再填一份',
     failure: '提交失败，请稍后重试，或直接发送邮件报名。',
+  },
+
+  resources: {
+    title: '资源库',
+    lead: '面向作者与与会者的常设机构资源——论文指南、模板、审核政策与行为准则，以及历届影像。文档不隶属于单届大会，长期沉淀为学术共同体的知识资产。',
+    documentsTitle: '常设文档',
+    exhibitionTitle: '影像陈列',
+    empty: '暂无内容。',
+    doc: {
+      preview: '预览',
+      download: '下载',
+      openLink: '打开链接',
+      version: '版本',
+      updated: '更新于',
+      previewUnavailable: '此文档暂不支持内嵌预览，请下载查看。',
+    },
+    typeLabels: {
+      pdf: 'PDF',
+      docx: 'DOCX',
+      md: '文档',
+      link: '链接',
+    },
+    exhibition: {
+      credit: '供图',
+      typeLabels: {
+        image: '图像',
+        video: '影像',
+        slide: '演示',
+      },
+    },
   },
 
   closing: {

@@ -8,6 +8,7 @@ export default {
     committee: 'Organizing committee of the SSPCZ: hosts, co-organizers, academic support and supporting societies.',
     policies: 'Paper review policy and academic integrity rules of the SSPCZ.',
     register: 'Register for the Secondary School Philosophy Conference of Zhejiang.',
+    resources: 'SSPCZ resource hub: permanent documents and media — paper guidelines, templates, review policies and code of conduct.',
   },
 
   nav: {
@@ -17,6 +18,7 @@ export default {
     program: 'Program',
     committee: 'Committee',
     policies: 'Policies',
+    resources: 'Resources',
     register: 'Register',
     languageSwitch: '中文',
   },
@@ -115,6 +117,36 @@ export default {
     successVocativeFallback: 'Friend',
     fillAnother: 'Fill in another',
     failure: 'Submission failed. Please try again later, or register by email.',
+  },
+
+  resources: {
+    title: 'Resources',
+    lead: 'Permanent institutional resources for authors and participants — paper guidelines, templates, review policies and codes of conduct, alongside media from past sessions. These assets belong to the academic community across editions, not to any single conference.',
+    documentsTitle: 'Documents',
+    exhibitionTitle: 'Exhibition',
+    empty: 'Nothing here yet.',
+    doc: {
+      preview: 'Preview',
+      download: 'Download',
+      openLink: 'Open link',
+      version: 'Version',
+      updated: 'Updated',
+      previewUnavailable: 'Inline preview is unavailable for this document — please download it.',
+    },
+    typeLabels: {
+      pdf: 'PDF',
+      docx: 'DOCX',
+      md: 'Document',
+      link: 'Link',
+    },
+    exhibition: {
+      credit: 'Credit',
+      typeLabels: {
+        image: 'Image',
+        video: 'Video',
+        slide: 'Slides',
+      },
+    },
   },
 
   closing: {

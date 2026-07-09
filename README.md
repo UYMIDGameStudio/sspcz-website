@@ -25,6 +25,26 @@ Design       tokens.css → patterns/ → layouts/ → components/ → templates
   `currentIssue` pointer and derives the archive from
   `getCollection('conference')` automatically.
 
+## Knowledge assets (institution-level)
+
+Two collections hold permanent assets that outlive any single edition,
+surfaced at `/resources/` (and `/en/resources/`):
+
+- **`documents`** (`src/content/documents/*.{zh,en}.md`) — paper
+  guidelines, templates, review policy, code of conduct. Each entry's
+  `type` (`pdf` / `docx` / `md` / `link`) drives `<PublicationCard>`: PDFs
+  get a zero-JS `<details>`/`<iframe>` inline preview plus a direct
+  download; `md` entries preview their rendered body; `docx` offers
+  download; `link` opens its target. Files referenced by `fileUrl` live in
+  `public/documents/`.
+- **`media`** (`src/content/media/*.yaml`) — exhibition images/videos/slides
+  tied to an edition via `issueRef`, rendered by `<Exhibition>` on a pure
+  CSS Grid with captions in the 340px margin track. Assets live in
+  `public/media/`.
+
+Adding an asset is a content-only change (a new `.md`/`.yaml` entry, plus
+its file under `public/`); no template edits.
+
 ## Publishing a new conference edition
 
 > **Never modify templates when adding a new conference edition. A new

@@ -66,6 +66,19 @@ export function shortDate(date: Date, locale: Locale): string {
   return locale === 'zh' ? `${m + 1}月${d}日` : `${EN_MONTHS[m]} ${d}`;
 }
 
+/** Full date with year, e.g. 2026年2月1日 / 1 February 2026. */
+export function longDate(date: Date, locale: Locale): string {
+  const y = date.getUTCFullYear();
+  const m = date.getUTCMonth();
+  const d = date.getUTCDate();
+  return locale === 'zh' ? `${y}年${m + 1}月${d}日` : `${d} ${EN_MONTHS_FULL[m]} ${y}`;
+}
+
+/** Machine-readable date for <time datetime>. */
+export function isoDate(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
 export function monthYear(v: { year: number; month: number }, locale: Locale): string {
   return locale === 'zh'
     ? `${v.year}年${v.month}月`
