@@ -7,7 +7,7 @@
  * current issue via the pointer, exactly like the institutional homepage.
  */
 import { getCollection, render } from 'astro:content';
-import EditorialLayout from '../layouts/EditorialLayout.astro';
+import DataLayout from '../layouts/DataLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import Exhibition from '../patterns/Exhibition.astro';
 import SectionCounter from '../components/SectionCounter.astro';
@@ -43,7 +43,7 @@ const media = (await getCollection('media'))
 const title = `${d.title} · ${dict.siteName}`;
 ---
 
-<EditorialLayout
+<DataLayout
   locale={locale}
   route="resources"
   issueId={currentIssueId}
@@ -99,7 +99,7 @@ const title = `${d.title} · ${dict.siteName}`;
       }
     </div>
   </Marginalia>
-</EditorialLayout>
+</DataLayout>
 
 <style>
   .empty {

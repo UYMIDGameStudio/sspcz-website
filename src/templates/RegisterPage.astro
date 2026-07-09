@@ -4,7 +4,7 @@
  * baseline). Radio choices and submission work with JavaScript disabled;
  * the backend behind /api/register is a separate decision (ADR-001 §6).
  */
-import EditorialLayout from '../layouts/EditorialLayout.astro';
+import DataLayout from '../layouts/DataLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import { t } from '../i18n';
@@ -24,7 +24,7 @@ const r = dict.register;
 const title = `${dict.nav.register} · ${dict.siteName}`;
 ---
 
-<EditorialLayout locale={locale} route="register" issueId={issueId} title={title} description={dict.meta.register}>
+<DataLayout locale={locale} route="register" issueId={issueId} title={title} description={dict.meta.register}>
   <section class="masthead">
     <p class="masthead__kicker">Registration · {issueMark(bundle.issue.issue, locale)}</p>
     <h1 class="masthead__title">{dict.nav.register}</h1>
@@ -121,7 +121,7 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
       <button class="register-form__submit" type="submit">{r.submit}</button>
     </form>
   </Marginalia>
-</EditorialLayout>
+</DataLayout>
 
 <style>
   .margin-note {

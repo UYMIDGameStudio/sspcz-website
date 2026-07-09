@@ -110,6 +110,52 @@ a:hover {
   }
 }
 
+/* ---------- reading-mode hierarchy (ADR-002 §4) ----------
+   One shared masthead, three altitudes. Institution pages lead with a
+   display-scale title and generous rhythm (cover); publication and data
+   pages restrain the title so the body/§-numbering leads. */
+
+.page--institution .masthead {
+  padding-bottom: var(--space-24);
+}
+
+.page--institution .masthead__title {
+  max-width: 16em;
+  margin-top: var(--space-6);
+  font-size: var(--text-display);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-none);
+}
+
+.page--institution .masthead__theme {
+  font-size: var(--text-lg);
+}
+
+.page--publication .masthead__title,
+.page--data .masthead__title {
+  font-size: var(--text-xl);
+}
+
+/* Publication: hold every reading region to one measure (65–75 ch). */
+.page--publication .masthead__lead,
+.page--publication .marginalia__body {
+  max-width: var(--measure);
+}
+
+.page--data .masthead {
+  padding-bottom: var(--space-8);
+}
+
+@media (width <= 56.25em) {
+  .page--institution .masthead__title {
+    font-size: var(--text-2xl);
+  }
+
+  .page--institution .masthead {
+    padding-bottom: var(--space-16);
+  }
+}
+
 /* ---------- prose (rendered editorial documents) ---------- */
 
 .prose {
@@ -152,6 +198,7 @@ a:hover {
 .prose blockquote p + p {
   margin-top: var(--space-2);
   font-size: var(--text-sm);
+
   /* --color-text (not muted): the citation sits on the inset surface,
      where muted grey drops below the 4.5:1 AA ratio for small text. */
   color: var(--color-text);

@@ -1,0 +1,41 @@
+---
+/**
+ * Component (semantic, stateless): the large edition numeral for the
+ * institution/edition hero (ADR-002 §4). Renders the zero-padded session
+ * number as a display-scale figure; the Roman/ordinal form remains the
+ * accessible label so screen readers hear "Issue III", not "zero three".
+ */
+import type { Locale } from '../lib/issueData';
+import { issueMark, paddedIssue } from '../lib/format';
+
+interface Props {
+  n: number;
+  locale: Locale;
+}
+
+const { n, locale } = Astro.props;
+---
+
+<p class="edition-numeral">
+  <span aria-hidden="true">{paddedIssue(n)}</span>
+  <span class="edition-numeral__label">{issueMark(n, locale)}</span>
+</p>
+
+<style>
+  .edition-numeral {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-numeral);
+    font-weight: var(--weight-light);
+    line-height: var(--leading-none);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-accent);
+  }
+
+  .edition-numeral__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+</style>

@@ -1,7 +1,7 @@
 ---
 /** Template: Call for Papers — editorial document + timeline records. */
 import { getEntry, render } from 'astro:content';
-import EditorialLayout from '../layouts/EditorialLayout.astro';
+import PublicationLayout from '../layouts/PublicationLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import RecordRow from '../components/RecordRow.astro';
@@ -25,7 +25,7 @@ const { Content } = await render(entry);
 const title = `${entry.data.title} · ${dict.siteName}`;
 ---
 
-<EditorialLayout locale={locale} route="cfp" issueId={issueId} title={title} description={dict.meta.cfp}>
+<PublicationLayout locale={locale} route="cfp" issueId={issueId} title={title} description={dict.meta.cfp}>
   <section class="masthead">
     <p class="masthead__kicker">Call for Papers · {issueMark(bundle.issue.issue, locale)}</p>
     <h1 class="masthead__title">{entry.data.title}</h1>
@@ -52,4 +52,4 @@ const title = `${entry.data.title} · ${dict.siteName}`;
     </Fragment>
     <div class="prose"><Content /></div>
   </Marginalia>
-</EditorialLayout>
+</PublicationLayout>

@@ -1,0 +1,33 @@
+---
+/**
+ * Contextual layout (ADR-002 §3): scanning mode — Program (timeline),
+ * Resources (grid), Committee (registers), Register (structured form).
+ * Dense information with metadata held apart from content. Chrome comes
+ * from PageShell; this layout owns only the `data` reading treatment (see
+ * styles/global.css `.page--data`).
+ */
+import PageShell from './PageShell.astro';
+import type { RouteKey } from '../lib/routes';
+import type { Locale } from '../lib/issueData';
+
+interface Props {
+  locale: Locale;
+  route: RouteKey;
+  issueId: string;
+  title: string;
+  description: string;
+}
+
+const { locale, route, issueId, title, description } = Astro.props;
+---
+
+<PageShell
+  locale={locale}
+  route={route}
+  issueId={issueId}
+  title={title}
+  description={description}
+  mode="data"
+>
+  <slot />
+</PageShell>

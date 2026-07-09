@@ -96,6 +96,11 @@ export function quotedTheme(locale: Locale, theme: { zh: string; en: string }): 
   return locale === 'zh' ? `「${theme.zh}」` : `“${theme.en}”`;
 }
 
+/** Two-digit edition numeral for the display hero, e.g. 3 → "03". */
+export function paddedIssue(n: number): string {
+  return String(n).padStart(2, '0');
+}
+
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
 
 /** Running-header edition mark: 第三届 / Issue III. */

@@ -9,7 +9,7 @@
  * never touches this template.
  */
 import { getCollection, getEntry, render } from 'astro:content';
-import EditorialLayout from '../layouts/EditorialLayout.astro';
+import InstitutionLayout from '../layouts/InstitutionLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import RecordRow from '../components/RecordRow.astro';
@@ -64,7 +64,7 @@ const archive = [...editionYears.entries()]
 const title = `${dict.siteName} · ${dict.siteNameLatin}`;
 ---
 
-<EditorialLayout
+<InstitutionLayout
   locale={locale}
   route="home"
   issueId={currentIssueId}
@@ -143,7 +143,7 @@ const title = `${dict.siteName} · ${dict.siteNameLatin}`;
       }
     </ol>
   </Marginalia>
-</EditorialLayout>
+</InstitutionLayout>
 
 <style>
   .current__title {

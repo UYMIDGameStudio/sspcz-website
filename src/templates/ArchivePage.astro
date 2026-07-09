@@ -1,0 +1,153 @@
+---
+/**
+ * Template: the institutional Archive (ADR-002 §1, Q2). A standalone
+ * L1 page listing every edition, derived from getCollection('conference')
+ * — extending it is a content-only change (a new issue folder), never a
+ * template edit.
+ */
+import { getCollection } from 'astro:content';
+import InstitutionLayout from '../layouts/InstitutionLayout.astro';
+import Marginalia from '../patterns/Marginalia.astro';
+import SectionCounter from '../components/SectionCounter.astro';
+import { t } from '../i18n';
+import {
+  currentIssueId,
+  getIssueBundle,
+  issueIdFor,
+  issueIds,
+  pick,
+  type Locale,
+} from '../lib/issueData';
+import { issueTitle, quotedTheme } from '../lib/format';
+import { path } from '../lib/routes';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = t(locale);
+
+/* Every edition referenced anywhere in the collection, newest first. */
+const docs = await getCollection('conference');
+const editionYears = new Map<number, number>();
+for (const doc of docs) {
+  if (!editionYears.has(doc.data.issue)) editionYears.set(doc.data.issue, doc.data.year);
+}
+const editions = [...editionYears.entries()]
+  .map(([n, year]) => {
+    const id = issueIdFor(n);
+    const published = issueIds.includes(id);
+    return { n, year, id, published, theme: published ? getIssueBundle(id).issue.theme : undefined };
+  })
+  .sort((a, b) => b.n - a.n);
+
+const title = `${dict.nav.archive} · ${dict.siteName}`;
+---
+
+<InstitutionLayout
+  locale={locale}
+  route="archive"
+  issueId={currentIssueId}
+  title={title}
+  description={dict.archive.metaDescription}
+>
+  <section class="masthead">
+    <p class="masthead__kicker">Archive · Editions</p>
+    <h1 class="masthead__title">{dict.nav.archive}</h1>
+    <p class="masthead__lead">{dict.archive.lead}</p>
+  </section>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Editions" />
+      <h2>{dict.home.archiveTitle}</h2>
+    </Fragment>
+    <ol class="archive">
+      {
+        editions.map((edition) => (
+          <li class="archive__item">
+            <span class="archive__year">{edition.year}</span>
+            <span class="archive__body">
+              <span class="archive__label">
+                {edition.published ? (
+                  <a href={path(locale, 'issue', edition.id)}>
+                    {issueTitle(edition.n, locale, dict.siteName)}
+                  </a>
+                ) : (
+                  issueTitle(edition.n, locale, dict.siteName)
+                )}
+              </span>
+              {edition.theme && (
+                <span class="archive__theme">{quotedTheme(locale, edition.theme)}</span>
+              )}
+            </span>
+            <span class="archive__status">
+              {edition.id === currentIssueId
+                ? dict.home.currentMark
+                : edition.published
+                  ? ''
+                  : dict.archive.upcoming}
+            </span>
+          </li>
+        ))
+      }
+    </ol>
+  </Marginalia>
+</InstitutionLayout>
+
+<style>
+  .archive {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .archive__item {
+    display: grid;
+    grid-template-columns: 5rem 1fr auto;
+    gap: var(--space-6);
+    align-items: baseline;
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .archive__year {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+  }
+
+  .archive__label {
+    font-family: var(--font-serif-cjk);
+    font-size: var(--text-md);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .archive__label {
+    font-family: var(--font-serif-latin);
+  }
+
+  .archive__theme {
+    margin-left: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .archive__status {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  @media (width <= 56.25em) {
+    .archive__item {
+      grid-template-columns: 1fr auto;
+    }
+
+    .archive__year {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

@@ -1,0 +1,256 @@
+---
+/**
+ * Shared page chrome (ADR-002 §3): the running header + three-tier
+ * navigation, the main matter, and the colophon — the single source of the
+ * site frame that all three contextual layouts (Institution / Publication /
+ * Data) wrap. Extracting it here keeps nav, i18n, and hreflang logic
+ * un-duplicated (RFC-400 §3). `mode` tags <main> so each reading mode can
+ * hang its own visual treatment without forking the chrome.
+ */
+import BaseLayout from './BaseLayout.astro';
+import EditorialGrid from '../patterns/EditorialGrid.astro';
+import RunningHeader from '../patterns/RunningHeader.astro';
+import { t } from '../i18n';
+import { getIssueBundle, type Locale } from '../lib/issueData';
+import { issueMark } from '../lib/format';
+import { path, switchLocale, withBase, type RouteKey } from '../lib/routes';
+
+export type LayoutMode = 'institution' | 'publication' | 'data';
+
+interface Props {
+  locale: Locale;
+  route: RouteKey;
+  issueId: string;
+  title: string;
+  description: string;
+  mode: LayoutMode;
+}
+
+const { locale, route, issueId, title, description, mode } = Astro.props;
+const dict = t(locale);
+const bundle = getIssueBundle(issueId);
+
+interface NavItem {
+  href: string;
+  label: string;
+  active: boolean;
+}
+const item = (key: RouteKey, label: string): NavItem => ({
+  href: path(locale, key, issueId),
+  label,
+  active: key === route,
+});
+
+// Three logical tiers (ADR-002 §1). L3 "Submit Paper" is an action that
+// resolves to the CFP page (single source for submission terms, Q4).
+const level1: NavItem[] = [
+  item('home', dict.nav.home),
+  item('archive', dict.nav.archive),
+  item('resources', dict.nav.resources),
+];
+const level2: NavItem[] = [
+  item('issue', dict.nav.currentIssue),
+  item('program', dict.nav.program),
+  item('cfp', dict.nav.cfp),
+  item('committee', dict.nav.committee),
+  item('policies', dict.nav.policies),
+];
+const level3: NavItem[] = [
+  { href: path(locale, 'cfp', issueId), label: dict.nav.submit, active: false },
+  item('register', dict.nav.register),
+];
+
+const publication = 'SSPCZ';
+
+const alternates = Astro.site
+  ? {
+      zh: new URL(path('zh', route, issueId), Astro.site).href,
+      en: new URL(path('en', route, issueId), Astro.site).href,
+    }
+  : undefined;
+---
+
+<BaseLayout title={title} description={description} lang={locale} alternates={alternates}>
+  <EditorialGrid>
+    <RunningHeader
+      publication={publication}
+      issue={issueMark(bundle.issue.issue, locale)}
+      year={bundle.issue.year}
+      homeHref={path(locale, 'home')}
+      logoSrc={withBase('/logo.jpg')}
+    >
+      <span class="nav-group nav-group--institution">
+        {
+          level1.map((it) => (
+            <a
+              href={it.href}
+              aria-current={it.active ? 'page' : undefined}
+              class:list={['nav-link', { 'nav-link--active': it.active }]}
+            >
+              {it.label}
+            </a>
+          ))
+        }
+      </span>
+
+      <span class="nav-group nav-group--issue">
+        {
+          level2.map((it) => (
+            <a
+              href={it.href}
+              aria-current={it.active ? 'page' : undefined}
+              class:list={['nav-link', { 'nav-link--active': it.active }]}
+            >
+              {it.label}
+            </a>
+          ))
+        }
+      </span>
+
+      <span class="nav-group nav-group--actions">
+        {
+          level3.map((it) => (
+            <a
+              href={it.href}
+              aria-current={it.active ? 'page' : undefined}
+              class:list={['nav-action', { 'nav-action--primary': it.active || it.label === dict.nav.register }]}
+            >
+              {it.label}
+            </a>
+          ))
+        }
+        <a class="nav-switch" href={switchLocale(locale, route, issueId)}>
+          {dict.nav.languageSwitch}
+        </a>
+      </span>
+    </RunningHeader>
+
+    <main class:list={['page', `page--${mode}`]}>
+      <slot />
+    </main>
+
+    <footer class="colophon" slot="colophon">
+      <div class="colophon__imprint">
+        <span class="colophon__name">{dict.siteName}</span>
+        {locale === 'zh' && <span class="colophon__latin">{dict.siteNameLatin}</span>}
+      </div>
+      <span class="colophon__rights">{dict.closing.copyright}</span>
+    </footer>
+  </EditorialGrid>
+</BaseLayout>
+
+<style>
+  /* --- three-tier navigation (ADR-002 §1) --- */
+  .nav-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-6);
+  }
+
+  .nav-group--issue {
+    padding-left: var(--space-6);
+    border-left: 1px solid var(--color-line);
+  }
+
+  .nav-group--actions {
+    gap: var(--space-3);
+    padding-left: var(--space-6);
+    border-left: 1px solid var(--color-line);
+  }
+
+  .nav-link {
+    display: inline-block;
+    padding: var(--space-2) 0;
+    color: var(--color-text-muted);
+  }
+
+  .nav-group--institution .nav-link {
+    color: var(--color-ink);
+  }
+
+  .nav-link--active {
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-ink);
+  }
+
+  /* L3 actions read as tasks, not links (ADR-002 §1). */
+  .nav-action {
+    display: inline-block;
+    padding: var(--space-2) var(--space-4);
+    color: var(--color-ink);
+    border: 1px solid var(--color-line-strong);
+  }
+
+  .nav-action:hover {
+    color: var(--color-text-on-dark);
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+
+  .nav-action--primary {
+    color: var(--color-text-on-dark);
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+
+  .nav-action--primary:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .nav-switch {
+    padding: var(--space-2) 0;
+    color: var(--color-text-muted);
+  }
+
+  @media (width <= 56.25em) {
+    .nav-group--issue,
+    .nav-group--actions {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+
+  /* --- colophon --- */
+  .colophon {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-8);
+    align-items: baseline;
+    justify-content: space-between;
+    padding: var(--space-6) var(--page-gutter);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-on-dark-muted);
+    background: var(--color-ink-deep);
+  }
+
+  .colophon__imprint {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+    align-items: baseline;
+  }
+
+  .colophon__name {
+    font-family: var(--font-serif-cjk);
+    color: var(--color-text-on-dark);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  :global(html:lang(en)) .colophon__name {
+    font-family: var(--font-serif-latin);
+  }
+
+  .colophon__latin,
+  .colophon__rights {
+    font-family: var(--font-serif-latin);
+  }
+
+  @media (width <= 56.25em) {
+    .colophon {
+      padding: var(--space-6) var(--page-gutter-narrow);
+    }
+  }
+</style>

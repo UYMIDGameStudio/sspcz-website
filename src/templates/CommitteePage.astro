@@ -1,6 +1,6 @@
 ---
 /** Template: committee & support — organizational registers from YAML. */
-import EditorialLayout from '../layouts/EditorialLayout.astro';
+import DataLayout from '../layouts/DataLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import RecordRow from '../components/RecordRow.astro';
@@ -29,7 +29,7 @@ const societyName = (s: (typeof bundle.committee.supportingSocieties)[number]): 
 };
 ---
 
-<EditorialLayout locale={locale} route="committee" issueId={issueId} title={title} description={dict.meta.committee}>
+<DataLayout locale={locale} route="committee" issueId={issueId} title={title} description={dict.meta.committee}>
   <section class="masthead">
     <p class="masthead__kicker">Organizing Committee · {issueMark(bundle.issue.issue, locale)}</p>
     <h1 class="masthead__title">{dict.nav.committee}</h1>
@@ -119,7 +119,7 @@ const societyName = (s: (typeof bundle.committee.supportingSocieties)[number]): 
       </p>
     </div>
   </Marginalia>
-</EditorialLayout>
+</DataLayout>
 
 <style>
   .pending {

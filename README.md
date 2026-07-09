@@ -25,6 +25,22 @@ Design       tokens.css → patterns/ → layouts/ → components/ → templates
   `currentIssue` pointer and derives the archive from
   `getCollection('conference')` automatically.
 
+### Layouts & navigation (ADR-002)
+
+- **One shared chrome** (`layouts/PageShell.astro`) owns the running header,
+  three-tier navigation, hreflang and colophon — single-source, never
+  duplicated per page.
+- **Three contextual layouts** wrap the shell by reading mode:
+  `InstitutionLayout` (homepage, Archive, edition landing — display hero +
+  edition numeral), `PublicationLayout` (CFP, Policies — narrow measure,
+  §-numbering), `DataLayout` (Program, Resources, Committee, Register —
+  dense scanning). Reading-mode CSS keys off a `page--{mode}` class.
+- **Navigation is three tiers**: Institution (About/Archive/Resources),
+  Current Issue (This Session/Program/CFP/Committee/Policies), Actions
+  (Submit Paper → CFP, Register) — grouped and styled purely with CSS, no
+  JavaScript. The standalone Archive route (`/archive/`) is derived from the
+  collection, so new editions appear with no code change.
+
 ## Knowledge assets (institution-level)
 
 Two collections hold permanent assets that outlive any single edition,

@@ -1,7 +1,7 @@
 ---
 /** Template: conference policies — a single editorial document. */
 import { getEntry, render } from 'astro:content';
-import EditorialLayout from '../layouts/EditorialLayout.astro';
+import PublicationLayout from '../layouts/PublicationLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import { t } from '../i18n';
@@ -22,7 +22,7 @@ const { Content } = await render(entry);
 const title = `${entry.data.title} · ${dict.siteName}`;
 ---
 
-<EditorialLayout locale={locale} route="policies" issueId={issueId} title={title} description={dict.meta.policies}>
+<PublicationLayout locale={locale} route="policies" issueId={issueId} title={title} description={dict.meta.policies}>
   <section class="masthead">
     <p class="masthead__kicker">Policies · Review &amp; Academic Integrity</p>
     <h1 class="masthead__title">{entry.data.title}</h1>
@@ -35,4 +35,4 @@ const title = `${entry.data.title} · ${dict.siteName}`;
     </Fragment>
     <div class="prose"><Content /></div>
   </Marginalia>
-</EditorialLayout>
+</PublicationLayout>

@@ -40,11 +40,18 @@
   --text-xl: 2.125rem;
   --text-2xl: 3.25rem;
   --text-hero: 4.75rem;
+
+  /* display scale — thematic titles and edition numerals (ADR-002 §4) */
+  --text-display: 5.5rem;
+  --text-numeral: 8.5rem;
+  --leading-none: 0.9;
   --leading-tight: 1.2;
   --leading-normal: 1.6;
   --leading-loose: 2;
+  --tracking-tight: -0.01em;
   --tracking-wide: 0.125em;
   --tracking-wider: 0.25em;
+  --weight-light: 300;
 
   /* ---- spacing scale ---- */
   --space-1: 0.25rem;
@@ -55,6 +62,7 @@
   --space-8: 2rem;
   --space-12: 3rem;
   --space-16: 4rem;
+  --space-24: 6rem;
 
   /* ---- layout ---- */
   --measure: 40rem;

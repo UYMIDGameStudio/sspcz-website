@@ -4,7 +4,7 @@
  * Fully parametrized by edition ID — no hardcoded issue anywhere.
  */
 import { getEntry, render } from 'astro:content';
-import EditorialLayout from '../layouts/EditorialLayout.astro';
+import InstitutionLayout from '../layouts/InstitutionLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import RecordRow from '../components/RecordRow.astro';
@@ -12,6 +12,7 @@ import { t } from '../i18n';
 import { getIssueBundle, pick, type Locale } from '../lib/issueData';
 import { dateRange, issueMark, issueTitle, quotedTheme, sessionLabel } from '../lib/format';
 import { path } from '../lib/routes';
+import EditionNumeral from '../components/EditionNumeral.astro';
 
 interface Props {
   locale: Locale;
@@ -35,7 +36,7 @@ const description = `${fullTitle} · ${quotedTheme(locale, issue.theme)} · ${da
 const joiner = ' · ';
 ---
 
-<EditorialLayout
+<InstitutionLayout
   locale={locale}
   route="issue"
   issueId={issueId}
@@ -47,10 +48,15 @@ const joiner = ' · ';
       {issueMark(issue.issue, locale)} · {dateRange(issue.dates.start, issue.dates.end, locale)} ·
       {pick(locale, issue.location.city)}
     </p>
-    <h1 class="masthead__title">{fullTitle}</h1>
-    <p class="masthead__theme">
-      {dict.currentIssue.themeLabel} · {quotedTheme(locale, issue.theme)}
-    </p>
+    <div class="edition-hero">
+      <EditionNumeral n={issue.issue} locale={locale} />
+      <div class="edition-hero__body">
+        <h1 class="masthead__title">{fullTitle}</h1>
+        <p class="masthead__theme">
+          {dict.currentIssue.themeLabel} · {quotedTheme(locale, issue.theme)}
+        </p>
+      </div>
+    </div>
     <p class="masthead__lead">{dict.currentIssue.heroLead}</p>
     <ul class="masthead__facts">
       <li>{dict.currentIssue.durationNote}</li>
@@ -155,9 +161,35 @@ const joiner = ' · ';
       </p>
     </div>
   </Marginalia>
-</EditorialLayout>
+</InstitutionLayout>
 
 <style>
+  /* Edition hero: the large numeral and the title share a baseline-aligned
+     row, collapsing to a stack on narrow viewports (ADR-002 §4). */
+  .edition-hero {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-8);
+    align-items: end;
+    margin-top: var(--space-6);
+  }
+
+  .edition-hero__body {
+    padding-bottom: var(--space-2);
+  }
+
+  .edition-hero .masthead__title {
+    margin-top: 0;
+  }
+
+  @media (width <= 56.25em) {
+    .edition-hero {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      align-items: start;
+    }
+  }
+
   .theme-mark {
     margin-top: var(--space-6);
     font-family: var(--font-serif-cjk);

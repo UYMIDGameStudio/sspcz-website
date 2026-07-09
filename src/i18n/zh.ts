@@ -12,13 +12,15 @@ export default {
   },
 
   nav: {
-    home: '首页',
-    currentIssue: '本届大会',
+    home: '关于大会',
+    archive: '历届档案',
+    currentIssue: '本届',
     cfp: '征稿启事',
     program: '日程安排',
     committee: '组委会',
     policies: '会议政策',
     resources: '资源库',
+    submit: '投稿',
     register: '注册报名',
     languageSwitch: 'EN',
   },
@@ -55,6 +57,12 @@ export default {
   program: {
     lead: '四日议程由学生论文讲演、嘉宾讲座与哲学黑客马拉松三大板块组成。以下为暂定框架，具体嘉宾与场次以组委会正式通知为准。',
     provisionalNote: '议程为暂定框架，最终以大会现场公布为准。',
+  },
+
+  archive: {
+    metaDescription: '浙江中学生哲学大会历届档案：各届主题、年份与主办方一览。',
+    lead: '浙江中学生哲学大会自 2024 年创办以来的历届档案。每届大会作为一份可长期查阅的出版物存档，主题、年份与组织沿革一并保留。',
+    upcoming: '筹备中',
   },
 
   cfpMeta: {

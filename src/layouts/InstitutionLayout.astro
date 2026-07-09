@@ -1,0 +1,34 @@
+---
+/**
+ * Contextual layout (ADR-002 §3): cover / overview reading mode — the
+ * institution homepage, About, Archive, and each edition's landing. Leads
+ * with a strong hero (large edition numeral, thematic title) and an
+ * institutional-history rhythm. Chrome comes from PageShell; this layout
+ * owns only the `institution` reading treatment (see styles/global.css
+ * `.page--institution`).
+ */
+import PageShell from './PageShell.astro';
+import type { RouteKey } from '../lib/routes';
+import type { Locale } from '../lib/issueData';
+
+interface Props {
+  locale: Locale;
+  route: RouteKey;
+  issueId: string;
+  title: string;
+  description: string;
+}
+
+const { locale, route, issueId, title, description } = Astro.props;
+---
+
+<PageShell
+  locale={locale}
+  route={route}
+  issueId={issueId}
+  title={title}
+  description={description}
+  mode="institution"
+>
+  <slot />
+</PageShell>

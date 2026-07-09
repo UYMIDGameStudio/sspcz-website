@@ -12,13 +12,15 @@ export default {
   },
 
   nav: {
-    home: 'Home',
+    home: 'About',
+    archive: 'Archive',
     currentIssue: 'This Session',
     cfp: 'Call for Papers',
     program: 'Program',
     committee: 'Committee',
     policies: 'Policies',
     resources: 'Resources',
+    submit: 'Submit Paper',
     register: 'Register',
     languageSwitch: '中文',
   },
@@ -56,6 +58,12 @@ export default {
     lead: 'Four days of student paper presentations, guest lectures and the philosophy hackathon. The framework below is provisional; speakers and sessions will be confirmed by official notice from the committee.',
     provisionalNote:
       'Provisional framework; the final program will be announced on site.',
+  },
+
+  archive: {
+    metaDescription: 'Archive of the SSPCZ: theme, year and hosts of every edition.',
+    lead: 'The archive of the Secondary School Philosophy Conference of Zhejiang since its founding in 2024. Each edition is preserved as a permanently readable publication, with its theme, year and organizational lineage intact.',
+    upcoming: 'In preparation',
   },
 
   cfpMeta: {
