@@ -6,7 +6,9 @@
       "numberOfRuns": 1,
       "url": [
         "http://localhost:4173/sspcz-website/",
+        "http://localhost:4173/sspcz-website/about/",
         "http://localhost:4173/sspcz-website/en/",
+        "http://localhost:4173/sspcz-website/en/about/",
         "http://localhost:4173/sspcz-website/issue-003/",
         "http://localhost:4173/sspcz-website/issue-003/cfp/",
         "http://localhost:4173/sspcz-website/issue-003/program/",

@@ -1,0 +1,35 @@
+---
+/**
+ * Contextual layout (ADR-003 §3.4, taxonomy row 4): cover mode — the
+ * Institutional Cover (`/`) and edition covers (`/issue-00X/`). Reads as a
+ * scholarly yearbook cover, never a marketing landing page (ADR-003 §3.4
+ * critical rule): no oversized hero, no conversion patterns, no CTA
+ * emphasis. Like the other three layouts it wraps the single shared
+ * PageShell chrome (ADR-002 §3 / ADR-003 §3.4); it owns only the `landing`
+ * reading treatment, which the cover template supplies.
+ */
+import PageShell from './PageShell.astro';
+import type { RouteKey } from '../lib/routes';
+import type { Locale } from '../lib/issueData';
+
+interface Props {
+  locale: Locale;
+  route: RouteKey;
+  issueId: string;
+  title: string;
+  description: string;
+}
+
+const { locale, route, issueId, title, description } = Astro.props;
+---
+
+<PageShell
+  locale={locale}
+  route={route}
+  issueId={issueId}
+  title={title}
+  description={description}
+  mode="landing"
+>
+  <slot />
+</PageShell>

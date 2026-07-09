@@ -1,0 +1,181 @@
+---
+/**
+ * Component (semantic, stateless): an edition's archival identity plate —
+ * edition numeral, session, theme (bilingual) — presented on the ice-blue
+ * contextual paper as the cover's current-issue entry (ADR-003 §3.5). The
+ * whole plate is a single link into the edition; the numeral carries the
+ * ordinal edition mark as its accessible label (as EditionNumeral does), so
+ * screen readers hear "Issue III", not "zero three".
+ */
+import type { Locale } from '../lib/issueData';
+import { paddedIssue, issueMark, sessionLabel } from '../lib/format';
+
+interface Props {
+  n: number;
+  locale: Locale;
+  href: string;
+  theme: { zh: string; en: string };
+  year: number;
+  /** Full edition title shown on the entry line, e.g. 第三届浙江中学生哲学大会. */
+  title: string;
+  /** Localized call to enter the edition, e.g. 查看详情. */
+  cta: string;
+}
+
+const { n, locale, href, theme, year, title, cta } = Astro.props;
+const themePrimary = locale === 'zh' ? theme.zh : theme.en;
+const themeSecondary = locale === 'zh' ? theme.en : theme.zh;
+---
+
+<a class="edition-card" href={href}>
+  <div class="edition-card__grid">
+    <div class="edition-card__index">
+      <p class="edition-card__label">Current Issue</p>
+      <p class="edition-card__numeral">
+        <span aria-hidden="true">{paddedIssue(n)}</span>
+        <span class="edition-card__numeral-label">{issueMark(n, locale)}</span>
+      </p>
+      <p class="edition-card__session">{sessionLabel(n, locale)} · {year}</p>
+    </div>
+    <div class="edition-card__theme">
+      <p class="edition-card__label">Theme</p>
+      <p class="edition-card__theme-primary">{themePrimary}</p>
+      <p class="edition-card__theme-secondary">{themeSecondary}</p>
+      <p class="edition-card__enter">
+        <span class="edition-card__enter-title">{title}</span>
+        <span class="edition-card__enter-cue">{cta} →</span>
+      </p>
+    </div>
+  </div>
+</a>
+
+<style>
+  .edition-card {
+    display: block;
+    margin-top: var(--space-24);
+    background: var(--surface-secondary);
+    border: 1px solid var(--color-line-strong);
+  }
+
+  .edition-card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .edition-card__grid {
+    display: grid;
+    grid-template-columns: 20rem 1fr;
+  }
+
+  .edition-card__index {
+    padding: var(--space-12) var(--space-8);
+    border-right: 1px solid var(--color-line-strong);
+  }
+
+  .edition-card__theme {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-12) var(--space-8);
+  }
+
+  .edition-card__label {
+    font-family: var(--font-serif-latin);
+    font-size: var(--type-marginalia);
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-accent-deep);
+    text-transform: uppercase;
+  }
+
+  .edition-card__numeral {
+    margin-top: var(--space-3);
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-numeral);
+    line-height: var(--leading-none);
+    color: var(--color-ink);
+  }
+
+  .edition-card__numeral-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .edition-card__session {
+    margin-top: var(--space-2);
+    font-family: var(--font-serif-cjk);
+    font-size: var(--type-metadata);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .edition-card__session {
+    font-family: var(--font-serif-latin);
+  }
+
+  .edition-card__theme-primary {
+    margin-top: var(--space-3);
+    font-family: var(--font-serif-cjk);
+    font-weight: var(--weight-black);
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .edition-card__theme-primary {
+    font-family: var(--font-serif-latin);
+  }
+
+  .edition-card__theme-secondary {
+    margin-top: var(--space-2);
+    font-family: var(--font-serif-latin);
+    font-style: italic;
+    font-size: var(--text-md);
+    color: var(--color-text);
+  }
+
+  :global(html:lang(en)) .edition-card__theme-secondary {
+    font-family: var(--font-serif-cjk);
+    font-style: normal;
+  }
+
+  .edition-card__enter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    align-items: baseline;
+    margin-top: var(--space-8);
+    font-size: var(--type-metadata);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .edition-card__enter-title {
+    font-family: var(--font-serif-cjk);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .edition-card__enter-title {
+    font-family: var(--font-serif-latin);
+  }
+
+  .edition-card__enter-cue {
+    color: var(--color-accent-deep);
+  }
+
+  @media (width <= 56.25em) {
+    .edition-card__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .edition-card__index {
+      border-right: 0;
+      border-bottom: 1px solid var(--color-line-strong);
+    }
+
+    .edition-card__index,
+    .edition-card__theme {
+      padding: var(--space-8) var(--page-gutter-narrow);
+    }
+  }
+</style>

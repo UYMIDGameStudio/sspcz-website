@@ -25,6 +25,12 @@
   --color-ink-raised: #1a3550;
   --color-accent: #3e7ca6;
   --color-accent-bright: #6fa3cc;
+
+  /* AA-safe accent for text on tinted paper. --color-accent (calibrated for
+     the white canvas) drops to ~3.5:1 on the ice-blue surface; this deeper
+     accent clears 4.5:1 there and on every Paper System surface, honouring
+     the ADR-003 §3.8 contrast guard without abandoning the blue accent. */
+  --color-accent-deep: #2c5a7a;
   --color-paper: var(--surface-primary);
   --color-paper-raised: var(--surface-tertiary);
   --color-paper-inset: var(--surface-secondary);
@@ -65,6 +71,9 @@
   --tracking-wide: 0.125em;
   --tracking-wider: 0.25em;
   --weight-light: 300;
+  --weight-semibold: 600; /* running lockup wordmark */
+  --weight-bold: 700;     /* institutional titles, page headings */
+  --weight-black: 900;    /* thematic display titles (edition theme) */
 
   /* ---- semantic type roles (ADR-003 §3.7) ----
      The raw --text-* scale above is the palette; components consume these
@@ -91,6 +100,7 @@
 
   /* ---- layout ---- */
   --measure: 40rem;
+  --page-max: 73.75rem; /* centered content column for cover plates (1180px) */
   --margin-track: 21.25rem;
   --page-gutter: 2.25rem;
   --page-gutter-narrow: 1.25rem;

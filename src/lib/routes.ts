@@ -2,6 +2,7 @@ import type { Locale } from './issueData';
 
 export type RouteKey =
   | 'home'
+  | 'about'
   | 'archive'
   | 'resources'
   | 'issue'
@@ -21,6 +22,7 @@ const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
 export function path(locale: Locale, key: RouteKey, issueId?: string): string {
   const prefix = `${BASE}${locale === 'en' ? '/en' : ''}`;
   if (key === 'home') return `${prefix}/`;
+  if (key === 'about') return `${prefix}/about/`;
   if (key === 'archive') return `${prefix}/archive/`;
   if (key === 'resources') return `${prefix}/resources/`;
   if (!issueId) throw new Error(`Route "${key}" requires an edition ID`);

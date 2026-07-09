@@ -36,6 +36,8 @@ export default {
   home: {
     heroLead:
       '为对哲学充满热情的初高中学生提供开放的学术交流平台——学生论文讲演、嘉宾讲座、哲学黑客马拉松，一场思想碰撞与知识交流的盛会。让年轻的心灵在哲学的海洋中自由翱翔。',
+    coverKicker: 'Secondary School Philosophy Conference of Zhejiang',
+    tagline: '面向初高中学生的哲学学术共同体',
     currentTitle: '当前会议',
     archiveTitle: '会议档案',
     currentMark: '进行中',
@@ -57,6 +59,11 @@ export default {
   program: {
     lead: '四日议程由学生论文讲演、嘉宾讲座与哲学黑客马拉松三大板块组成。以下为暂定框架，具体嘉宾与场次以组委会正式通知为准。',
     provisionalNote: '议程为暂定框架，最终以大会现场公布为准。',
+  },
+
+  about: {
+    metaDescription: '关于浙江中学生哲学大会：大会宗旨、历届档案与往届嘉宾学者。',
+    missionTitle: '大会宗旨',
   },
 
   archive: {
