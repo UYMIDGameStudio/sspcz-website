@@ -27,6 +27,6 @@ const { label } = Astro.props;
   }
 
   .section-marker__index::before {
-    content: "§" counter(section) " — ";
+    content: "§ " counter(section, decimal-leading-zero) " — ";
   }
 </style>

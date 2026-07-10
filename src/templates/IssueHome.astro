@@ -1,18 +1,26 @@
 ---
 /**
- * Template: an edition's front door at its permanent home (`/issue-XXX/`).
- * Fully parametrized by edition ID — no hardcoded issue anywhere.
+ * Template: an edition's front door at its permanent home (`/issue-XXX/`) —
+ * the edition cover (ADR-003 §3.4, LandingLayout). A masthead plate (edition
+ * numeral + facts | theme + lead + actions), the organizers' letter on the
+ * ice-blue contextual paper, the three pillars, participant categories, hosts,
+ * and a closing invitation on the ink band. Fully parametrized by edition ID.
  */
 import { getEntry, render } from 'astro:content';
-import InstitutionLayout from '../layouts/InstitutionLayout.astro';
+import LandingLayout from '../layouts/LandingLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
-import RecordRow from '../components/RecordRow.astro';
 import { t } from '../i18n';
 import { getIssueBundle, pick, type Locale } from '../lib/issueData';
-import { dateRange, issueMark, issueTitle, quotedTheme, sessionLabel } from '../lib/format';
+import {
+  dateRange,
+  issueMark,
+  issueTitle,
+  paddedIssue,
+  quotedTheme,
+  sessionLabel,
+} from '../lib/format';
 import { path } from '../lib/routes';
-import EditionNumeral from '../components/EditionNumeral.astro';
 
 interface Props {
   locale: Locale;
@@ -21,78 +29,89 @@ interface Props {
 
 const { locale, issueId } = Astro.props;
 const dict = t(locale);
+const ci = dict.currentIssue;
 const bundle = getIssueBundle(issueId);
 const { issue, committee } = bundle;
 
-const aboutEntry = await getEntry('conference', `${issueId}/about.${locale}`);
 const letterEntry = await getEntry('conference', `${issueId}/theme-letter.${locale}`);
-if (!aboutEntry || !letterEntry) throw new Error(`${issueId} editorial documents missing`);
-const { Content: About } = await render(aboutEntry);
+if (!letterEntry) throw new Error(`${issueId} theme-letter missing`);
 const { Content: Letter } = await render(letterEntry);
 
 const fullTitle = issueTitle(issue.issue, locale, dict.siteName);
 const title = `${fullTitle} · ${pick(locale, issue.theme)}`;
 const description = `${fullTitle} · ${quotedTheme(locale, issue.theme)} · ${dateRange(issue.dates.start, issue.dates.end, locale)}`;
 const joiner = ' · ';
+const duration = locale === 'zh' ? `${issue.dates.durationDays} 天` : `${issue.dates.durationDays} days`;
+
+const facts = [
+  { label: ci.facts.period, value: `${dateRange(issue.dates.start, issue.dates.end, locale)} · ${duration}` },
+  { label: ci.facts.location, value: `${pick(locale, issue.location.city)} · ${pick(locale, issue.location.venue.note)}` },
+  { label: ci.facts.audience, value: pick(locale, issue.audience.primary) },
+  { label: ci.facts.auditors, value: pick(locale, issue.audience.auditors) },
+];
 ---
 
-<InstitutionLayout
-  locale={locale}
-  route="issue"
-  issueId={issueId}
-  title={title}
-  description={description}
->
-  <section class="masthead">
-    <p class="masthead__kicker">
-      {issueMark(issue.issue, locale)} · {dateRange(issue.dates.start, issue.dates.end, locale)} ·
-      {pick(locale, issue.location.city)}
-    </p>
-    <div class="edition-hero">
-      <EditionNumeral n={issue.issue} locale={locale} />
-      <div class="edition-hero__body">
-        <h1 class="masthead__title">{fullTitle}</h1>
-        <p class="masthead__theme">
-          {dict.currentIssue.themeLabel} · {quotedTheme(locale, issue.theme)}
-        </p>
+<LandingLayout locale={locale} route="issue" issueId={issueId} title={title} description={description}>
+  <section class="cover">
+    <div class="cover__index">
+      <p class="cover__kicker">{sessionLabel(issue.issue, locale)}</p>
+      <p class="cover__numeral">
+        <span aria-hidden="true">{paddedIssue(issue.issue)}</span>
+        <span class="u-sr-only">{issueMark(issue.issue, locale)}</span>
+      </p>
+      <dl class="facts">
+        {
+          facts.map((f) => (
+            <div class="facts__row">
+              <dt class="facts__label">{f.label}</dt>
+              <dd class="facts__value">{f.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <div class="cover__theme">
+      <p class="cover__kicker cover__kicker--accent">{ci.themeLabel}</p>
+      <h1 class="cover__title">{pick(locale, issue.theme)}</h1>
+      <p class="cover__title-alt">
+        {locale === 'zh' ? issue.theme.en : issue.theme.zh}
+      </p>
+      <p class="cover__lead">{ci.heroLead}</p>
+      <div class="cover__actions">
+        <a class="button button--primary" href={path(locale, 'register', issueId)}>
+          {dict.actions.registerNow}
+        </a>
+        <a class="button" href={path(locale, 'cfp', issueId)}>{dict.actions.readCfp}</a>
       </div>
     </div>
-    <p class="masthead__lead">{dict.currentIssue.heroLead}</p>
-    <ul class="masthead__facts">
-      <li>{dict.currentIssue.durationNote}</li>
-      <li>{pick(locale, issue.location.venue.note)}</li>
-      <li>{pick(locale, issue.audience.primary)} · {pick(locale, issue.audience.auditors)}</li>
-    </ul>
   </section>
 
-  <Marginalia>
-    <Fragment slot="margin">
-      <SectionCounter label="About" />
-      <h2>{aboutEntry.data.title}</h2>
-    </Fragment>
-    <div class="prose"><About /></div>
-  </Marginalia>
-
-  <Marginalia>
-    <Fragment slot="margin">
-      <SectionCounter label="Theme" />
-      <h2>{letterEntry.data.title}</h2>
-      <p class="theme-mark">{quotedTheme(locale, issue.theme)}</p>
-    </Fragment>
-    <div class="prose"><Letter /></div>
-  </Marginalia>
+  <div class="band band--secondary">
+    <Marginalia>
+      <Fragment slot="margin">
+        <SectionCounter label="Letter" />
+        <h2>{ci.letterTitle}</h2>
+        <p class="margin-sub">A Letter to the Contemplative</p>
+      </Fragment>
+      <div class="prose"><Letter /></div>
+    </Marginalia>
+  </div>
 
   <Marginalia>
     <Fragment slot="margin">
       <SectionCounter label="Format" />
-      <h2>{dict.currentIssue.pillarsTitle}</h2>
+      <h2>{ci.pillarsTitle}</h2>
+      <p class="margin-sub">Three Pillars</p>
     </Fragment>
     <ol class="pillars">
       {
         issue.pillars.map((pillar) => (
           <li class="pillars__item">
-            <p class="pillars__kicker">{pick(locale, pillar.kicker)}</p>
-            <h3 class="pillars__name">{pick(locale, pillar.name)}</h3>
+            <div>
+              <p class="pillars__kicker">{pick(locale, pillar.kicker)}</p>
+              <h3 class="pillars__name">{pick(locale, pillar.name)}</h3>
+            </div>
             <p class="pillars__summary">{pick(locale, pillar.summary)}</p>
           </li>
         ))
@@ -103,14 +122,15 @@ const joiner = ' · ';
   <Marginalia>
     <Fragment slot="margin">
       <SectionCounter label="Participants" />
-      <h2>{dict.currentIssue.participantsTitle}</h2>
+      <h2>{ci.participantsTitle}</h2>
+      <p class="margin-sub">Who Attends</p>
     </Fragment>
-    <dl class="categories">
+    <dl class="grid-2">
       {
         issue.participantCategories.map((cat) => (
-          <div class="categories__item">
-            <dt class="categories__name">{pick(locale, cat.name)}</dt>
-            <dd class="categories__desc">{pick(locale, cat.description)}</dd>
+          <div class="grid-2__cell">
+            <dt class="grid-2__name">{pick(locale, cat.name)}</dt>
+            <dd class="grid-2__desc">{pick(locale, cat.description)}</dd>
           </div>
         ))
       }
@@ -120,86 +140,281 @@ const joiner = ' · ';
   <Marginalia>
     <Fragment slot="margin">
       <SectionCounter label="Organizers" />
-      <h2>{dict.currentIssue.organizersTitle}</h2>
+      <h2>{ci.organizersTitle}</h2>
+      <p class="margin-sub">Hosts &amp; Support</p>
       <p class="margin-note">
-        <a href={path(locale, 'committee', issueId)}>{dict.currentIssue.fullListNote}</a>
+        <a href={path(locale, 'committee', issueId)}>{ci.fullListNote}</a>
       </p>
     </Fragment>
-    <div>
-      <RecordRow label={dict.committee.labels.hosts}>
-        {committee.hosts.map((o) => pick(locale, o.name)).join(joiner)}
-      </RecordRow>
-      <RecordRow label={dict.committee.labels.coOrganizers}>
-        {committee.coOrganizers.map((o) => pick(locale, o.name)).join(joiner)}
-        {committee.coOrganizersPending && (
-          <span class="pending">{dict.currentIssue.morePending}</span>
-        )}
-      </RecordRow>
-      <RecordRow label={dict.committee.labels.academicSupport}>
-        {committee.academicSupport.map((o) => pick(locale, o.name)).join(joiner)}
-      </RecordRow>
+    <div class="register">
+      <div class="register__row">
+        <div class="register__label">{dict.committee.labels.hosts}</div>
+        <div class="register__value">
+          {committee.hosts.map((o) => pick(locale, o.name)).join(joiner)}
+        </div>
+      </div>
+      <div class="register__row">
+        <div class="register__label">{dict.committee.labels.coOrganizers}</div>
+        <div class="register__value">
+          {committee.coOrganizers.map((o) => pick(locale, o.name)).join(joiner)}
+          {committee.coOrganizersPending && <span class="pending">{ci.morePending}</span>}
+        </div>
+      </div>
+      <div class="register__row">
+        <div class="register__label">{dict.committee.labels.academicSupport}</div>
+        <div class="register__value">
+          {committee.academicSupport.map((o) => pick(locale, o.name)).join(joiner)}
+        </div>
+      </div>
     </div>
   </Marginalia>
 
-  <Marginalia>
-    <Fragment slot="margin">
-      <SectionCounter label="Sessions" />
-      <h2>{dict.currentIssue.pastSessionsTitle}</h2>
-    </Fragment>
-    <div>
-      {
-        committee.pastSessions.map((s) => (
-          <RecordRow label={sessionLabel(s.session, locale)}>
-            {pick(locale, s.summary)}
-          </RecordRow>
-        ))
-      }
-      <p class="closing-line">
-        {dict.closing.motto} —
-        <a href={path(locale, 'register', issueId)}>{dict.actions.registerNow}</a> ·
-        <a href={path(locale, 'program', issueId)}>{dict.actions.viewProgram}</a>
-      </p>
+  <div class="band band--ink">
+    <div class="invitation">
+      <p class="invitation__motto">{dict.closing.motto}</p>
+      <p class="invitation__latin">{dict.closing.mottoLatin}</p>
+      <div class="cover__actions cover__actions--center">
+        <a class="button button--on-ink" href={path(locale, 'register', issueId)}>
+          {dict.actions.registerNow}
+        </a>
+        <a class="button button--ghost-ink" href={path(locale, 'program', issueId)}>
+          {dict.actions.viewProgram}
+        </a>
+      </div>
     </div>
-  </Marginalia>
-</InstitutionLayout>
+  </div>
+</LandingLayout>
 
 <style>
-  /* Edition hero: the large numeral and the title share a baseline-aligned
-     row, collapsing to a stack on narrow viewports (ADR-002 §4). */
-  .edition-hero {
+  .cover {
     display: grid;
-    grid-template-columns: auto 1fr;
-    gap: var(--space-8);
-    align-items: end;
+    grid-template-columns: var(--margin-track) 1fr;
+    gap: var(--space-12);
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding: var(--space-16) var(--page-gutter);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .cover__kicker {
+    font-family: var(--font-serif-latin);
+    font-size: var(--type-marginalia);
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .cover__kicker--accent {
+    color: var(--color-accent-deep);
+  }
+
+  .cover__numeral {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-numeral);
+    line-height: var(--leading-none);
+    color: var(--color-ink);
+    margin-top: var(--space-2);
+  }
+
+  .facts {
+    margin: var(--space-8) 0 0;
+  }
+
+  .facts__row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) 0;
+    font-size: var(--type-metadata);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .facts__row:last-child {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .facts__label {
+    color: var(--color-text-muted);
+  }
+
+  .facts__value {
+    color: var(--color-ink);
+    text-align: right;
+  }
+
+  .cover__theme {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .cover__title {
+    margin-top: var(--space-4);
+    font-family: var(--font-serif-cjk);
+    font-weight: var(--weight-black);
+    font-size: var(--type-display);
+    line-height: var(--leading-none);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .cover__title {
+    font-family: var(--font-serif-latin);
+  }
+
+  .cover__title-alt {
+    margin-top: var(--space-3);
+    font-family: var(--font-serif-latin);
+    font-style: italic;
+    font-size: var(--text-lg);
+    color: var(--color-text);
+  }
+
+  :global(html:lang(en)) .cover__title-alt {
+    font-family: var(--font-serif-cjk);
+    font-style: normal;
+  }
+
+  .cover__lead {
+    max-width: var(--measure);
     margin-top: var(--space-6);
+    line-height: var(--leading-loose);
+    color: var(--color-text-muted);
   }
 
-  .edition-hero__body {
-    padding-bottom: var(--space-2);
+  .cover__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
   }
 
-  .edition-hero .masthead__title {
-    margin-top: 0;
+  .cover__actions--center {
+    justify-content: center;
   }
 
   @media (width <= 56.25em) {
-    .edition-hero {
+    .cover {
       grid-template-columns: 1fr;
-      gap: var(--space-4);
-      align-items: start;
+      gap: var(--space-8);
+      padding: var(--space-12) var(--page-gutter-narrow);
+    }
+
+    .cover__title {
+      font-size: var(--text-2xl);
     }
   }
 
-  .theme-mark {
-    margin-top: var(--space-6);
-    font-family: var(--font-serif-cjk);
-    font-size: var(--text-xl);
-    color: var(--color-accent);
+  /* Organizers' letter on the ice-blue band: body ink, blockquote on white. */
+  .band--secondary :global(.prose) {
+    color: var(--color-ink);
   }
 
-  :global(html:lang(en)) .theme-mark {
+  .band--secondary :global(.prose blockquote) {
+    background: var(--surface-primary);
+  }
+
+  /* Three pillars: metadata column + summary. */
+  .pillars {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pillars__item {
+    display: grid;
+    grid-template-columns: 12.5rem 1fr;
+    gap: var(--space-8);
+    align-items: center;
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .pillars__item:first-child {
+    border-top-color: var(--color-line-strong);
+  }
+
+  .pillars__item:last-child {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .pillars__kicker {
     font-family: var(--font-serif-latin);
-    font-size: var(--text-lg);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .pillars__name {
+    margin-top: var(--space-2);
+    font-size: var(--type-heading-sub);
+  }
+
+  .pillars__summary {
+    color: var(--color-text-muted);
+    line-height: var(--leading-loose);
+  }
+
+  /* 2×2 category grid with hairline gutters. */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin: 0;
+    background: var(--color-line);
+    border: 1px solid var(--color-line);
+  }
+
+  .grid-2__cell {
+    padding: var(--space-6);
+    background: var(--surface-primary);
+  }
+
+  .grid-2__name {
+    font-family: var(--font-serif-cjk);
+    font-size: var(--type-heading-sub);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .grid-2__name {
+    font-family: var(--font-serif-latin);
+  }
+
+  .grid-2__desc {
+    margin: var(--space-2) 0 0;
+    font-size: var(--type-metadata);
+    line-height: var(--leading-loose);
+    color: var(--color-text-muted);
+  }
+
+  /* Register-style label/value rows (hosts & support). */
+  .register__row {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: var(--space-6);
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .register__row:first-child {
+    border-top-color: var(--color-line-strong);
+  }
+
+  .register__label {
+    font-size: var(--type-metadata);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+  }
+
+  .register__value {
+    color: var(--color-ink);
+    line-height: var(--leading-normal);
+  }
+
+  .pending {
+    margin-left: var(--space-1);
+    color: var(--color-text-muted);
   }
 
   .margin-note {
@@ -213,73 +428,53 @@ const joiner = ' · ';
     text-decoration: underline;
   }
 
-  .pillars {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  /* Closing invitation on the ink band. */
+  .invitation {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding: var(--space-24) var(--page-gutter);
+    text-align: center;
   }
 
-  .pillars__item {
-    padding: var(--space-4) 0;
-    border-bottom: 1px solid var(--color-line);
-  }
-
-  .pillars__kicker {
-    font-family: var(--font-serif-latin);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-wide);
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-  }
-
-  .pillars__name {
-    margin-top: var(--space-1);
-    font-size: var(--text-md);
-  }
-
-  .pillars__summary {
-    margin-top: var(--space-2);
-    color: var(--color-text-muted);
-    line-height: var(--leading-loose);
-  }
-
-  .categories {
-    margin: 0;
-  }
-
-  .categories__item {
-    padding: var(--space-4) 0;
-    border-bottom: 1px solid var(--color-line);
-  }
-
-  .categories__name {
+  .invitation__motto {
     font-family: var(--font-serif-cjk);
-    font-size: var(--text-md);
-    color: var(--color-ink);
+    font-size: var(--text-lg);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-on-dark);
   }
 
-  :global(html:lang(en)) .categories__name {
+  :global(html:lang(en)) .invitation__motto {
     font-family: var(--font-serif-latin);
   }
 
-  .categories__desc {
-    margin: var(--space-2) 0 0;
-    color: var(--color-text-muted);
-    line-height: var(--leading-loose);
+  .invitation__latin {
+    margin-top: var(--space-3);
+    font-family: var(--font-serif-latin);
+    font-style: italic;
+    color: var(--color-text-on-dark-muted);
   }
 
-  .pending {
-    margin-left: var(--space-1);
-    color: var(--color-text-muted);
+  .u-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
   }
 
-  .closing-line {
-    margin-top: var(--space-8);
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-  }
+  @media (width <= 56.25em) {
+    .pillars__item,
+    .grid-2,
+    .register__row {
+      grid-template-columns: 1fr;
+    }
 
-  .closing-line a {
-    text-decoration: underline;
+    .pillars__item {
+      gap: var(--space-2);
+    }
+
+    .register__row {
+      gap: var(--space-2);
+    }
   }
 </style>

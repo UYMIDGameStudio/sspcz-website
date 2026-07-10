@@ -53,8 +53,38 @@ a:hover {
 /* ---------- masthead (page opening) ---------- */
 
 .masthead {
+  max-width: var(--page-max);
+  margin-inline: auto;
   padding: var(--space-16) var(--page-gutter) var(--space-12);
   border-bottom: 1px solid var(--color-line);
+}
+
+/* Full-bleed contextual band (ADR-003 §3.8): the surface spans the viewport
+   while its content stays in the centered column. Wrap a Marginalia to give a
+   section the ice-blue or ink paper. */
+.band {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.band > .marginalia {
+  border-bottom: 0;
+}
+
+.band--secondary {
+  background: var(--surface-secondary);
+}
+
+/* Contrast guard (ADR-003 §3.8): on the ice-blue paper, muted greys drop below
+   AA — the section marker and Latin subtitle step up to --color-text. */
+.band--secondary p.section-marker,
+.band--secondary .margin-sub {
+  color: var(--color-text);
+}
+
+.band--ink {
+  color: var(--color-text-on-dark);
+  background: var(--color-ink);
+  border-bottom: 0;
 }
 
 .masthead__kicker {
@@ -154,6 +184,67 @@ a:hover {
   .page--institution .masthead {
     padding-bottom: var(--space-16);
   }
+}
+
+/* Italic Latin subtitle under a section's CJK heading (in the margin track). */
+.margin-sub {
+  margin-top: var(--space-2);
+  font-family: var(--font-serif-latin);
+  font-style: italic;
+  font-size: var(--type-metadata);
+  color: var(--color-text-muted);
+}
+
+/* ---------- action buttons (ADR-003) ----------
+   Task affordances, matching the nav actions: solid ink or hairline outline
+   on paper; inverted variants sit on the ink bands. */
+.button {
+  display: inline-block;
+  padding: var(--space-3) var(--space-8);
+  font-size: var(--type-metadata);
+  letter-spacing: var(--tracking-wide);
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-ink);
+}
+
+.button:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.button--primary {
+  color: var(--color-text-on-dark);
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.button--primary:hover {
+  color: var(--color-text-on-dark);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* On ink bands: a light solid and a hairline ghost. */
+.button--on-ink {
+  color: var(--color-ink);
+  background: var(--color-text-on-dark);
+  border-color: var(--color-text-on-dark);
+}
+
+.button--on-ink:hover {
+  color: var(--color-ink);
+  background: var(--surface-primary);
+  border-color: var(--surface-primary);
+}
+
+.button--ghost-ink {
+  color: var(--color-text-on-dark);
+  border-color: var(--color-ink-raised);
+}
+
+.button--ghost-ink:hover {
+  color: var(--color-text-on-dark);
+  border-color: var(--color-accent-bright);
 }
 
 /* ---------- prose (rendered editorial documents) ---------- */

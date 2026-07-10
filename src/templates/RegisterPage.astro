@@ -137,7 +137,14 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
   }
 
   .register-form {
-    max-width: var(--measure);
+    padding: var(--space-12);
+    border: 1px solid var(--color-line);
+  }
+
+  @media (width <= 56.25em) {
+    .register-form {
+      padding: var(--space-8) var(--page-gutter-narrow);
+    }
   }
 
   .register-form__grid {
