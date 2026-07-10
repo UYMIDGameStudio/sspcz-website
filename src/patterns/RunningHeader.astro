@@ -18,9 +18,9 @@ const Tag = homeHref ? 'a' : 'span';
 ---
 
 <header class="running-header">
-  <Tag class="masthead" href={homeHref}>
-    {logoSrc && <img class="masthead__logo" src={logoSrc} alt={publication} width="120" height="27" />}
-    <span class="masthead__wordmark" aria-hidden="true">{publication}</span>
+  <Tag class="running-header__brand" href={homeHref}>
+    {logoSrc && <img class="running-header__logo" src={logoSrc} alt={publication} width="120" height="27" />}
+    <span class="running-header__wordmark" aria-hidden="true">{publication}</span>
   </Tag>
   <nav class="running-header__nav" aria-label="Site">
     <slot />
@@ -46,7 +46,10 @@ const Tag = homeHref ? 'a' : 'span';
     border-bottom: 1px solid var(--color-line);
   }
 
-  .masthead {
+  /* Named with the block prefix (not `.masthead`) to avoid colliding with the
+     page-level `.masthead` in global.css, whose padding + border-bottom would
+     otherwise land on this header brand link. */
+  .running-header__brand {
     display: inline-flex;
     gap: var(--space-3);
     align-items: center;
@@ -54,14 +57,14 @@ const Tag = homeHref ? 'a' : 'span';
     white-space: nowrap;
   }
 
-  .masthead__logo {
+  .running-header__logo {
     display: block;
     width: auto;
     height: 1.7em;
     mix-blend-mode: multiply;
   }
 
-  .masthead__wordmark {
+  .running-header__wordmark {
     white-space: nowrap;
   }
 
@@ -83,7 +86,7 @@ const Tag = homeHref ? 'a' : 'span';
     }
 
     /* The wordmark is verbose on small screens; the logo carries identity. */
-    .masthead__logo + .masthead__wordmark {
+    .running-header__logo + .running-header__wordmark {
       display: none;
     }
   }
