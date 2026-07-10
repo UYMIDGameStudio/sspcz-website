@@ -16,17 +16,17 @@ interface Props {
 const { locale, issueId } = Astro.props;
 const dict = t(locale);
 const bundle = getIssueBundle(issueId);
+const { committee } = bundle;
 const title = `${dict.nav.committee} · ${dict.siteName}`;
 
 const joiner = ' · ';
 const listJoiner = locale === 'zh' ? '、' : ', ';
 
-const societyName = (s: (typeof bundle.committee.supportingSocieties)[number]): string => {
+const societyName = (s: (typeof committee.supportingSocieties)[number]): string => {
   if (!s.school) return pick(locale, s.society);
-  return locale === 'zh'
-    ? `${s.school.zh}${s.society.zh}`
-    : `${s.society.en}, ${s.school.en}`;
+  return locale === 'zh' ? `${s.school.zh}${s.society.zh}` : `${s.society.en}, ${s.school.en}`;
 };
+const societies = committee.supportingSocieties.map(societyName).join(joiner);
 ---
 
 <DataLayout locale={locale} route="committee" issueId={issueId} title={title} description={dict.meta.committee}>
@@ -40,41 +40,51 @@ const societyName = (s: (typeof bundle.committee.supportingSocieties)[number]): 
     <Fragment slot="margin">
       <SectionCounter label="Structure" />
       <h2>{dict.committee.structureTitle}</h2>
+      <p class="margin-sub">Structure of this Session</p>
     </Fragment>
     <div>
       <RecordRow label={dict.committee.labels.hosts}>
-        {bundle.committee.hosts.map((o) => pick(locale, o.name)).join(joiner)}
+        {committee.hosts.map((o) => pick(locale, o.name)).join(joiner)}
       </RecordRow>
       <RecordRow label={dict.committee.labels.coOrganizers}>
-        {bundle.committee.coOrganizers.map((o) => pick(locale, o.name)).join(joiner)}
-        {bundle.committee.coOrganizersPending && (
+        {committee.coOrganizers.map((o) => pick(locale, o.name)).join(joiner)}
+        {committee.coOrganizersPending && (
           <span class="pending">{dict.currentIssue.morePending}</span>
         )}
       </RecordRow>
       <RecordRow label={dict.committee.labels.academicSupport}>
-        {bundle.committee.academicSupport.map((o) => pick(locale, o.name)).join(joiner)}
+        {committee.academicSupport.map((o) => pick(locale, o.name)).join(joiner)}
       </RecordRow>
       <RecordRow label={dict.committee.labels.secretariat}>
-        {pick(locale, bundle.committee.structure.secretariat)}
+        {pick(locale, committee.structure.secretariat)}
       </RecordRow>
       <RecordRow label={dict.committee.labels.teams}>
-        <p>{bundle.committee.structure.teams.map((o) => pick(locale, o.name)).join(joiner)}</p>
-        <p class="team-note">{pick(locale, bundle.committee.structure.teamNote)}</p>
-      </RecordRow>
-      <RecordRow label={dict.committee.labels.societies}>
-        {bundle.committee.supportingSocieties.map(societyName).join(joiner)}
+        <p>{committee.structure.teams.map((o) => pick(locale, o.name)).join(joiner)}</p>
+        <p class="team-note">{pick(locale, committee.structure.teamNote)}</p>
       </RecordRow>
     </div>
   </Marginalia>
+
+  <div class="band band--secondary">
+    <Marginalia>
+      <Fragment slot="margin">
+        <SectionCounter label="Societies" />
+        <h2>{dict.committee.labels.societies}</h2>
+        <p class="margin-sub">Supporting Societies</p>
+      </Fragment>
+      <p class="societies">{societies}</p>
+    </Marginalia>
+  </div>
 
   <Marginalia>
     <Fragment slot="margin">
       <SectionCounter label="Past Sessions" />
       <h2>{dict.committee.pastTitle}</h2>
+      <p class="margin-sub">Past Sessions</p>
     </Fragment>
     <div>
       {
-        bundle.committee.pastSessions.map((s) => (
+        committee.pastSessions.map((s) => (
           <section class="past-session">
             <h3 class="past-session__title">{sessionLabel(s.session, locale)}</h3>
             <RecordRow label={dict.committee.labels.hosts}>
@@ -98,6 +108,7 @@ const societyName = (s: (typeof bundle.committee.supportingSocieties)[number]): 
     <Fragment slot="margin">
       <SectionCounter label="Speakers" />
       <h2>{dict.committee.speakersTitle}</h2>
+      <p class="margin-sub">Past Guest Speakers</p>
     </Fragment>
     <div>
       <ul class="speakers">
@@ -107,18 +118,16 @@ const societyName = (s: (typeof bundle.committee.supportingSocieties)[number]): 
     </div>
   </Marginalia>
 
-  <Marginalia>
-    <Fragment slot="margin">
-      <SectionCounter label="Partnership" />
-      <h2>{dict.committee.partnershipTitle}</h2>
-    </Fragment>
-    <div>
-      <p class="partnership">{pick(locale, bundle.committee.partnership.invitation)}</p>
+  <div class="band band--ink">
+    <div class="partnership">
+      <p class="partnership__tag">Partnership</p>
+      <p class="partnership__title">{dict.committee.partnershipTitle}</p>
+      <p class="partnership__lead">{pick(locale, committee.partnership.invitation)}</p>
       <p class="partnership__contact">
-        <a href={`mailto:${bundle.committee.partnership.email}`}>{bundle.committee.partnership.email}</a>
+        <a href={`mailto:${committee.partnership.email}`}>{committee.partnership.email}</a>
       </p>
     </div>
-  </Marginalia>
+  </div>
 </DataLayout>
 
 <style>
@@ -133,12 +142,20 @@ const societyName = (s: (typeof bundle.committee.supportingSocieties)[number]): 
     color: var(--color-text-muted);
   }
 
+  .societies {
+    font-size: var(--type-metadata);
+    line-height: var(--leading-loose);
+    color: var(--color-ink);
+  }
+
   .past-session {
     padding-bottom: var(--space-6);
   }
 
   .past-session + .past-session {
     margin-top: var(--space-6);
+    border-top: 1px solid var(--color-line);
+    padding-top: var(--space-6);
   }
 
   .past-session__title {
@@ -155,8 +172,9 @@ const societyName = (s: (typeof bundle.committee.supportingSocieties)[number]): 
   }
 
   .speakers__name {
-    padding: var(--space-2) var(--space-4);
+    padding: var(--space-3) var(--space-6);
     font-family: var(--font-serif-cjk);
+    font-size: var(--type-heading-sub);
     color: var(--color-ink);
     border: 1px solid var(--color-line-strong);
   }
@@ -171,18 +189,50 @@ const societyName = (s: (typeof bundle.committee.supportingSocieties)[number]): 
     color: var(--color-text-muted);
   }
 
+  /* Dark partnership band. */
   .partnership {
-    max-width: var(--measure);
-    line-height: var(--leading-loose);
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding: var(--space-16) var(--page-gutter);
+    text-align: center;
+  }
+
+  .partnership__tag {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-text-on-dark-muted);
+    text-transform: uppercase;
+  }
+
+  .partnership__title {
+    margin-top: var(--space-3);
+    font-family: var(--font-serif-cjk);
+    font-size: var(--text-lg);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-on-dark);
+  }
+
+  :global(html:lang(en)) .partnership__title {
+    font-family: var(--font-serif-latin);
+  }
+
+  .partnership__lead {
+    max-width: 34em;
+    margin: var(--space-4) auto 0;
+    line-height: var(--leading-normal);
+    color: var(--color-text-on-dark-muted);
   }
 
   .partnership__contact {
-    margin-top: var(--space-4);
+    margin-top: var(--space-6);
     font-family: var(--font-serif-latin);
+    font-size: var(--text-md);
     letter-spacing: var(--tracking-wide);
   }
 
   .partnership__contact a {
+    color: var(--color-text-on-dark);
     text-decoration: underline;
   }
 </style>

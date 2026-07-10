@@ -54,6 +54,8 @@ export default {
     organizersTitle: '主办与支持',
     pastSessionsTitle: '历届大会',
     morePending: '（更多待定）',
+    letterTitle: '组委寄语',
+    facts: { period: '会期', location: '地点', audience: '对象', auditors: '旁听' },
   },
 
   program: {
@@ -77,6 +79,13 @@ export default {
     deadline: '投稿截止',
     presentations: '大会讲演',
     guidanceLead: '本届「变与不变」学术解释与哲学黑客松概念说明，详见',
+  },
+
+  cfp: {
+    scopeTitle: '对象与主题',
+    timelineTitle: '时间与投稿',
+    submitLead: '投稿与合作请联络组委会邮箱 ',
+    registerFirst: '先去报名',
   },
 
   committee: {

@@ -1,0 +1,108 @@
+---
+/**
+ * Component (semantic, stateless): a day's sessions as a pure-CSS vertical
+ * timeline (ADR-003 §3.4 — the zero-JS program pattern). An ordered list with
+ * a hairline spine and node markers; each row pairs the time/kind metadata
+ * with the session title and abstract. No script, no interaction.
+ */
+import type { Locale, Session } from '../lib/issueData';
+import { pick } from '../lib/issueData';
+
+interface Props {
+  sessions: Session[];
+  locale: Locale;
+}
+
+const { sessions, locale } = Astro.props;
+---
+
+<ol class="timeline">
+  {
+    sessions.map((s) => (
+      <li class="timeline__item">
+        <span class="timeline__node" aria-hidden="true" />
+        <div class="timeline__meta">
+          <p class="timeline__time">
+            {s.timeStart}–{s.timeEnd}
+          </p>
+          <p class="timeline__kind">{pick(locale, s.kindLabel)}</p>
+        </div>
+        <div class="timeline__body">
+          <h3 class="timeline__title">{pick(locale, s.title)}</h3>
+          <p class="timeline__abstract">{pick(locale, s.abstract)}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .timeline {
+    margin: 0;
+    padding: 0 0 0 var(--space-6);
+    list-style: none;
+    border-left: 1px solid var(--color-line-strong);
+  }
+
+  .timeline__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 9.375rem 1fr;
+    gap: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+
+  .timeline__item:last-child {
+    padding-bottom: 0;
+  }
+
+  /* Node marker straddling the spine. */
+  .timeline__node {
+    position: absolute;
+    top: 0.4rem;
+    left: calc(-1 * var(--space-6) - 0.28rem);
+    width: 0.5625rem;
+    height: 0.5625rem;
+    background: var(--surface-primary);
+    border: 2px solid var(--color-accent);
+    border-radius: 50%;
+  }
+
+  .timeline__time {
+    font-family: var(--font-serif-latin);
+    font-size: var(--type-metadata);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-accent-deep);
+  }
+
+  .timeline__kind {
+    margin-top: var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .timeline__title {
+    font-family: var(--font-serif-cjk);
+    font-size: var(--type-heading-sub);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .timeline__title {
+    font-family: var(--font-serif-latin);
+  }
+
+  .timeline__abstract {
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+    line-height: var(--leading-loose);
+  }
+
+  @media (width <= 56.25em) {
+    .timeline__item {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+  }
+</style>

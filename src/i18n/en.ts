@@ -54,6 +54,8 @@ export default {
     organizersTitle: 'Hosts & Support',
     pastSessionsTitle: 'Past Sessions',
     morePending: '(more to be announced)',
+    letterTitle: 'Organizers’ Letter',
+    facts: { period: 'Dates', location: 'Location', audience: 'For', auditors: 'Auditors' },
   },
 
   program: {
@@ -79,6 +81,13 @@ export default {
     deadline: 'Submissions close',
     presentations: 'Presentations',
     guidanceLead: 'This session’s theme explanation and hackathon concept notes are in the',
+  },
+
+  cfp: {
+    scopeTitle: 'Scope & Theme',
+    timelineTitle: 'Timeline & Submission',
+    submitLead: 'For submissions and partnership, write to the committee at ',
+    registerFirst: 'Register first',
   },
 
   committee: {

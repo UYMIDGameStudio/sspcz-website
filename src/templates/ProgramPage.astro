@@ -8,7 +8,7 @@
 import DataLayout from '../layouts/DataLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
-import SessionEntry from '../components/SessionEntry.astro';
+import Timeline from '../components/Timeline.astro';
 import { t } from '../i18n';
 import { getIssueBundle, type Locale } from '../lib/issueData';
 import { issueMark, shortDate } from '../lib/format';
@@ -39,9 +39,7 @@ const title = `${dict.nav.program} · ${dict.siteName}`;
           <h2>{shortDate(day.date, locale)}</h2>
         </Fragment>
         <div>
-          {day.sessions.map((session) => (
-            <SessionEntry session={session} locale={locale} />
-          ))}
+          <Timeline sessions={day.sessions} locale={locale} />
           {day.day === bundle.schedule.days.length && bundle.schedule.provisional && (
             <p class="provisional">{dict.program.provisionalNote}</p>
           )}

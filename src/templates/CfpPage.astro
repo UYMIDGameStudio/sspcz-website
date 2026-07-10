@@ -1,10 +1,9 @@
 ---
-/** Template: Call for Papers — editorial document + timeline records. */
+/** Template: Call for Papers — editorial document + a data-driven timeline. */
 import { getEntry, render } from 'astro:content';
 import PublicationLayout from '../layouts/PublicationLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
-import RecordRow from '../components/RecordRow.astro';
 import { t } from '../i18n';
 import { getIssueBundle, type Locale } from '../lib/issueData';
 import { dateRange, issueMark, monthYear, quotedTheme } from '../lib/format';
@@ -18,38 +17,39 @@ interface Props {
 const { locale, issueId } = Astro.props;
 const dict = t(locale);
 const bundle = getIssueBundle(issueId);
+const { issue } = bundle;
 
 const entry = await getEntry('conference', `${issueId}/cfp.${locale}`);
 if (!entry) throw new Error(`${issueId} cfp document missing`);
 const { Content } = await render(entry);
 
 const title = `${entry.data.title} · ${dict.siteName}`;
+
+const dates = [
+  { tag: 'Submissions Open', label: dict.cfpMeta.open, value: monthYear(issue.cfp.open, locale) },
+  { tag: 'Submissions Close', label: dict.cfpMeta.deadline, value: monthYear(issue.cfp.deadline, locale) },
+  {
+    tag: 'Presentations',
+    label: dict.cfpMeta.presentations,
+    value: dateRange(issue.cfp.presentations.start, issue.cfp.presentations.end, locale),
+  },
+];
 ---
 
 <PublicationLayout locale={locale} route="cfp" issueId={issueId} title={title} description={dict.meta.cfp}>
   <section class="masthead">
-    <p class="masthead__kicker">Call for Papers · {issueMark(bundle.issue.issue, locale)}</p>
+    <p class="masthead__kicker">Call for Papers · {issueMark(issue.issue, locale)}</p>
     <h1 class="masthead__title">{entry.data.title}</h1>
     <p class="masthead__theme">
-      {dict.currentIssue.themeLabel} · {quotedTheme(locale, bundle.issue.theme)}
+      {dict.currentIssue.themeLabel} · {quotedTheme(locale, issue.theme)}
     </p>
   </section>
 
   <Marginalia>
     <Fragment slot="margin">
-      <SectionCounter label="Dates" />
-      <div>
-        <RecordRow label={dict.cfpMeta.open}>{monthYear(bundle.issue.cfp.open, locale)}</RecordRow>
-        <RecordRow label={dict.cfpMeta.deadline}>
-          {monthYear(bundle.issue.cfp.deadline, locale)}
-        </RecordRow>
-        <RecordRow label={dict.cfpMeta.presentations}>
-          {dateRange(bundle.issue.cfp.presentations.start, bundle.issue.cfp.presentations.end, locale)}
-        </RecordRow>
-        <RecordRow label={dict.register.contactLabel}>
-          <a href={`mailto:${bundle.issue.contact.email}`}>{bundle.issue.contact.email}</a>
-        </RecordRow>
-      </div>
+      <SectionCounter label="Scope" />
+      <h2>{dict.cfp.scopeTitle}</h2>
+      <p class="margin-sub">Scope &amp; Review</p>
     </Fragment>
     <div class="prose">
       <Content />
@@ -61,6 +61,39 @@ const title = `${entry.data.title} · ${dict.siteName}`;
           </p>
         )
       }
+    </div>
+  </Marginalia>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Timeline" />
+      <h2>{dict.cfp.timelineTitle}</h2>
+      <p class="margin-sub">Timeline &amp; Submission</p>
+    </Fragment>
+    <div>
+      <div class="dates">
+        {
+          dates.map((d) => (
+            <div class="dates__cell">
+              <p class="dates__tag">{d.tag}</p>
+              <p class="dates__label">{d.label}</p>
+              <p class="dates__value">{d.value}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="submit">
+        <div class="submit__body">
+          <p class="submit__tag">How to Submit</p>
+          <p class="submit__text">
+            {dict.cfp.submitLead}
+            <a class="submit__email" href={`mailto:${issue.contact.email}`}>{issue.contact.email}</a>
+          </p>
+        </div>
+        <a class="button button--on-ink" href={path(locale, 'register', issueId)}>
+          {dict.cfp.registerFirst} →
+        </a>
+      </div>
     </div>
   </Marginalia>
 </PublicationLayout>
@@ -78,5 +111,97 @@ const title = `${entry.data.title} · ${dict.siteName}`;
     color: var(--color-accent-deep);
     text-decoration: underline;
     white-space: nowrap;
+  }
+
+  /* 3-column date grid with hairline separators. */
+  .dates {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--color-line);
+  }
+
+  .dates__cell {
+    padding: var(--space-6);
+    border-left: 1px solid var(--color-line);
+  }
+
+  .dates__cell:first-child {
+    border-left: 0;
+  }
+
+  .dates__tag {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .dates__label {
+    margin-top: var(--space-2);
+    font-family: var(--font-serif-cjk);
+    font-size: var(--type-heading-sub);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .dates__label {
+    font-family: var(--font-serif-latin);
+  }
+
+  .dates__value {
+    margin-top: var(--space-1);
+    font-size: var(--type-metadata);
+    color: var(--color-accent-deep);
+  }
+
+  /* Dark submission bar. */
+  .submit {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-6);
+    padding: var(--space-8);
+    color: var(--color-text-on-dark);
+    background: var(--color-ink);
+  }
+
+  .submit__body {
+    max-width: 34em;
+  }
+
+  .submit__tag {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-on-dark-muted);
+    text-transform: uppercase;
+  }
+
+  .submit__text {
+    margin-top: var(--space-2);
+    line-height: var(--leading-normal);
+  }
+
+  .submit__email {
+    color: var(--color-text-on-dark);
+    text-decoration: underline;
+    white-space: nowrap;
+  }
+
+  @media (width <= 56.25em) {
+    .dates {
+      grid-template-columns: 1fr;
+    }
+
+    .dates__cell {
+      border-left: 0;
+      border-top: 1px solid var(--color-line);
+    }
+
+    .dates__cell:first-child {
+      border-top: 0;
+    }
   }
 </style>
