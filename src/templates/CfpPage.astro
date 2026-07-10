@@ -8,6 +8,7 @@ import RecordRow from '../components/RecordRow.astro';
 import { t } from '../i18n';
 import { getIssueBundle, type Locale } from '../lib/issueData';
 import { dateRange, issueMark, monthYear, quotedTheme } from '../lib/format';
+import { path } from '../lib/routes';
 
 interface Props {
   locale: Locale;
@@ -50,6 +51,32 @@ const title = `${entry.data.title} · ${dict.siteName}`;
         </RecordRow>
       </div>
     </Fragment>
-    <div class="prose"><Content /></div>
+    <div class="prose">
+      <Content />
+      {
+        locale === 'zh' && (
+          <p class="cross-ref">
+            {dict.cfpMeta.guidanceLead}
+            <a href={path(locale, 'resources')}>{dict.resources.title} →</a>
+          </p>
+        )
+      }
+    </div>
   </Marginalia>
 </PublicationLayout>
+
+<style>
+  .cross-ref {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    font-size: var(--type-metadata);
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .cross-ref a {
+    color: var(--color-accent-deep);
+    text-decoration: underline;
+    white-space: nowrap;
+  }
+</style>

@@ -78,6 +78,7 @@ export default {
     open: 'Submissions open',
     deadline: 'Submissions close',
     presentations: 'Presentations',
+    guidanceLead: 'This session’s theme explanation and hackathon concept notes are in the',
   },
 
   committee: {

@@ -76,6 +76,7 @@ export default {
     open: '投稿开通',
     deadline: '投稿截止',
     presentations: '大会讲演',
+    guidanceLead: '本届「变与不变」学术解释与哲学黑客松概念说明，详见',
   },
 
   committee: {
