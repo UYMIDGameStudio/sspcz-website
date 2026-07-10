@@ -11,7 +11,7 @@ import BaseLayout from './BaseLayout.astro';
 import EditorialGrid from '../patterns/EditorialGrid.astro';
 import RunningHeader from '../patterns/RunningHeader.astro';
 import { t } from '../i18n';
-import { getIssueBundle, type Locale } from '../lib/issueData';
+import { getIssueBundle, institution, type Locale } from '../lib/issueData';
 import { issueMark } from '../lib/format';
 import { path, switchLocale, withBase, type RouteKey } from '../lib/routes';
 
@@ -42,9 +42,10 @@ const item = (key: RouteKey, label: string): NavItem => ({
 });
 
 // Three logical tiers (ADR-002 §1). L3 "Submit Paper" is an action that
-// resolves to the CFP page (single source for submission terms, Q4).
+// resolves to the CFP page (single source for submission terms, Q4). Home is
+// carried by the brand lockup, so L1 leads with About (ADR-003 §3.2 / Q5).
 const level1: NavItem[] = [
-  item('home', dict.nav.home),
+  item('about', dict.nav.home),
   item('archive', dict.nav.archive),
   item('resources', dict.nav.resources),
 ];
@@ -60,7 +61,13 @@ const level3: NavItem[] = [
   item('register', dict.nav.register),
 ];
 
-const publication = 'SSPCZ';
+// Name-primary brand lockup (ADR-003 §3.2), locale-aware. zh leads with the
+// native name and tags the romanized acronym + founding year; en leads with the
+// recognizable acronym and expands to the full name.
+const brand =
+  locale === 'zh'
+    ? { primary: dict.siteName, secondary: `SSPCZ · SINCE ${institution.founded}` }
+    : { primary: 'SSPCZ', secondary: dict.siteName };
 
 const alternates = Astro.site
   ? {
@@ -73,7 +80,8 @@ const alternates = Astro.site
 <BaseLayout title={title} description={description} lang={locale} alternates={alternates}>
   <EditorialGrid>
     <RunningHeader
-      publication={publication}
+      primary={brand.primary}
+      secondary={brand.secondary}
       issue={issueMark(bundle.issue.issue, locale)}
       year={bundle.issue.year}
       homeHref={path(locale, 'home')}

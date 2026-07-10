@@ -1,26 +1,34 @@
 ---
 /**
- * Pattern (layout-level): persistent publication metadata framing the
- * viewport like a physical journal page (RFC-300 §2.4). The masthead pairs
- * the official SSPCZ logo with the publication wordmark; the year is
- * chronological metadata drawn from issue frontmatter (ADR-001 §2.1).
+ * Pattern (layout-level): persistent publication masthead framing the viewport
+ * like a physical journal page (RFC-300 §2.4). Renders the name-primary brand
+ * lockup (ADR-003 §3.2): the official SSPCZ logo beside a stacked wordmark —
+ * the institution's name as the primary line, with the acronym + founding year
+ * as a subordinate tertiary tag. The issue mark is chronological metadata drawn
+ * from issue frontmatter (ADR-001 §2.1).
  */
 interface Props {
-  publication: string;
+  /** Primary identity line (native name in zh; the acronym in en). */
+  primary: string;
+  /** Subordinate tertiary tag (acronym · since-year in zh; full name in en). */
+  secondary: string;
   issue: string;
   year: number | string;
   homeHref?: string;
   logoSrc?: string;
 }
 
-const { publication, issue, year, homeHref, logoSrc } = Astro.props;
+const { primary, secondary, issue, year, homeHref, logoSrc } = Astro.props;
 const Tag = homeHref ? 'a' : 'span';
 ---
 
 <header class="running-header">
   <Tag class="running-header__brand" href={homeHref}>
-    {logoSrc && <img class="running-header__logo" src={logoSrc} alt={publication} width="120" height="27" />}
-    <span class="running-header__wordmark" aria-hidden="true">{publication}</span>
+    {logoSrc && <img class="running-header__logo" src={logoSrc} alt="" width="120" height="42" />}
+    <span class="running-header__lockup">
+      <span class="running-header__wordmark">{primary}</span>
+      <span class="running-header__tag">{secondary}</span>
+    </span>
   </Tag>
   <nav class="running-header__nav" aria-label="Site">
     <slot />
@@ -60,11 +68,38 @@ const Tag = homeHref ? 'a' : 'span';
   .running-header__logo {
     display: block;
     width: auto;
-    height: 1.7em;
+    height: 2.5rem;
     mix-blend-mode: multiply;
   }
 
+  .running-header__lockup {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    line-height: var(--leading-tight);
+  }
+
+  /* Primary line: the institution name. CJK by default; Latin under :lang(en). */
   .running-header__wordmark {
+    font-family: var(--font-serif-cjk);
+    font-size: var(--text-md);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+
+  :global(html:lang(en)) .running-header__wordmark {
+    font-family: var(--font-serif-latin);
+  }
+
+  /* Tertiary tag: --color-text-muted (not the fainter mock grey) keeps it AA
+     legible at this size while staying subordinate to the name. */
+  .running-header__tag {
+    font-family: var(--font-serif-latin);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-text-muted);
     white-space: nowrap;
   }
 
@@ -85,8 +120,9 @@ const Tag = homeHref ? 'a' : 'span';
       padding: var(--space-3) var(--page-gutter-narrow);
     }
 
-    /* The wordmark is verbose on small screens; the logo carries identity. */
-    .running-header__logo + .running-header__wordmark {
+    /* The tertiary tag is verbose on small screens; the name + logo carry
+       identity. */
+    .running-header__tag {
       display: none;
     }
   }
