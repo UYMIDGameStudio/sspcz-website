@@ -6,7 +6,7 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 
-const BASE = '/sspcz-website';
+const BASE = '';
 const ROOT = './dist';
 const PORT = 4173;
 

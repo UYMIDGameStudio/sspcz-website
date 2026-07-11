@@ -3,14 +3,14 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import yaml from '@rollup/plugin-yaml';
 
-// Canonical origin + base path.
-// 当启用自定义域名后，SITE 需指向自定义域名绝对地址，BASE 必须重置为空字符串。
+// Canonical origin + base path. The custom domain serves from the root;
+// BASE stays '' unless the site ever moves back under a sub-path.
 const SITE = 'https://sspcz.org';
 const BASE = '';
 
 /** Legacy static-site URLs → permanent archival homes (ADR-001 Phase 4).
- * These map to issue-003 specifically (not "current"): the legacy pages
- * WERE the third session, so the mapping never changes. */
+ *  These map to issue-003 specifically (not "current"): the legacy pages
+ *  WERE the third session, so the mapping never changes. */
 const LEGACY_REDIRECTS = Object.fromEntries(
   Object.entries({
     '/third-session.html': '/issue-003/',
@@ -30,13 +30,14 @@ const LEGACY_REDIRECTS = Object.fromEntries(
 
 export default defineConfig({
   site: SITE,
-  base: BASE,
+  base: BASE || '/',
   output: 'static',
   trailingSlash: 'ignore',
   i18n: {
     defaultLocale: 'zh',
     locales: ['zh', 'en'],
   },
+  redirects: LEGACY_REDIRECTS,
   integrations: [
     sitemap({
       i18n: {
