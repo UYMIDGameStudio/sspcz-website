@@ -21,24 +21,36 @@ pastSpeakers:
     givenName:
       zh: "然"
       en: "Ran"
+    honorific:
+      zh: "教授"
+      en: "Prof."
   - familyName:
       zh: "吴"
       en: "Wu"
     givenName:
       zh: "静"
       en: "Jing"
+    honorific:
+      zh: "教授"
+      en: "Prof."
   - familyName:
       zh: "胡"
       en: "Hu"
     givenName:
       zh: "星铭"
       en: "Xingming"
+    honorific:
+      zh: "教授"
+      en: "Prof."
   - familyName:
       zh: "林"
       en: "Lin"
     givenName:
       zh: "玮"
       en: "Wei"
+    honorific:
+      zh: "教授"
+      en: "Prof."
 
 pastSpeakersNote:
   zh: "前两届大会特邀嘉宾（排名不分先后）。本届嘉宾信息将陆续公布。"

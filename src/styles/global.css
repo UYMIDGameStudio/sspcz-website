@@ -59,6 +59,15 @@ a:hover {
   border-bottom: 1px solid var(--color-line);
 }
 
+/* Italic Latin subtitle under a section's CJK heading (in the margin track). */
+.margin-sub {
+  margin-top: var(--space-2);
+  font-family: var(--font-serif-latin);
+  font-style: italic;
+  font-size: var(--type-metadata);
+  color: var(--color-text-muted);
+}
+
 /* Full-bleed contextual band (ADR-003 §3.8): the surface spans the viewport
    while its content stays in the centered column. Wrap a Marginalia to give a
    section the ice-blue or ink paper. */
@@ -119,17 +128,6 @@ a:hover {
   line-height: var(--leading-loose);
 }
 
-.masthead__facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-8);
-  margin: var(--space-6) 0 0;
-  padding: 0;
-  font-size: var(--type-metadata);
-  color: var(--color-text-muted);
-  list-style: none;
-}
-
 @media (width <= 56.25em) {
   .masthead {
     padding: var(--space-12) var(--page-gutter-narrow);
@@ -184,15 +182,6 @@ a:hover {
   .page--institution .masthead {
     padding-bottom: var(--space-16);
   }
-}
-
-/* Italic Latin subtitle under a section's CJK heading (in the margin track). */
-.margin-sub {
-  margin-top: var(--space-2);
-  font-family: var(--font-serif-latin);
-  font-style: italic;
-  font-size: var(--type-metadata);
-  color: var(--color-text-muted);
 }
 
 /* ---------- action buttons (ADR-003) ----------

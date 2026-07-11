@@ -5,7 +5,7 @@ lang: zh
 type: md
 version: "1.0"
 updatedDate: 2026-04-19
-order: 6
+order: 4
 ---
 
 > 「Hack the Question. Rock the Mind.」

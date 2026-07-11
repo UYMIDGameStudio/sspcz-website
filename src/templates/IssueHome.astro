@@ -41,7 +41,7 @@ const fullTitle = issueTitle(issue.issue, locale, dict.siteName);
 const title = `${fullTitle} · ${pick(locale, issue.theme)}`;
 const description = `${fullTitle} · ${quotedTheme(locale, issue.theme)} · ${dateRange(issue.dates.start, issue.dates.end, locale)}`;
 const joiner = ' · ';
-const duration = locale === 'zh' ? `${issue.dates.durationDays} 天` : `${issue.dates.durationDays} days`;
+const duration = `${issue.dates.durationDays} ${ci.daysUnit}`;
 
 const facts = [
   { label: ci.facts.period, value: `${dateRange(issue.dates.start, issue.dates.end, locale)} · ${duration}` },

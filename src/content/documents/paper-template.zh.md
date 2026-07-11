@@ -6,5 +6,5 @@ type: pdf
 fileUrl: /documents/paper-template.pdf
 version: "1.0"
 updatedDate: 2026-02-10
-order: 2
+order: 1
 ---

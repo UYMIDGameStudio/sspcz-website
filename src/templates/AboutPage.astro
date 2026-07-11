@@ -20,8 +20,8 @@ import {
   currentIssueId,
   institution,
   pick,
+  speakerName,
   type Locale,
-  type Speaker,
 } from '../lib/issueData';
 import { issueTitle, paddedIssue, quotedTheme } from '../lib/format';
 import { path } from '../lib/routes';
@@ -62,15 +62,8 @@ const pastEditions = currentIssue.committee.pastSessions.map((s) => ({
 }));
 const editions = [currentEdition, ...pastEditions].sort((a, b) => b.n - a.n);
 
-/* §03 — past guest scholars, composed from atomic name units. */
-const fullName = (s: Speaker): string => {
-  const fam = pick(locale, s.familyName);
-  const giv = pick(locale, s.givenName);
-  const name = locale === 'en' ? `${fam} ${giv}` : `${fam}${giv}`;
-  if (!s.honorific) return name;
-  const hon = pick(locale, s.honorific);
-  return locale === 'en' ? `${name}, ${hon}` : `${name} ${hon}`;
-};
+/* §03 — past guest scholars, via the shared name formatter (single voice
+   with CommitteePage). */
 const speakers = currentIssue.speakers.pastSpeakers;
 
 const title = `${dict.nav.home} · ${dict.siteName}`;
@@ -156,7 +149,7 @@ const title = `${dict.nav.home} · ${dict.siteName}`;
     </Fragment>
     <div>
       <ul class="speakers">
-        {speakers.map((s) => <li class="speakers__chip">{fullName(s)}</li>)}
+        {speakers.map((s) => <li class="speakers__chip">{speakerName(locale, s)}</li>)}
       </ul>
       <p class="speakers__note">{pick(locale, currentIssue.speakers.pastSpeakersNote)}</p>
     </div>
