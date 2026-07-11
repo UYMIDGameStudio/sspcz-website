@@ -2,6 +2,7 @@
 import '../styles/tokens.css';
 import '../styles/global.css';
 import type { Locale } from '../lib/issueData';
+import { withBase } from '../lib/routes';
 
 interface Props {
   title: string;
@@ -21,6 +22,9 @@ const canonical = alternates ? (lang === 'zh' ? alternates.zh : alternates.en) :
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <link rel="icon" href={withBase('/favicon.ico')} sizes="32x32" />
+    <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
     {description && <meta name="description" content={description} />}
     {canonical && <link rel="canonical" href={canonical} />}
     {

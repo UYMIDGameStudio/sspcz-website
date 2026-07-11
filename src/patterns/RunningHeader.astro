@@ -24,7 +24,7 @@ const Tag = homeHref ? 'a' : 'span';
 
 <header class="running-header">
   <Tag class="running-header__brand" href={homeHref}>
-    {logoSrc && <img class="running-header__logo" src={logoSrc} alt="" width="120" height="42" />}
+    {logoSrc && <img class="running-header__logo" src={logoSrc} alt="" width="40" height="40" />}
     <span class="running-header__lockup">
       <span class="running-header__wordmark">{primary}</span>
       <span class="running-header__tag">{secondary}</span>
@@ -65,11 +65,12 @@ const Tag = homeHref ? 'a' : 'span';
     white-space: nowrap;
   }
 
+  /* The brand symbol ships with a transparent background (public/brand/),
+     so it sits on any paper surface without blend tricks. */
   .running-header__logo {
     display: block;
     width: auto;
     height: 2.5rem;
-    mix-blend-mode: multiply;
   }
 
   .running-header__lockup {
