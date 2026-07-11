@@ -37,7 +37,6 @@ export default defineConfig({
     defaultLocale: 'zh',
     locales: ['zh', 'en'],
   },
-  redirects: LEGACY_REDIRECTS,
   integrations: [
     sitemap({
       i18n: {
