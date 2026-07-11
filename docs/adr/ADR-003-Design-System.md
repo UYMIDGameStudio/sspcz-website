@@ -230,4 +230,17 @@ This ADR explicitly does **not**:
 
 ---
 
+## 7. Amendments
+
+- **A1 — component retirements (Phase 7.4 aftermath; approved by owner).**
+  `EditionNumeral` is deleted, absorbed by `EditionCard` as §3.5 already
+  prescribed. `SessionEntry` and `Dialectic` are retired and deleted: the
+  approved Program design renders sessions through the pure-CSS `Timeline`
+  (§3.4 Q4), which carries the time/kind/title/abstract voice itself, leaving
+  the Dialectic block without a consumer. Should a future surface need the
+  statement/response voice again, it re-enters through the component gate —
+  not by resurrecting the old files.
+
+---
+
 *Implementation may begin only after explicit approval of this finalized ADR.*

@@ -8,7 +8,7 @@ export default {
     committee: 'Organizing committee of the SSPCZ: hosts, co-organizers, academic support and supporting societies.',
     policies: 'Paper review policy and academic integrity rules of the SSPCZ.',
     register: 'Register for the Secondary School Philosophy Conference of Zhejiang.',
-    resources: 'SSPCZ resource hub: permanent documents and media — paper guidelines, templates, review policies and code of conduct.',
+    resources: 'SSPCZ resource hub: permanent documents and media — the paper template, review policies and this session\u2019s theme explanations.',
   },
 
   nav: {
@@ -47,12 +47,11 @@ export default {
     heroLead:
       'This session again focuses on middle and high school students across Zhejiang. Through three pillars — student paper presentations, guest lectures and a philosophy hackathon — it brings philosophy to every participant and kindles the spirit of inquiry in young minds.',
     themeLabel: "This year's theme",
-    durationNote: 'four days',
+    daysUnit: 'days',
     fullListNote: 'Full list on the Committee page',
     pillarsTitle: 'Three Pillars',
     participantsTitle: 'Who Attends',
     organizersTitle: 'Hosts & Support',
-    pastSessionsTitle: 'Past Sessions',
     morePending: '(more to be announced)',
     letterTitle: 'Organizers’ Letter',
     facts: { period: 'Dates', location: 'Location', audience: 'For', auditors: 'Auditors' },
@@ -134,6 +133,7 @@ export default {
       roleAuditor: 'Auditing member',
       roleSubmitter: 'Paper submitter',
     },
+    /* The keys below are reserved for the form backend flow (ADR-001 §6, pending). */
     validationPrefix: 'Please fill in: ',
     submit: 'Submit',
     submitting: 'Submitting…',
@@ -147,7 +147,7 @@ export default {
 
   resources: {
     title: 'Resources',
-    lead: 'Permanent institutional resources for authors and participants — paper guidelines, templates, review policies and codes of conduct, alongside media from past sessions. These assets belong to the academic community across editions, not to any single conference.',
+    lead: 'Permanent institutional resources for authors and participants — the paper template, review policies and this session\u2019s theme explanations, alongside media from past sessions. These assets belong to the academic community across editions, not to any single conference.',
     documentsTitle: 'Documents',
     exhibitionTitle: 'Exhibition',
     empty: 'Nothing here yet.',
@@ -157,7 +157,6 @@ export default {
       openLink: 'Open link',
       version: 'Version',
       updated: 'Updated',
-      previewUnavailable: 'Inline preview is unavailable for this document — please download it.',
     },
     typeLabels: {
       pdf: 'PDF',

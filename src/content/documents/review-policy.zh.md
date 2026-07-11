@@ -6,5 +6,5 @@ type: link
 fileUrl: /issue-003/policies/
 version: "2.0"
 updatedDate: 2026-02-01
-order: 3
+order: 2
 ---
