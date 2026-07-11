@@ -150,10 +150,14 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
 <style>
   /* Hosted registration (Huodongxing) on the secondary paper; the widget is
      themed to the same surface via its embedded= color parameter. */
+  /* Rounded corners by owner request — matching the widget's own card
+     radius; the rest of the site keeps its square hairline grammar. */
   .hosted {
     padding: var(--space-4);
+    overflow: hidden;
     background: var(--surface-secondary);
     border: 1px solid var(--color-line-strong);
+    border-radius: 0.75rem;
   }
 
   .hosted__frame {
@@ -162,6 +166,7 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
     height: 43.75rem;
     background: var(--surface-secondary);
     border: 0;
+    border-radius: 0.5rem;
   }
 
   .hosted__fallback {
