@@ -84,8 +84,10 @@ a:hover {
 }
 
 /* Contrast guard (ADR-003 §3.8): on the ice-blue paper, muted greys drop below
-   AA — the section marker and Latin subtitle step up to --color-text. */
+   AA — the section marker, Latin subtitle and record labels step up to
+   --color-text. (Element-qualified to out-specify scoped component styles.) */
 .band--secondary p.section-marker,
+.band--secondary p.record__label,
 .band--secondary .margin-sub {
   color: var(--color-text);
 }
