@@ -107,6 +107,8 @@ export default {
   register: {
     lead: '大会在杭州举行，面向初高中学生开放报名，大学生与教师可以旁听身份参与。报名成功后，组委会将通过你留下的联系方式发送参会通知。',
     cfpNote: '想在大会上讲演论文？请先阅读征稿启事。',
+    serviceNote: '报名通道由活动行提供；如页面未加载，请直接打开报名页。',
+    openExternal: '在活动行中打开报名页',
     contactLabel: '组委会联络',
     fields: {
       name: '姓名',

@@ -109,6 +109,8 @@ export default {
   register: {
     lead: 'The conference takes place in Hangzhou. Registration is open to middle and high school students; university students and teachers may attend as auditors. After you register, the committee will send conference updates via the contact you leave.',
     cfpNote: 'Want to present a paper? Read the Call for Papers first.',
+    serviceNote: 'Registration is handled on Huodongxing; if the widget fails to load, open the page directly.',
+    openExternal: 'Open the registration page on Huodongxing',
     contactLabel: 'Committee contact',
     fields: {
       name: 'Name',

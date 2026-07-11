@@ -40,6 +40,9 @@ const issueSchema = z.object({
   }),
   audience: z.object({ primary: localized, auditors: localized }),
   contact: z.object({ email: z.string().email() }),
+  registration: z
+    .object({ embed: z.string().url(), page: z.string().url() })
+    .optional(),
   cfp: z.object({
     open: z.object({ year: z.number().int(), month: z.number().int() }),
     deadline: z.object({ year: z.number().int(), month: z.number().int() }),

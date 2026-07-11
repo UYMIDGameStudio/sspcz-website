@@ -31,6 +31,10 @@ audience:
     zh: "大学生与教师可旁听"
     en: "University students and teachers may audit"
 
+registration:
+  embed: "https://www.huodongxing.com/event/8868555534200?view=tickets&embedded=d0e7f5"
+  page: "https://www.huodongxing.com/event/8868555534200"
+
 contact:
   email: "sspcz2026@163.com"
 
