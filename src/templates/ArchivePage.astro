@@ -1,23 +1,28 @@
 ---
 /**
- * Template: the institutional Archive (ADR-002 §1, Q2). A standalone
- * L1 page listing every edition, derived from getCollection('conference')
- * — extending it is a content-only change (a new issue folder), never a
- * template edit.
+ * Template: the institutional Archive (ADR-002 §1, Q2) — a standalone L1
+ * register of every session. Two archival sources, deduplicated by session
+ * number: editions published on this platform (issue bundles, linked to
+ * their permanent homes, newest first) and the committee's pastSessions
+ * record — the SSOT for editions that predate the platform. Extending the
+ * archive is a data-only change (a new issue folder, or a new pastSessions
+ * entry), never a template edit.
  */
-import { getCollection } from 'astro:content';
-import InstitutionLayout from '../layouts/InstitutionLayout.astro';
+import DataLayout from '../layouts/DataLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
+import RecordRow from '../components/RecordRow.astro';
 import { t } from '../i18n';
 import {
+  currentIssue,
   currentIssueId,
   getIssueBundle,
-  issueIdFor,
+  institution,
   issueIds,
+  pick,
   type Locale,
 } from '../lib/issueData';
-import { issueTitle, quotedTheme } from '../lib/format';
+import { issueTitle, paddedIssue, quotedTheme, sessionLabel } from '../lib/format';
 import { path } from '../lib/routes';
 
 interface Props {
@@ -26,25 +31,65 @@ interface Props {
 
 const { locale } = Astro.props;
 const dict = t(locale);
+const labels = dict.committee.labels;
+const joiner = locale === 'zh' ? '、' : ', ';
 
-/* Every edition referenced anywhere in the collection, newest first. */
-const docs = await getCollection('conference');
-const editionYears = new Map<number, number>();
-for (const doc of docs) {
-  if (!editionYears.has(doc.data.issue)) editionYears.set(doc.data.issue, doc.data.year);
+interface Row {
+  label: string;
+  value: string;
 }
-const editions = [...editionYears.entries()]
-  .map(([n, year]) => {
-    const id = issueIdFor(n);
-    const published = issueIds.includes(id);
-    return { n, year, id, published, theme: published ? getIssueBundle(id).issue.theme : undefined };
-  })
-  .sort((a, b) => b.n - a.n);
+interface Edition {
+  n: number;
+  year: number;
+  current: boolean;
+  href?: string;
+  theme?: { zh: string; en: string };
+  summary?: string;
+  rows: Row[];
+}
 
+const names = (list?: { name: { zh: string; en: string } }[]) =>
+  list ? list.map((o) => pick(locale, o.name)).join(joiner) : '';
+
+/* Platform editions — linked to their permanent homes. */
+const platformEditions: Edition[] = issueIds.map((id) => {
+  const b = getIssueBundle(id);
+  return {
+    n: b.issue.issue,
+    year: b.issue.year,
+    current: id === currentIssueId,
+    href: path(locale, 'issue', id),
+    theme: b.issue.theme,
+    rows: [
+      { label: labels.hosts, value: names(b.committee.hosts) },
+      { label: labels.coOrganizers, value: names(b.committee.coOrganizers) },
+      { label: labels.academicSupport, value: names(b.committee.academicSupport) },
+    ],
+  };
+});
+
+/* Pre-platform editions — the committee's archival record. */
+const platformNumbers = new Set(platformEditions.map((e) => e.n));
+const pastEditions: Edition[] = currentIssue.committee.pastSessions
+  .filter((s) => !platformNumbers.has(s.session))
+  .map((s) => {
+    const rows: Row[] = [{ label: labels.hosts, value: names(s.hosts) }];
+    if (s.coOrganizers) rows.push({ label: labels.coOrganizers, value: names(s.coOrganizers) });
+    rows.push({ label: labels.supporters, value: names(s.supporters) });
+    return {
+      n: s.session,
+      year: institution.founded + (s.session - 1),
+      current: false,
+      summary: pick(locale, s.summary),
+      rows,
+    };
+  });
+
+const editions = [...platformEditions, ...pastEditions].sort((a, b) => b.n - a.n);
 const title = `${dict.nav.archive} · ${dict.siteName}`;
 ---
 
-<InstitutionLayout
+<DataLayout
   locale={locale}
   route="archive"
   issueId={currentIssueId}
@@ -52,101 +97,96 @@ const title = `${dict.nav.archive} · ${dict.siteName}`;
   description={dict.archive.metaDescription}
 >
   <section class="masthead">
-    <p class="masthead__kicker">Archive · Editions</p>
+    <p class="masthead__kicker">Archive · Since {institution.founded}</p>
     <h1 class="masthead__title">{dict.nav.archive}</h1>
     <p class="masthead__lead">{dict.archive.lead}</p>
   </section>
 
-  <Marginalia>
-    <Fragment slot="margin">
-      <SectionCounter label="Editions" />
-      <h2>{dict.home.archiveTitle}</h2>
-    </Fragment>
-    <ol class="archive">
-      {
-        editions.map((edition) => (
-          <li class="archive__item">
-            <span class="archive__year">{edition.year}</span>
-            <span class="archive__body">
-              <span class="archive__label">
-                {edition.published ? (
-                  <a href={path(locale, 'issue', edition.id)}>
-                    {issueTitle(edition.n, locale, dict.siteName)}
-                  </a>
-                ) : (
-                  issueTitle(edition.n, locale, dict.siteName)
-                )}
-              </span>
-              {edition.theme && (
-                <span class="archive__theme">{quotedTheme(locale, edition.theme)}</span>
-              )}
-            </span>
-            <span class="archive__status">
-              {edition.id === currentIssueId
-                ? dict.home.currentMark
-                : edition.published
-                  ? ''
-                  : dict.archive.upcoming}
-            </span>
-          </li>
-        ))
-      }
-    </ol>
-  </Marginalia>
-</InstitutionLayout>
+  {
+    editions.map((e) => (
+      <div class:list={[{ 'band band--secondary': e.current }]}>
+        <Marginalia>
+          <Fragment slot="margin">
+            <SectionCounter label={`${e.year}`} />
+            <p class="edition__numeral" aria-hidden="true">
+              {paddedIssue(e.n)}
+            </p>
+            <h2 class="edition__title">{issueTitle(e.n, locale, dict.siteName)}</h2>
+            <p class="margin-sub">{sessionLabel(e.n, 'en')} · {e.year}</p>
+          </Fragment>
+          <div>
+            {e.theme && (
+              <p class="edition__theme">
+                {dict.currentIssue.themeLabel} · {quotedTheme(locale, e.theme)}
+              </p>
+            )}
+            {e.summary && <p class="edition__summary">{e.summary}</p>}
+            {e.rows.map((r) => (
+              <RecordRow label={r.label}>{r.value}</RecordRow>
+            ))}
+            {e.href && (
+              <p class="edition__enter">
+                {e.current && <span class="edition__mark">{dict.home.currentMark}</span>}
+                <a href={e.href}>{dict.actions.viewDetails} →</a>
+              </p>
+            )}
+          </div>
+        </Marginalia>
+      </div>
+    ))
+  }
+</DataLayout>
 
 <style>
-  .archive {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .archive__item {
-    display: grid;
-    grid-template-columns: 5rem 1fr auto;
-    gap: var(--space-6);
-    align-items: baseline;
-    padding: var(--space-6) 0;
-    border-bottom: 1px solid var(--color-line);
-  }
-
-  .archive__year {
+  .edition__numeral {
+    margin-top: var(--space-3);
     font-family: var(--font-serif-latin);
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
+    font-size: var(--text-2xl);
+    line-height: var(--leading-none);
+    color: var(--color-ink);
   }
 
-  .archive__label {
+  .edition__title {
+    margin-top: var(--space-2);
+    font-size: var(--type-heading-sub);
+  }
+
+  .edition__theme {
+    padding-bottom: var(--space-4);
     font-family: var(--font-serif-cjk);
     font-size: var(--text-md);
     color: var(--color-ink);
   }
 
-  :global(html:lang(en)) .archive__label {
+  :global(html:lang(en)) .edition__theme {
     font-family: var(--font-serif-latin);
   }
 
-  .archive__theme {
-    margin-left: var(--space-2);
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
+  .edition__summary {
+    max-width: var(--measure);
+    padding-bottom: var(--space-4);
+    color: var(--color-text);
+    line-height: var(--leading-loose);
   }
 
-  .archive__status {
+  .edition__enter {
+    display: flex;
+    gap: var(--space-4);
+    align-items: baseline;
+    margin-top: var(--space-6);
+    font-size: var(--type-metadata);
+  }
+
+  .edition__enter a {
+    color: var(--color-accent-deep);
+    text-decoration: underline;
+  }
+
+  .edition__mark {
+    padding: var(--space-1) var(--space-3);
     font-size: var(--text-xs);
     letter-spacing: var(--tracking-wide);
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-  }
-
-  @media (width <= 56.25em) {
-    .archive__item {
-      grid-template-columns: 1fr auto;
-    }
-
-    .archive__year {
-      grid-column: 1 / -1;
-    }
+    color: var(--color-text);
+    border: 1px solid var(--color-line-strong);
   }
 </style>
