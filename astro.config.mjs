@@ -3,14 +3,14 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import yaml from '@rollup/plugin-yaml';
 
-// Canonical origin + base path. Currently the GitHub Pages project URL;
-// when a custom domain is adopted, change SITE and set BASE to ''.
-const SITE = 'https://uymidgamestudio.github.io';
-const BASE = '/sspcz-website';
+// Canonical origin + base path.
+// 当启用自定义域名后，SITE 需指向自定义域名绝对地址，BASE 必须重置为空字符串。
+const SITE = 'https://sspcz.org';
+const BASE = '';
 
 /** Legacy static-site URLs → permanent archival homes (ADR-001 Phase 4).
- *  These map to issue-003 specifically (not "current"): the legacy pages
- *  WERE the third session, so the mapping never changes. */
+ * These map to issue-003 specifically (not "current"): the legacy pages
+ * WERE the third session, so the mapping never changes. */
 const LEGACY_REDIRECTS = Object.fromEntries(
   Object.entries({
     '/third-session.html': '/issue-003/',
