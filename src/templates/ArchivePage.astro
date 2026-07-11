@@ -78,7 +78,7 @@ const pastEditions: Edition[] = currentIssue.committee.pastSessions
     rows.push({ label: labels.supporters, value: names(s.supporters) });
     return {
       n: s.session,
-      year: institution.founded + (s.session - 1),
+      year: s.year,
       current: false,
       summary: pick(locale, s.summary),
       rows,

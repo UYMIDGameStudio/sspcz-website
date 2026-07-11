@@ -36,7 +36,7 @@ export default {
   home: {
     heroLead:
       'An open academic forum for middle and high school students passionate about philosophy — student paper presentations, guest lectures and a philosophy hackathon. A festival of ideas, where young minds roam free in the ocean of philosophy.',
-    coverKicker: 'SSPCZ · Since 2024',
+    coverKicker: 'SSPCZ · Since 2022',
     tagline: 'A philosophical academic community for secondary school students',
     currentTitle: 'Current Conference',
     archiveTitle: 'Archive',
@@ -71,7 +71,7 @@ export default {
 
   archive: {
     metaDescription: 'Archive of the SSPCZ: theme, year and hosts of every edition.',
-    lead: 'The archive of the Secondary School Philosophy Conference of Zhejiang since its founding in 2024. Each edition is preserved as a permanently readable publication, with its theme, year and organizational lineage intact.',
+    lead: 'The archive of the Secondary School Philosophy Conference of Zhejiang since its founding in 2022. Each edition is preserved as a permanently readable publication, with its theme, year and organizational lineage intact.',
     upcoming: 'In preparation',
   },
 
@@ -177,7 +177,7 @@ export default {
   closing: {
     motto: 'Think with us — let ideas happen',
     mottoLatin: 'Sapere aude — dare to know.',
-    copyright: '© 2024–2026 SSPCZ Organizing Committee',
+    copyright: '© 2022–2026 SSPCZ Organizing Committee',
   },
 
 } as const;

@@ -69,7 +69,7 @@ export default {
 
   archive: {
     metaDescription: '浙江中学生哲学大会历届档案：各届主题、年份与主办方一览。',
-    lead: '浙江中学生哲学大会自 2024 年创办以来的历届档案。每届大会作为一份可长期查阅的出版物存档，主题、年份与组织沿革一并保留。',
+    lead: '浙江中学生哲学大会自 2022 年创办以来的历届档案。每届大会作为一份可长期查阅的出版物存档，主题、年份与组织沿革一并保留。',
     upcoming: '筹备中',
   },
 
@@ -175,7 +175,7 @@ export default {
   closing: {
     motto: '与我们一起，让思想发生',
     mottoLatin: 'Sapere aude — dare to know.',
-    copyright: '© 2024–2026 SSPCZ 组委会',
+    copyright: '© 2022–2026 SSPCZ 组委会',
   },
 
 } as const;

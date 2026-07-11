@@ -102,6 +102,7 @@ const committeeSchema = z.object({
   pastSessions: z.array(
     z.object({
       session: z.number().int().positive(),
+      year: z.number().int(),
       summary: localized,
       hosts: z.array(orgName),
       coOrganizers: z.array(orgName).optional(),

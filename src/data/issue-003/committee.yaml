@@ -147,6 +147,7 @@ supportingSocieties:
 
 pastSessions:
   - session: 1
+    year: 2023
     summary:
       zh: "由杭州外国语学校 BOMB 哲学社主办，严州中学冰火文学社、杭州周行学社等十余个社团联合支持。"
       en: "Hosted by the BOMB Philosophy Society of Hangzhou Foreign Languages School, with joint support from a dozen student societies across Zhejiang."
@@ -192,6 +193,7 @@ pastSessions:
           zh: "杭外国学社"
           en: "Chinese Classics Society, HFLS"
   - session: 2
+    year: 2025
     summary:
       zh: "由第八届全国中学生哲学大会组委会、第二届浙江中学生哲学大会组委会联合主办，杭州全球青年人才中心等联合协办。"
       en: "Co-hosted by the organizing committees of the 8th National Secondary School Philosophy Conference and the 2nd SSPCZ, co-organized by Hangzhou Global Youth Talent Center and others."

@@ -18,7 +18,6 @@ import { t } from '../i18n';
 import {
   currentIssue,
   currentIssueId,
-  institution,
   pick,
   speakerName,
   type Locale,
@@ -41,7 +40,7 @@ const { Content: About } = await render(aboutEntry);
 /* §02 — every edition, newest first, with its narrative summary. The current
    edition is the live pointer (its lineage is its host list); past editions
    are the committee's pastSessions record — the SSOT for editions that predate
-   the content collection. Years run annually from the founding year. */
+   the content collection, each carrying its recorded year. */
 const currentHosts = currentIssue.committee.hosts.map((h) => pick(locale, h.name)).join(' · ');
 
 const currentEdition = {
@@ -54,7 +53,7 @@ const currentEdition = {
 };
 const pastEditions = currentIssue.committee.pastSessions.map((s) => ({
   n: s.session,
-  year: institution.founded + (s.session - 1),
+  year: s.year,
   id: '',
   current: false,
   theme: undefined as { zh: string; en: string } | undefined,
