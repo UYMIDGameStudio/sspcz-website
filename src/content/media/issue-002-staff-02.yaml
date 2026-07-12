@@ -1,0 +1,13 @@
+# Photo record — the date is a year-precision sort key (datePrecision: year);
+# the exhibition displays the year only.
+type: image
+src: /media/issue-002-staff-02.jpg
+caption:
+  zh: 第二届大会工作照（二）
+  en: Behind the scenes at the Second Session (II)
+credit:
+  zh: 组委会宣传组
+  en: SSPCZ Publicity Team
+date: 2025-01-12
+datePrecision: year
+issueRef: issue-002

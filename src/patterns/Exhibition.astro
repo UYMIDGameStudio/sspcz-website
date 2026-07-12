@@ -17,6 +17,7 @@ interface MediaItem {
   caption: { zh: string; en: string };
   credit: { zh: string; en: string };
   date: Date;
+  datePrecision: 'day' | 'year';
 }
 
 interface Props {
@@ -43,7 +44,14 @@ const d = t(locale).resources.exhibition;
           <p class="exhibit__type">{d.typeLabels[item.type]}</p>
           <p class="exhibit__text">{item.caption[locale]}</p>
           <p class="exhibit__meta">
-            {d.credit}: {item.credit[locale]} · <time>{longDate(item.date, locale)}</time>
+            {d.credit}: {item.credit[locale]} ·{' '}
+            <time>
+              {item.datePrecision === 'year'
+                ? locale === 'zh'
+                  ? `${item.date.getUTCFullYear()}年`
+                  : `${item.date.getUTCFullYear()}`
+                : longDate(item.date, locale)}
+            </time>
           </p>
         </figcaption>
       </figure>

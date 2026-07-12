@@ -63,6 +63,8 @@ const media = defineCollection({
     caption: z.object({ zh: z.string(), en: z.string() }),
     credit: z.object({ zh: z.string(), en: z.string() }),
     date: z.coerce.date(),
+    /* 'year': the record only carries year fidelity; display renders the year. */
+    datePrecision: z.enum(['day', 'year']).default('day'),
     issueRef: z.string().regex(/^issue-\d{3}$/),
   }),
 });

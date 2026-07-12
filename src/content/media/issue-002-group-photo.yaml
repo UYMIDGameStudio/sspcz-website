@@ -1,0 +1,13 @@
+# Photo record — the date is a year-precision sort key (datePrecision: year);
+# the exhibition displays the year only.
+type: image
+src: /media/issue-002-group-photo.jpg
+caption:
+  zh: 第二届大会合照
+  en: Group photo of the Second Session
+credit:
+  zh: 组委会宣传组
+  en: SSPCZ Publicity Team
+date: 2025-01-14
+datePrecision: year
+issueRef: issue-002

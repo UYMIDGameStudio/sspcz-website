@@ -1,0 +1,13 @@
+# Photo record — the date is a year-precision sort key (datePrecision: year);
+# the exhibition displays the year only.
+type: image
+src: /media/issue-002-opening-partner-speech.jpg
+caption:
+  zh: 第二届大会开幕式 · 合作方杭州全球青年人才中心发言
+  en: Opening ceremony of the Second Session — address by partner Hangzhou Global Youth Talent Center
+credit:
+  zh: 组委会宣传组
+  en: SSPCZ Publicity Team
+date: 2025-01-16
+datePrecision: year
+issueRef: issue-002
