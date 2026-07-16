@@ -40,6 +40,8 @@ export default defineConfig({
   redirects: LEGACY_REDIRECTS,
   integrations: [
     sitemap({
+      // The /b/ bookmark landing pages are noindex print companions.
+      filter: (page) => !page.includes('/b/'),
       i18n: {
         defaultLocale: 'zh',
         locales: { zh: 'zh-CN', en: 'en' },
