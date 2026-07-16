@@ -43,6 +43,7 @@
   --color-text-faint: #8194a3;
   --color-text-on-dark: #e8edf3;
   --color-text-on-dark-muted: #9db4c6;
+
   /* ---- bookmark series (print companion 《我还是昨天的我吗》, /b/) ----
      A physical-product palette: warm paper, 墨青 ink, 群青 accent. Namespaced
      so it never leaks into the site's Paper System. */
@@ -50,6 +51,8 @@
   --bm-ink: #16243d;
   --bm-accent: #2e4e8f;
   --bm-line: #d9d4ca;
+  --bm-font-serif: "Noto Serif SC", "Source Han Serif SC", serif;
+  --bm-font-serif-latin: georgia, serif;
   --color-alert: #9c4a33;
   --color-alert-bg: #f6ece8;
   --color-alert-line: #d0a396;

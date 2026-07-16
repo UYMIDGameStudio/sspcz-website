@@ -1,0 +1,67 @@
+---
+import { bookmarkSeries, type Bookmark } from '../data/bookmarks';
+import '../styles/tokens.css';
+import '../styles/bookmarks.css';
+
+interface Props {
+  bookmark: Bookmark;
+}
+
+const { bookmark } = Astro.props;
+const pageTitle = `${bookmark.quote_cn} — ${bookmarkSeries.title} · ${bookmarkSeries.shortName} ${bookmarkSeries.year}`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{pageTitle}</title>
+  </head>
+  <body class="bookmark-page">
+    <main class="bookmark-page__main">
+      <article class="bookmark-card" aria-labelledby="bookmark-name">
+        <header class="bookmark-card__masthead">
+          <p>
+            {bookmarkSeries.institution}
+            <span aria-hidden="true">——</span>
+            {bookmarkSeries.issue}
+          </p>
+        </header>
+
+        <section class="bookmark-card__identity">
+          <p class="bookmark-card__section">{bookmark.section}</p>
+          <h1 class="bookmark-card__name" id="bookmark-name">{bookmark.name_cn}</h1>
+          <p class="bookmark-card__name-en" lang="en">{bookmark.name_en}</p>
+          <p class="bookmark-card__meta">{bookmark.meta}</p>
+        </section>
+
+        <section class="bookmark-card__quotation" aria-label={bookmarkSeries.quoteLabel}>
+          <blockquote class="bookmark-card__quote">「{bookmark.quote_cn}」</blockquote>
+          {
+            bookmark.quote_en && (
+              <p class="bookmark-card__quote-en" lang="en">{bookmark.quote_en}</p>
+            )
+          }
+          <p class="bookmark-card__source">{bookmark.source}</p>
+        </section>
+
+        <p class="bookmark-card__context">{bookmark.context}</p>
+
+        <footer class="bookmark-card__footer">
+          <div class="bookmark-card__folio">
+            <p>
+              {bookmarkSeries.preheatCn} · <span lang="en">{bookmarkSeries.preheatEn}</span>
+            </p>
+            <p>{bookmark.no} / {bookmarkSeries.total}</p>
+          </div>
+          <a class="bookmark-card__home-link" href="/">
+            {bookmarkSeries.institution} · {bookmarkSeries.themeCn}
+            <span aria-hidden="true">→</span>
+          </a>
+        </footer>
+      </article>
+    </main>
+  </body>
+</html>

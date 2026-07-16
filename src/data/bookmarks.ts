@@ -1,27 +1,29 @@
-/**
- * NFC bookmark series 《我还是昨天的我吗》 — ISSUE 03 · 预热 Preheat 2026.
- * Seven physical bookmarks; each carries an NFC tag and QR code pointing at
- * `sspcz.org/b/[id]`. This file is the single source for the landing pages
- * under src/pages/b/. Content is fixed by the committee — do not edit copy.
- */
-
 export interface Bookmark {
-  /** URL id, printed into the NFC tag and QR code — never change. */
   id: string;
-  /** Series number, 01–07. */
   no: string;
-  /** Series section label, e.g. §1 变 · FLUX. */
   section: string;
   name_cn: string;
   name_en: string;
-  /** School / dates line. */
   meta: string;
   quote_cn: string;
-  /** Empty string when the card carries no English rendering. */
   quote_en: string;
   source: string;
   context: string;
 }
+
+export const bookmarkSeries = {
+  title: '我还是昨天的我吗',
+  institution: '浙江中学生哲学大会',
+  issue: 'ISSUE 03',
+  year: '2026',
+  shortName: 'SSPCZ',
+  preheatCn: '预热',
+  preheatEn: 'Preheat 2026',
+  themeCn: '变与不变',
+  indexIntro: '七则关于变、不变与成为的哲学札记',
+  quoteLabel: '引文',
+  total: '07',
+} as const;
 
 export const bookmarks: Bookmark[] = [
   {

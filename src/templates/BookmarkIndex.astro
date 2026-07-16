@@ -1,0 +1,70 @@
+---
+import { bookmarks, bookmarkSeries } from '../data/bookmarks';
+import '../styles/tokens.css';
+import '../styles/bookmarks.css';
+
+const firstSentence = (quote: string) => quote.match(/^.*?[。！？?]/)?.[0] ?? quote;
+const pageTitle = `${bookmarkSeries.title} — ${bookmarkSeries.issue} · ${bookmarkSeries.shortName} ${bookmarkSeries.year}`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{pageTitle}</title>
+  </head>
+  <body class="bookmark-page">
+    <main class="bookmark-page__main">
+      <section class="bookmark-card bookmark-card--index" aria-labelledby="series-title">
+        <header class="bookmark-card__masthead">
+          <p>
+            {bookmarkSeries.institution}
+            <span aria-hidden="true">——</span>
+            {bookmarkSeries.issue}
+          </p>
+        </header>
+
+        <div class="bookmark-index__title-block">
+          <p class="bookmark-index__eyebrow">
+            {bookmarkSeries.issue} · {bookmarkSeries.preheatCn}
+            <span lang="en">{bookmarkSeries.preheatEn}</span>
+          </p>
+          <h1 class="bookmark-index__title" id="series-title">《{bookmarkSeries.title}》</h1>
+          <p class="bookmark-index__intro">{bookmarkSeries.indexIntro}</p>
+        </div>
+
+        <ol class="bookmark-index">
+          {
+            bookmarks.map((bookmark) => (
+              <li class="bookmark-index__item">
+                <a class="bookmark-index__link" href={`/b/${bookmark.id}`}>
+                  <span class="bookmark-index__number">{bookmark.no}</span>
+                  <span class="bookmark-index__entry">
+                    <span class="bookmark-index__section">{bookmark.section}</span>
+                    <span class="bookmark-index__name">{bookmark.name_cn}</span>
+                    <span class="bookmark-index__quote">
+                      「{firstSentence(bookmark.quote_cn)}」
+                    </span>
+                  </span>
+                  <span class="bookmark-index__arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+
+        <footer class="bookmark-card__footer">
+          <p class="bookmark-card__preheat">
+            {bookmarkSeries.preheatCn} · <span lang="en">{bookmarkSeries.preheatEn}</span>
+          </p>
+          <a class="bookmark-card__home-link" href="/">
+            {bookmarkSeries.institution} · {bookmarkSeries.themeCn}
+            <span aria-hidden="true">→</span>
+          </a>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>
