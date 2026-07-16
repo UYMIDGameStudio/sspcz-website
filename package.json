@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "lint:css": "stylelint \"src/**/*.css\"",
+    "test:qa-server": "node --test scripts/qa-server.test.mjs",
     "qa:lh": "lhci autorun"
   },
   "dependencies": {
