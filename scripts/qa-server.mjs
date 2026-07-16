@@ -3,11 +3,12 @@
  * Lighthouse audits the site exactly as a base-path host would serve it.
  */
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
-import { extname, join, normalize } from 'node:path';
+import { readFile, realpath } from 'node:fs/promises';
+import { extname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 
 const BASE = '';
-const ROOT = './dist';
+const ROOT = resolve('./dist');
+const HOST = '127.0.0.1';
 const PORT = 4173;
 
 const TYPES = {
@@ -20,6 +21,18 @@ const TYPES = {
   '.ico': 'image/x-icon',
 };
 
+function isInsideRoot(file) {
+  const rel = relative(ROOT, file);
+  return rel === '' || (!isAbsolute(rel) && rel !== '..' && !rel.startsWith(`..${sep}`));
+}
+
+async function readInsideRoot(file) {
+  if (!isInsideRoot(file)) throw new Error('outside root');
+  const canonical = await realpath(file);
+  if (!isInsideRoot(canonical)) throw new Error('outside root');
+  return { data: await readFile(canonical), file: canonical };
+}
+
 createServer(async (req, res) => {
   try {
     let pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
@@ -31,20 +44,22 @@ createServer(async (req, res) => {
     }
     let rel = pathname.slice(BASE.length);
     if (rel.endsWith('/')) rel += 'index.html';
-    let file = normalize(join(ROOT, rel));
-    let data;
+    let file = resolve(ROOT, rel.replace(/^[/\\]+/, ''));
+    let result;
     try {
-      data = await readFile(file);
+      result = await readInsideRoot(file);
     } catch {
       file = join(file, 'index.html');
-      data = await readFile(file);
+      result = await readInsideRoot(file);
     }
-    res.writeHead(200, { 'content-type': TYPES[extname(file)] ?? 'application/octet-stream' });
-    res.end(data);
+    res.writeHead(200, {
+      'content-type': TYPES[extname(result.file)] ?? 'application/octet-stream',
+    });
+    res.end(result.data);
   } catch {
     res.writeHead(404);
     res.end('not found');
   }
-}).listen(PORT, () => {
-  console.log(`qa server ready on http://localhost:${PORT}${BASE}/`);
+}).listen(PORT, HOST, () => {
+  console.log(`qa server ready on http://${HOST}:${PORT}${BASE}/`);
 });
