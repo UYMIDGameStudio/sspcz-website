@@ -22,7 +22,7 @@ days:
           zh: "组委会致辞，介绍大会宗旨、主题「变与不变」与本届安排。"
           en: "Welcome from the organizing committee — the conference's mission, the theme \"Change & Invariance\" and the program."
       - timeStart: "09:40"
-        timeEnd: "12:00"
+        timeEnd: "12:20"
         kind: papers
         kindLabel:
           zh: "讲演"
@@ -33,8 +33,8 @@ days:
         abstract:
           zh: "发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。"
           en: "25–30 minute presentations by presenting authors, guest comments, then a 15–20 minute open discussion."
-      - timeStart: "13:30"
-        timeEnd: "16:00"
+      - timeStart: "13:50"
+        timeEnd: "16:30"
         kind: papers
         kindLabel:
           zh: "讲演"
@@ -45,8 +45,8 @@ days:
         abstract:
           zh: "发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。"
           en: "25–30 minute presentations by presenting authors, guest comments, then a 15–20 minute open discussion."
-      - timeStart: "16:15"
-        timeEnd: "17:15"
+      - timeStart: "16:45"
+        timeEnd: "17:45"
         kind: lecture
         kindLabel:
           zh: "讲座"
@@ -62,7 +62,7 @@ days:
     date: 2026-10-03
     sessions:
       - timeStart: "09:00"
-        timeEnd: "12:00"
+        timeEnd: "11:40"
         kind: papers
         kindLabel:
           zh: "讲演"
@@ -73,8 +73,8 @@ days:
         abstract:
           zh: "发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。"
           en: "25–30 minute presentations by presenting authors, guest comments, then a 15–20 minute open discussion."
-      - timeStart: "13:30"
-        timeEnd: "15:30"
+      - timeStart: "13:10"
+        timeEnd: "15:50"
         kind: papers
         kindLabel:
           zh: "讲演"
@@ -85,8 +85,8 @@ days:
         abstract:
           zh: "发言论文作者进行 25–30 分钟讲演，嘉宾点评后开放 15–20 分钟自由讨论。"
           en: "25–30 minute presentations by presenting authors, guest comments, then a 15–20 minute open discussion."
-      - timeStart: "15:45"
-        timeEnd: "16:45"
+      - timeStart: "16:05"
+        timeEnd: "17:05"
         kind: lecture
         kindLabel:
           zh: "讲座"
@@ -102,7 +102,19 @@ days:
     date: 2026-10-04
     sessions:
       - timeStart: "09:00"
-        timeEnd: "09:30"
+        timeEnd: "10:00"
+        kind: lecture
+        kindLabel:
+          zh: "讲座"
+          en: "Lecture"
+        title:
+          zh: "嘉宾主旨讲座（黑客松导引）"
+          en: "Keynote Lecture (Hackathon Orientation)"
+        abstract:
+          zh: "嘉宾就本届黑客松议题做一小时导引讲座，为随后的开题与协作定调。"
+          en: "An hour-long orientation lecture on this session's hackathon questions, setting the key for the kickoff and the collaboration that follows."
+      - timeStart: "10:00"
+        timeEnd: "10:30"
         kind: briefing
         kindLabel:
           zh: "说明"
@@ -113,7 +125,7 @@ days:
         abstract:
           zh: "公布议题与规则，参与者分组。"
           en: "Topics and rules announced; participants form teams."
-      - timeStart: "09:30"
+      - timeStart: "10:30"
         timeEnd: "17:00"
         kind: hackathon
         kindLabel:
