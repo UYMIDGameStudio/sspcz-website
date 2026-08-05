@@ -36,5 +36,12 @@
       gap: var(--space-6);
       padding: var(--space-12) var(--page-gutter-narrow);
     }
+
+    /* Grid items default to min-width:auto, so an unbreakable run (a long
+       English link, an email) widens the track past the viewport. */
+    .marginalia__margin,
+    .marginalia__body {
+      min-width: 0;
+    }
   }
 </style>
