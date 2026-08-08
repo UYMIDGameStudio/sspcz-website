@@ -1,0 +1,107 @@
+---
+/**
+ * Stateless registration follow-up: an issue-owned community QR asset with
+ * its archival context kept visible beside it (RFC-300 §2.1).
+ */
+interface Props {
+  image: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  validityNote: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+const { image, eyebrow, title, description, validityNote, alt, width, height } = Astro.props;
+---
+
+<section class="registration-community" aria-labelledby="registration-community-title">
+  <div class="registration-community__annotation">
+    <p class="registration-community__eyebrow">{eyebrow}</p>
+    <h3 id="registration-community-title" class="registration-community__title">{title}</h3>
+    <p class="registration-community__description">{description}</p>
+    <p class="registration-community__validity">{validityNote}</p>
+  </div>
+
+  <figure class="registration-community__figure">
+    <img
+      class="registration-community__image"
+      src={image}
+      alt={alt}
+      width={width}
+      height={height}
+      loading="lazy"
+      decoding="async"
+    />
+  </figure>
+</section>
+
+<style>
+  .registration-community {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--margin-track));
+    gap: var(--space-8);
+    align-items: start;
+    padding: var(--space-8);
+    margin-top: var(--space-12);
+    background: var(--surface-tertiary);
+    border: 1px solid var(--color-line-strong);
+  }
+
+  .registration-community__annotation {
+    min-width: 0;
+  }
+
+  .registration-community__eyebrow {
+    font-family: var(--font-serif-latin);
+    font-size: var(--type-marginalia);
+    letter-spacing: var(--tracking-wider);
+    color: var(--color-accent-deep);
+    text-transform: uppercase;
+  }
+
+  .registration-community__title {
+    margin-top: var(--space-3);
+    font-size: var(--type-heading-sub);
+  }
+
+  .registration-community__description,
+  .registration-community__validity {
+    margin-top: var(--space-4);
+    color: var(--color-text);
+    line-height: var(--leading-loose);
+  }
+
+  .registration-community__validity {
+    padding-top: var(--space-4);
+    font-size: var(--type-marginalia);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .registration-community__figure {
+    margin: 0;
+    background: var(--color-ink-deep);
+    border: 1px solid var(--color-line-strong);
+  }
+
+  .registration-community__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (width <= 56.25em) {
+    .registration-community {
+      grid-template-columns: 1fr;
+      padding: var(--space-6);
+    }
+
+    .registration-community__figure {
+      width: 100%;
+      max-width: var(--margin-track);
+      margin-inline: auto;
+    }
+  }
+</style>

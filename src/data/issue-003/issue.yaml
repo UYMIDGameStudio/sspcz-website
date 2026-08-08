@@ -34,6 +34,25 @@ audience:
 registration:
   embed: "https://www.huodongxing.com/event/8868555534200?view=tickets&embedded=3e7ca6"
   page: "https://www.huodongxing.com/event/8868555534200"
+  community:
+    image: "/media/issue-003-wechat-interest-group.jpg"
+    eyebrow:
+      zh: "报名后续联络"
+      en: "Registration Follow-up"
+    title:
+      zh: "第三届大会意向群"
+      en: "Issue III Interest Group"
+    description:
+      zh: "完成报名后，可扫描二维码加入大会意向群，接收参会通知与后续更新。"
+      en: "After registering, scan the QR code to join the conference interest group and receive participant updates."
+    validityNote:
+      zh: "二维码有效期至 2026 年 8 月 15 日；入群后将发布更新。"
+      en: "The QR code is valid through 15 August 2026; an updated code will be shared in the group."
+    alt:
+      zh: "第三届浙江中学生哲学大会意向群微信二维码"
+      en: "WeChat QR code for the SSPCZ Issue III interest group"
+    width: 966
+    height: 1518
 
 contact:
   email: "sspcz2026@163.com"
