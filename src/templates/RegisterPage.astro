@@ -11,8 +11,9 @@
 import DataLayout from '../layouts/DataLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
+import RegistrationCommunity from '../components/RegistrationCommunity.astro';
 import { t } from '../i18n';
-import { getIssueBundle, type Locale } from '../lib/issueData';
+import { getIssueBundle, pick, type Locale } from '../lib/issueData';
 import { dateRange, issueMark, quotedTheme } from '../lib/format';
 import { path } from '../lib/routes';
 
@@ -144,6 +145,21 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
       <button class="register-form__submit" type="submit">{r.submit}</button>
     </form>
     )}
+
+    {
+      bundle.issue.registration?.community && (
+        <RegistrationCommunity
+          image={bundle.issue.registration.community.image}
+          eyebrow={pick(locale, bundle.issue.registration.community.eyebrow)}
+          title={pick(locale, bundle.issue.registration.community.title)}
+          description={pick(locale, bundle.issue.registration.community.description)}
+          validityNote={pick(locale, bundle.issue.registration.community.validityNote)}
+          alt={pick(locale, bundle.issue.registration.community.alt)}
+          width={bundle.issue.registration.community.width}
+          height={bundle.issue.registration.community.height}
+        />
+      )
+    }
   </Marginalia>
 </DataLayout>
 

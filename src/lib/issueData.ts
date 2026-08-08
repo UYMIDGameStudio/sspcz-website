@@ -41,7 +41,22 @@ const issueSchema = z.object({
   audience: z.object({ primary: localized, auditors: localized }),
   contact: z.object({ email: z.string().email() }),
   registration: z
-    .object({ embed: z.string().url(), page: z.string().url() })
+    .object({
+      embed: z.string().url(),
+      page: z.string().url(),
+      community: z
+        .object({
+          image: z.string().startsWith('/'),
+          eyebrow: localized,
+          title: localized,
+          description: localized,
+          validityNote: localized,
+          alt: localized,
+          width: z.number().int().positive(),
+          height: z.number().int().positive(),
+        })
+        .optional(),
+    })
     .optional(),
   cfp: z.object({
     open: z.object({ year: z.number().int(), month: z.number().int() }),
