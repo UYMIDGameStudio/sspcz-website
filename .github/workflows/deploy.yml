@@ -33,8 +33,9 @@ jobs:
 
       - name: "Red line: zero JavaScript in the built site (RFC-400 §1)"
         run: |
-          if grep -rl "<script" dist --include='*.html'; then
-            echo "::error::Built HTML contains <script> — zero-JS baseline violated."
+          # JSON-LD script elements contain non-executable structured data.
+          if grep -Pril '<script(?![^>]*type=[^[:alnum:]]application/ld\+json[^[:alnum:]])' dist --include='*.html'; then
+            echo "::error::Built HTML contains an executable script — zero-JS baseline violated."
             exit 1
           fi
 
