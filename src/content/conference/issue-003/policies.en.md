@@ -5,6 +5,10 @@ issue: 3
 year: 2026
 kind: policies
 order: 3
+status: provisional
+version: "2.0-summary"
+dateModified: 2026-08-14
+sourceEdition: 2
 ---
 
 This document is an English summary of the paper review policy of the 2nd SSPCZ, provided for submitters. The official charter of the 3rd session will be issued by the committee's academic team; the Chinese version prevails.

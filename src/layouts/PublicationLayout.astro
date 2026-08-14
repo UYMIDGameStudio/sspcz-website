@@ -9,6 +9,7 @@
 import PageShell from './PageShell.astro';
 import type { RouteKey } from '../lib/routes';
 import type { Locale } from '../lib/issueData';
+import type { CreativeWorkMetadata } from '../lib/seo';
 
 interface Props {
   locale: Locale;
@@ -16,9 +17,11 @@ interface Props {
   issueId: string;
   title: string;
   description: string;
+  alternatePaths?: Partial<Record<Locale, string>>;
+  creativeWork?: CreativeWorkMetadata;
 }
 
-const { locale, route, issueId, title, description } = Astro.props;
+const { locale, route, issueId, title, description, alternatePaths, creativeWork } = Astro.props;
 ---
 
 <PageShell
@@ -27,6 +30,8 @@ const { locale, route, issueId, title, description } = Astro.props;
   issueId={issueId}
   title={title}
   description={description}
+  alternatePaths={alternatePaths}
+  creativeWork={creativeWork}
   mode="publication"
 >
   <slot />

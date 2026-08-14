@@ -5,7 +5,7 @@
  *   - pdf  → a <details>/<summary> inline preview wrapping a native
  *            <iframe> (the browser's own PDF renderer), plus a direct
  *            <a download>.
- *   - md   → a <details> preview of the rendered document body (slotted).
+ *   - md   → a canonical detail page, keeping the resource index concise.
  *   - docx → a direct <a download> (browsers cannot preview docx inline).
  *   - link → an <a> that opens the target.
  * No JavaScript participates in any of this.
@@ -23,9 +23,10 @@ interface Props {
   version: string;
   updatedDate: Date;
   fileUrl?: string;
+  pageUrl?: string;
 }
 
-const { locale, type, title, description, version, updatedDate, fileUrl } = Astro.props;
+const { locale, type, title, description, version, updatedDate, fileUrl, pageUrl } = Astro.props;
 const d = t(locale).resources;
 const href = fileUrl ? withBase(fileUrl) : undefined;
 ---
@@ -50,6 +51,13 @@ const href = fileUrl ? withBase(fileUrl) : undefined;
 
   <div class="publication__actions">
     {
+      pageUrl && (
+        <a class="publication__btn publication__btn--ghost" href={pageUrl}>
+          {d.doc.readPage}
+        </a>
+      )
+    }
+    {
       type === 'pdf' && href && (
         <>
           <details class="preview">
@@ -60,17 +68,6 @@ const href = fileUrl ? withBase(fileUrl) : undefined;
             {d.doc.download}
           </a>
         </>
-      )
-    }
-
-    {
-      type === 'md' && (
-        <details class="preview">
-          <summary class="publication__btn publication__btn--ghost">{d.doc.preview}</summary>
-          <div class="preview__prose prose">
-            <slot />
-          </div>
-        </details>
       )
     }
 
@@ -147,7 +144,9 @@ const href = fileUrl ? withBase(fileUrl) : undefined;
   }
 
   .publication__btn {
-    display: inline-block;
+    display: inline-flex;
+    min-height: var(--target-min);
+    align-items: center;
     padding: var(--space-2) var(--space-6);
     font-size: var(--text-sm);
     letter-spacing: var(--tracking-wide);
@@ -193,15 +192,6 @@ const href = fileUrl ? withBase(fileUrl) : undefined;
     margin-top: var(--space-2);
     background: var(--color-surface);
     border: 1px solid var(--color-line-strong);
-  }
-
-  .preview__prose {
-    order: 2;
-    flex-basis: 100%;
-    margin-top: var(--space-2);
-    padding: var(--space-6);
-    background: var(--color-paper-raised);
-    border: 1px solid var(--color-line);
   }
 
   summary {

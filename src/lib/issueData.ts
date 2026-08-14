@@ -44,6 +44,8 @@ const issueSchema = z.object({
     .object({
       embed: z.string().url(),
       page: z.string().url(),
+      status: z.enum(['open', 'closed', 'pending']),
+      feeNote: localized,
       community: z
         .object({
           image: z.string().startsWith('/'),

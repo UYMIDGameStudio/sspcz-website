@@ -6,6 +6,7 @@ import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import { t } from '../i18n';
 import type { Locale } from '../lib/issueData';
+import { isoDate, longDate } from '../lib/format';
 
 interface Props {
   locale: Locale;
@@ -20,9 +21,24 @@ if (!entry) throw new Error(`${issueId} policies document missing`);
 const { Content } = await render(entry);
 
 const title = `${entry.data.title} · ${dict.siteName}`;
+const creativeWork = entry.data.version && entry.data.dateModified
+  ? {
+      name: entry.data.title,
+      description: dict.meta.policies,
+      version: entry.data.version,
+      dateModified: isoDate(entry.data.dateModified),
+    }
+  : undefined;
 ---
 
-<PublicationLayout locale={locale} route="policies" issueId={issueId} title={title} description={dict.meta.policies}>
+<PublicationLayout
+  locale={locale}
+  route="policies"
+  issueId={issueId}
+  title={title}
+  description={dict.meta.policies}
+  creativeWork={creativeWork}
+>
   <section class="masthead">
     <p class="masthead__kicker">Policies · Review &amp; Academic Integrity</p>
     <h1 class="masthead__title">{entry.data.title}</h1>
@@ -33,6 +49,79 @@ const title = `${entry.data.title} · ${dict.siteName}`;
       <SectionCounter label="Charter" />
       <h2>{entry.data.title}</h2>
     </Fragment>
-    <div class="prose"><Content /></div>
+    <div>
+      {
+        entry.data.status && entry.data.version && entry.data.dateModified && (
+          <aside class="policy-meta" aria-label={dict.policies.statusLabel}>
+            <dl class="policy-meta__facts">
+              <div>
+                <dt>{dict.policies.statusLabel}</dt>
+                <dd>{entry.data.status === 'provisional' ? dict.policies.statusProvisional : entry.data.status}</dd>
+              </div>
+              <div>
+                <dt>{dict.policies.versionLabel}</dt>
+                <dd>{entry.data.version}</dd>
+              </div>
+              <div>
+                <dt>{dict.policies.updatedLabel}</dt>
+                <dd><time datetime={isoDate(entry.data.dateModified)}>{longDate(entry.data.dateModified, locale)}</time></dd>
+              </div>
+              <div>
+                <dt>{dict.policies.responsibleLabel}</dt>
+                <dd>{dict.policies.responsibleValue}</dd>
+              </div>
+              <div>
+                <dt>{dict.policies.sourceLabel}</dt>
+                <dd>{dict.policies.sourceValue}</dd>
+              </div>
+            </dl>
+            <p class="policy-meta__note">{dict.policies.effectNote}</p>
+          </aside>
+        )
+      }
+      <div class="prose"><Content /></div>
+    </div>
   </Marginalia>
 </PublicationLayout>
+
+<style>
+  .policy-meta {
+    margin-bottom: var(--space-8);
+    padding: var(--space-6);
+    background: var(--surface-tertiary);
+    border: 1px solid var(--color-line-strong);
+  }
+
+  .policy-meta__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4) var(--space-8);
+    margin: 0;
+  }
+
+  .policy-meta__facts dt {
+    font-size: var(--type-marginalia);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text);
+    text-transform: uppercase;
+  }
+
+  .policy-meta__facts dd {
+    margin: var(--space-1) 0 0;
+    color: var(--color-ink);
+  }
+
+  .policy-meta__note {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    color: var(--color-text);
+    line-height: var(--leading-loose);
+    border-top: 1px solid var(--color-line);
+  }
+
+  @media (width <= 56.25em) {
+    .policy-meta__facts {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

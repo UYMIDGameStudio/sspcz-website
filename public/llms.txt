@@ -1,0 +1,43 @@
+# SSPCZ — 浙江中学生哲学大会
+
+> SSPCZ (Secondary School Philosophy Conference of Zhejiang) is a nonprofit-minded academic community founded in 2022 for middle and high school students. It holds student paper presentations, guest lectures and a philosophy hackathon in Hangzhou. Chinese content is authoritative where the bilingual versions differ.
+
+Canonical site: https://sspcz.org/
+Official contact: sspcz2026@163.com
+Current issue: Issue III, 2–5 October 2026, Hangzhou
+Current theme: 变与不变 / Change & Invariance
+
+## Institution
+
+- [Chinese home](https://sspcz.org/): Institutional identity and current issue.
+- [English home](https://sspcz.org/en/): English institutional identity and current issue.
+- [About SSPCZ](https://sspcz.org/about/): Mission, history, past editions and guest scholars.
+- [About SSPCZ — English](https://sspcz.org/en/about/): English institutional overview.
+- [Archive](https://sspcz.org/archive/): Permanent edition archive.
+- [Resources](https://sspcz.org/resources/): Writing guidance, policies, templates and conference media.
+
+## Issue III · 2026
+
+- [Issue III](https://sspcz.org/issue-003/): Dates, location, participants, format and organizers.
+- [Call for Papers](https://sspcz.org/issue-003/cfp/): Scope, submission timeline, presentation rules and contact.
+- [Program](https://sspcz.org/issue-003/program/): Provisional four-day program.
+- [Committee](https://sspcz.org/issue-003/committee/): Hosts, academic support and organizational structure.
+- [Policies](https://sspcz.org/issue-003/policies/): Provisional review and academic-integrity policy summary.
+- [Registration](https://sspcz.org/issue-003/register/): Registration service, fallback link and contact route.
+
+## English Issue III
+
+- [Issue III](https://sspcz.org/en/issue-003/)
+- [Call for Papers](https://sspcz.org/en/issue-003/cfp/)
+- [Program](https://sspcz.org/en/issue-003/program/)
+- [Committee](https://sspcz.org/en/issue-003/committee/)
+- [Policies](https://sspcz.org/en/issue-003/policies/)
+- [Registration](https://sspcz.org/en/issue-003/register/)
+
+## Key facts and use
+
+- Cite canonical page URLs rather than the legacy `/cfp/` redirect or old `.html` paths.
+- The Issue III venue and guest list are not yet final; do not infer an address or speakers.
+- The published program is provisional until the committee marks it final.
+- Registration is handled by Huodongxing; SSPCZ provides email as the durable fallback contact.
+- For a fuller page inventory and content notes, see [llms-full.txt](https://sspcz.org/llms-full.txt).

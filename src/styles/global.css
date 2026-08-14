@@ -190,7 +190,10 @@ a:hover {
    Task affordances, matching the nav actions: solid ink or hairline outline
    on paper; inverted variants sit on the ink bands. */
 .button {
-  display: inline-block;
+  display: inline-flex;
+  min-height: var(--target-min);
+  align-items: center;
+  justify-content: center;
   padding: var(--space-3) var(--space-8);
   font-size: var(--type-metadata);
   letter-spacing: var(--tracking-wide);

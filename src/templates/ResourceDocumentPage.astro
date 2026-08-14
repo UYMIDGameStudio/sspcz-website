@@ -1,0 +1,156 @@
+---
+/**
+ * Canonical reading page for a permanent institutional resource. The hub is
+ * an index; this page gives each document a stable citation URL, visible
+ * responsibility/version metadata and CreativeWork structured data.
+ */
+import { getCollection, getEntry, render } from 'astro:content';
+import PublicationLayout from '../layouts/PublicationLayout.astro';
+import Marginalia from '../patterns/Marginalia.astro';
+import SectionCounter from '../components/SectionCounter.astro';
+import { t } from '../i18n';
+import { currentIssueId, type Locale } from '../lib/issueData';
+import { isoDate, longDate } from '../lib/format';
+import { resourceDocumentPath, withBase } from '../lib/routes';
+
+interface Props {
+  locale: Locale;
+  entryId: string;
+}
+
+const { locale, entryId } = Astro.props;
+const entry = await getEntry('documents', entryId);
+if (!entry || entry.data.lang !== locale || entry.data.type === 'link') {
+  throw new Error(`Canonical resource document missing: ${entryId}`);
+}
+
+const { Content } = await render(entry);
+const dict = t(locale);
+const d = dict.resources;
+const slug = entry.id.replace(/\.(zh|en)$/, '');
+const allDocuments = await getCollection('documents');
+const counterpart = allDocuments.find(
+  (candidate) =>
+    candidate.id.replace(/\.(zh|en)$/, '') === slug && candidate.data.lang !== locale,
+);
+const alternatePaths: Partial<Record<Locale, string>> = {
+  [locale]: resourceDocumentPath(locale, slug),
+};
+if (counterpart) {
+  alternatePaths[counterpart.data.lang] = resourceDocumentPath(counterpart.data.lang, slug);
+}
+
+const title = `${entry.data.title} · ${dict.siteName}`;
+const href = entry.data.fileUrl ? withBase(entry.data.fileUrl) : undefined;
+const creativeWork = {
+  name: entry.data.title,
+  description: entry.data.description,
+  version: entry.data.version,
+  dateModified: isoDate(entry.data.updatedDate),
+  fileUrl: entry.data.fileUrl,
+};
+---
+
+<PublicationLayout
+  locale={locale}
+  route="resources"
+  issueId={currentIssueId}
+  title={title}
+  description={entry.data.description}
+  alternatePaths={alternatePaths}
+  creativeWork={creativeWork}
+>
+  <section class="masthead">
+    <p class="masthead__kicker">Resources · Canonical Document</p>
+    <h1 class="masthead__title">{entry.data.title}</h1>
+    <p class="masthead__lead">{entry.data.description}</p>
+  </section>
+
+  <Marginalia>
+    <Fragment slot="margin">
+      <SectionCounter label="Document" />
+      <h2>{d.typeLabels[entry.data.type]}</h2>
+    </Fragment>
+
+    <article class="resource-document">
+      <dl class="resource-document__meta">
+        <div>
+          <dt>{d.doc.publisher}</dt>
+          <dd>{dict.siteName}</dd>
+        </div>
+        <div>
+          <dt>{d.doc.version}</dt>
+          <dd>{entry.data.version}</dd>
+        </div>
+        <div>
+          <dt>{d.doc.updated}</dt>
+          <dd><time datetime={isoDate(entry.data.updatedDate)}>{longDate(entry.data.updatedDate, locale)}</time></dd>
+        </div>
+        <div>
+          <dt>{d.doc.format}</dt>
+          <dd>{d.typeLabels[entry.data.type]}</dd>
+        </div>
+      </dl>
+
+      {entry.data.type === 'md' && <div class="prose"><Content /></div>}
+
+      {
+        href && (
+          <p class="resource-document__action">
+            <a class="button button--primary" href={href} download={entry.data.type !== 'pdf'}>
+              {entry.data.type === 'pdf' ? d.doc.preview : d.doc.download}
+            </a>
+          </p>
+        )
+      }
+
+      {
+        entry.data.type === 'pdf' && href && (
+          <iframe class="resource-document__preview" src={href} title={entry.data.title} loading="lazy" />
+        )
+      }
+    </article>
+  </Marginalia>
+</PublicationLayout>
+
+<style>
+  .resource-document__meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4) var(--space-8);
+    margin: 0 0 var(--space-8);
+    padding: var(--space-6);
+    background: var(--surface-tertiary);
+    border: 1px solid var(--color-line);
+  }
+
+  .resource-document__meta dt {
+    font-size: var(--type-marginalia);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text);
+    text-transform: uppercase;
+  }
+
+  .resource-document__meta dd {
+    margin: var(--space-1) 0 0;
+    color: var(--color-ink);
+  }
+
+  .resource-document__action {
+    margin-top: var(--space-8);
+  }
+
+  .resource-document__preview {
+    width: 100%;
+    height: 60vh;
+    margin-top: var(--space-6);
+    background: var(--surface-primary);
+    border: 1px solid var(--color-line-strong);
+  }
+
+  @media (width <= 56.25em) {
+    .resource-document__meta {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

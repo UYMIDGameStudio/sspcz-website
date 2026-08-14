@@ -63,7 +63,7 @@
   --font-sans-cjk: "Noto Sans SC", system-ui, sans-serif;
   --text-xs: 0.8125rem;
   --text-sm: 0.9063rem;
-  --text-base: 0.9375rem;
+  --text-base: 1rem;
   --text-md: 1.1875rem;
   --text-lg: 1.875rem;
   --text-xl: 2.125rem;
@@ -115,6 +115,7 @@
   --page-gutter: 2.25rem;
   --page-gutter-narrow: 1.25rem;
   --breakpoint-compact: 56.25em;
+  --target-min: 2.75rem; /* 44px minimum for primary interactive targets */
 
   /* ---- stacking ---- */
   --z-header: 20;

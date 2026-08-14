@@ -11,6 +11,7 @@
 import PageShell from './PageShell.astro';
 import type { RouteKey } from '../lib/routes';
 import type { Locale } from '../lib/issueData';
+import type { FaqItem } from '../lib/seo';
 
 interface Props {
   locale: Locale;
@@ -18,9 +19,10 @@ interface Props {
   issueId: string;
   title: string;
   description: string;
+  faqItems?: FaqItem[];
 }
 
-const { locale, route, issueId, title, description } = Astro.props;
+const { locale, route, issueId, title, description, faqItems } = Astro.props;
 ---
 
 <PageShell
@@ -29,6 +31,7 @@ const { locale, route, issueId, title, description } = Astro.props;
   issueId={issueId}
   title={title}
   description={description}
+  faqItems={faqItems}
   mode="landing"
 >
   <slot />

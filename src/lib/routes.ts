@@ -38,3 +38,9 @@ export function withBase(url: string): string {
 export function switchLocale(locale: Locale, key: RouteKey, issueId?: string): string {
   return path(locale === 'zh' ? 'en' : 'zh', key, issueId);
 }
+
+/** Permanent canonical URL for an individual institutional resource. */
+export function resourceDocumentPath(locale: Locale, slug: string): string {
+  const prefix = `${BASE}${locale === 'en' ? '/en' : ''}`;
+  return `${prefix}/resources/${slug}/`;
+}

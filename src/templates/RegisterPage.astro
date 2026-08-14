@@ -68,6 +68,7 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
             {r.serviceNote}
             <a href={bundle.issue.registration.page}>{r.openExternal} →</a>
           </p>
+          <p class="hosted__data-note">{r.dataNote}</p>
         </div>
       )
     }
@@ -198,6 +199,14 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
     white-space: nowrap;
   }
 
+  .hosted__data-note {
+    padding: var(--space-3) var(--space-2) var(--space-1);
+    font-size: var(--type-marginalia);
+    color: var(--color-text-muted);
+    line-height: var(--leading-loose);
+    border-top: 1px solid var(--color-line);
+  }
+
   .margin-note {
     margin-top: var(--space-4);
     font-size: var(--text-xs);
@@ -300,7 +309,9 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
   }
 
   .choice__label {
-    display: inline-block;
+    display: inline-flex;
+    min-height: var(--target-min);
+    align-items: center;
     padding: var(--space-3) var(--space-6);
     font-size: var(--text-sm);
     color: var(--color-text);
@@ -327,6 +338,7 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
 
   .register-form__submit {
     width: 100%;
+    min-height: var(--target-min);
     padding: var(--space-4);
     margin-top: var(--space-8);
     font-family: var(--font-sans-cjk);

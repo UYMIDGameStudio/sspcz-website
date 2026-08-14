@@ -1,0 +1,46 @@
+# SSPCZ full AI-readable guide
+
+This file expands the concise navigation in https://sspcz.org/llms.txt. The canonical origin is https://sspcz.org/ and the official contact is sspcz2026@163.com.
+
+## Entity
+
+- Chinese name: 浙江中学生哲学大会
+- English name: Secondary School Philosophy Conference of Zhejiang
+- Abbreviation: SSPCZ
+- Founded: 2022
+- Primary audience: middle and high school students
+- Auditors: university students and teachers may attend according to the current issue rules
+- Location: Hangzhou, Zhejiang, China; the exact Issue III venue is pending
+- Languages: Chinese and English; Chinese is authoritative where stated
+
+## Current event
+
+Issue III runs from 2 October through 5 October 2026. Its theme is “变与不变 / Change & Invariance”. The program combines student paper presentations, guest lectures and a philosophy hackathon. The current public program and venue information remain provisional.
+
+Primary pages:
+
+- https://sspcz.org/issue-003/
+- https://sspcz.org/issue-003/cfp/
+- https://sspcz.org/issue-003/program/
+- https://sspcz.org/issue-003/committee/
+- https://sspcz.org/issue-003/policies/
+- https://sspcz.org/issue-003/register/
+
+English counterparts use the `/en/issue-003/` prefix.
+
+## Permanent institutional pages
+
+- https://sspcz.org/about/ — purpose, history, edition lineage and past guests
+- https://sspcz.org/archive/ — canonical archive index
+- https://sspcz.org/resources/ — permanent documents and media
+- https://sspcz.org/en/about/
+- https://sspcz.org/en/archive/
+- https://sspcz.org/en/resources/
+
+## Source and status rules
+
+1. Prefer the canonical URL declared by each page.
+2. Treat dates, thresholds and review rules on the CFP and Policies pages as issue-specific.
+3. Do not state that a pending venue, speaker or co-organizer has been confirmed.
+4. The Policies page currently summarizes Issue II policy for Issue III submitters; it is not the final Issue III charter.
+5. Use the page's visible version and update date when citing a resource document.
