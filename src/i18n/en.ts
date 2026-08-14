@@ -128,7 +128,8 @@ export default {
   register: {
     lead: 'The conference takes place in Hangzhou. Registration is open to middle and high school students; university students and teachers may attend as auditors. After you register, the committee will send conference updates via the contact you leave.',
     cfpNote: 'Want to present a paper? Read the Call for Papers first.',
-    serviceNote: 'Registration is hosted on Huodongxing. To avoid preloading third-party content here, continue to Huodongxing to register.',
+    serviceNote: 'Use the button above to load Huodongxing here; if the widget fails to load, open the page directly.',
+    showEmbed: 'Show the embedded registration page',
     openExternal: 'Open the registration page on Huodongxing',
     contactLabel: 'Committee contact',
     dataNote: 'Registration details are submitted to and processed on Huodongxing. The committee uses the contact you provide to send conference notices. Before submitting, read the platform rules and privacy notice shown on the registration page.',
