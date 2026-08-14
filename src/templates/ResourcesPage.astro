@@ -6,7 +6,7 @@
  * an institution-level page; edition-scoped nav links resolve to the
  * current issue via the pointer, exactly like the institutional homepage.
  */
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import DataLayout from '../layouts/DataLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import Exhibition from '../patterns/Exhibition.astro';
@@ -14,6 +14,7 @@ import SectionCounter from '../components/SectionCounter.astro';
 import PublicationCard from '../components/PublicationCard.astro';
 import { t } from '../i18n';
 import { currentIssueId, type Locale } from '../lib/issueData';
+import { resourceDocumentPath } from '../lib/routes';
 
 interface Props {
   locale: Locale;
@@ -23,17 +24,16 @@ const { locale } = Astro.props;
 const dict = t(locale);
 const d = dict.resources;
 
-/* Documents for this locale, ordered; md bodies rendered for inline preview. */
+/* Documents for this locale, ordered. Long-form bodies live at canonical
+   resource URLs; this page stays an index rather than duplicating them. */
 const docEntries = (await getCollection('documents'))
   .filter((entry) => entry.data.lang === locale)
   .sort((a, b) => a.data.order - b.data.order);
 
-const documents = await Promise.all(
-  docEntries.map(async (entry) => ({
-    data: entry.data,
-    Content: entry.data.type === 'md' ? (await render(entry)).Content : null,
-  })),
-);
+const documents = docEntries.map((entry) => ({
+  data: entry.data,
+  slug: entry.id.replace(/\.(zh|en)$/, ''),
+}));
 
 /* Media across all editions, newest first. */
 const media = (await getCollection('media'))
@@ -66,7 +66,7 @@ const title = `${d.title} · ${dict.siteName}`;
         documents.length === 0 ? (
           <p class="empty">{d.empty}</p>
         ) : (
-          documents.map(({ data, Content }) => (
+          documents.map(({ data, slug }) => (
             <PublicationCard
               locale={locale}
               type={data.type}
@@ -75,9 +75,8 @@ const title = `${d.title} · ${dict.siteName}`;
               version={data.version}
               updatedDate={data.updatedDate}
               fileUrl={data.fileUrl}
-            >
-              {Content && <Content />}
-            </PublicationCard>
+              pageUrl={data.type !== 'link' ? resourceDocumentPath(locale, slug) : undefined}
+            />
           ))
         )
       }

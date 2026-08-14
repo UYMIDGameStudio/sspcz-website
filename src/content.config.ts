@@ -21,6 +21,10 @@ const conference = defineCollection({
     year: z.number().int(),
     kind: z.enum(['cfp', 'theme-letter', 'policies', 'about']),
     order: z.number().default(0),
+    status: z.enum(['provisional', 'final', 'archived']).optional(),
+    version: z.string().optional(),
+    dateModified: z.coerce.date().optional(),
+    sourceEdition: z.number().int().positive().optional(),
   }),
 });
 
@@ -60,6 +64,8 @@ const media = defineCollection({
   schema: z.object({
     type: z.enum(['image', 'video', 'slide']),
     src: z.string(),
+    width: z.number().int().positive(),
+    height: z.number().int().positive(),
     caption: z.object({ zh: z.string(), en: z.string() }),
     credit: z.object({ zh: z.string(), en: z.string() }),
     date: z.coerce.date(),

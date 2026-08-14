@@ -5,6 +5,10 @@ issue: 3
 year: 2026
 kind: policies
 order: 3
+status: provisional
+version: "2.0-summary"
+dateModified: 2026-08-14
+sourceEdition: 2
 ---
 
 本文依据《第二届浙江中学生哲学大会会议论文审核政策》整理，供投稿者了解论文审核与学术规范要求。第三届正式章程以组委会学术组发布为准。

@@ -2,6 +2,8 @@
 # the exhibition displays the year only.
 type: image
 src: /media/issue-002-lecture-hu-xingming.jpg
+width: 1600
+height: 1067
 caption:
   zh: 第二届大会 · 胡星铭教授专题讲座
   en: Prof. Hu Xingming's keynote lecture at the Second Session

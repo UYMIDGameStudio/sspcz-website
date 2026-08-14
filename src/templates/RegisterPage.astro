@@ -1,10 +1,9 @@
 ---
 /**
  * Template: registration. When the edition's data declares a hosted
- * registration service (issue.yaml `registration`), the page embeds it —
- * currently Huodongxing, themed to the secondary paper via its embedded=
- * color parameter — with a direct fallback link. Our own document stays
- * script-free (RFC-400 §1); the interactivity lives on the third party.
+ * registration service (issue.yaml `registration`), the page links to it
+ * without preloading third-party scripts, cookies, or frames. Our document
+ * stays script-free (RFC-400 §1), and registration happens on the provider.
  * Editions without a service render the native zero-JS form (its
  * /api/register backend remains the open ADR-001 §6 decision).
  */
@@ -57,17 +56,11 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
     {
       bundle.issue.registration && (
         <div class="hosted">
-          <iframe
-            class="hosted__frame"
-            src={bundle.issue.registration.embed}
-            title={dict.nav.register}
-            loading="lazy"
-            allowtransparency="true"
-          />
           <p class="hosted__fallback">
             {r.serviceNote}
             <a href={bundle.issue.registration.page}>{r.openExternal} →</a>
           </p>
+          <p class="hosted__data-note">{r.dataNote}</p>
         </div>
       )
     }
@@ -164,10 +157,8 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
 </DataLayout>
 
 <style>
-  /* Hosted registration (Huodongxing) on the secondary paper; the widget is
-     themed to the same surface via its embedded= color parameter. */
-  /* Rounded corners by owner request — matching the widget's own card
-     radius; the rest of the site keeps its square hairline grammar. */
+  /* Hosted registration is linked rather than embedded so third-party code,
+     cookies, and failures cannot affect this document's initial load. */
   .hosted {
     padding: var(--space-4);
     overflow: hidden;
@@ -176,26 +167,27 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
     border-radius: 0.75rem;
   }
 
-  .hosted__frame {
-    display: block;
-    width: 100%;
-    height: 43.75rem;
-    background: var(--surface-secondary);
-    border: 0;
-    border-radius: 0.5rem;
-  }
-
   .hosted__fallback {
-    padding: var(--space-3) var(--space-2) var(--space-1);
+    padding: var(--space-4) var(--space-2);
     font-size: var(--type-metadata);
     color: var(--color-text);
   }
 
   .hosted__fallback a {
+    display: inline-flex;
+    min-height: var(--target-min);
+    align-items: center;
     margin-left: var(--space-2);
     color: var(--color-accent-deep);
     text-decoration: underline;
-    white-space: nowrap;
+  }
+
+  .hosted__data-note {
+    padding: var(--space-3) var(--space-2) var(--space-1);
+    font-size: var(--type-marginalia);
+    color: var(--color-text-muted);
+    line-height: var(--leading-loose);
+    border-top: 1px solid var(--color-line);
   }
 
   .margin-note {
@@ -300,7 +292,9 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
   }
 
   .choice__label {
-    display: inline-block;
+    display: inline-flex;
+    min-height: var(--target-min);
+    align-items: center;
     padding: var(--space-3) var(--space-6);
     font-size: var(--text-sm);
     color: var(--color-text);
@@ -327,6 +321,7 @@ const title = `${dict.nav.register} · ${dict.siteName}`;
 
   .register-form__submit {
     width: 100%;
+    min-height: var(--target-min);
     padding: var(--space-4);
     margin-top: var(--space-8);
     font-family: var(--font-sans-cjk);

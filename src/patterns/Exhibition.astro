@@ -14,6 +14,8 @@ import { longDate } from '../lib/format';
 interface MediaItem {
   type: 'image' | 'video' | 'slide';
   src: string;
+  width: number;
+  height: number;
   caption: { zh: string; en: string };
   credit: { zh: string; en: string };
   date: Date;
@@ -37,7 +39,15 @@ const d = t(locale).resources.exhibition;
           {item.type === 'video' ? (
             <video class="exhibit__media" src={withBase(item.src)} controls preload="none" />
           ) : (
-            <img class="exhibit__media" src={withBase(item.src)} alt={item.caption[locale]} loading="lazy" />
+            <img
+              class="exhibit__media"
+              src={withBase(item.src)}
+              alt={item.caption[locale]}
+              width={item.width}
+              height={item.height}
+              loading="lazy"
+              decoding="async"
+            />
           )}
         </div>
         <figcaption class="exhibit__caption">

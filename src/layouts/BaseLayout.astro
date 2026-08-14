@@ -3,17 +3,28 @@ import '../styles/tokens.css';
 import '../styles/global.css';
 import type { Locale } from '../lib/issueData';
 import { withBase } from '../lib/routes';
+import { DEFAULT_SHARE_IMAGE, serializeJsonLd } from '../lib/seo';
 
 interface Props {
   title: string;
   description?: string;
   lang?: Locale;
   /** Absolute URLs of the zh/en versions of this page, for hreflang. */
-  alternates?: { zh: string; en: string };
+  alternates?: Partial<Record<Locale, string>>;
+  canonical?: string;
+  structuredData?: unknown;
 }
 
-const { title, description, lang = 'zh', alternates } = Astro.props;
-const canonical = alternates ? (lang === 'zh' ? alternates.zh : alternates.en) : undefined;
+const {
+  title,
+  description,
+  lang = 'zh',
+  alternates,
+  canonical = alternates?.[lang],
+  structuredData,
+} = Astro.props;
+const languageTag = lang === 'zh' ? 'zh-CN' : 'en';
+const alternateLanguageTag = lang === 'zh' ? 'en' : 'zh-CN';
 ---
 
 <!doctype html>
@@ -26,16 +37,34 @@ const canonical = alternates ? (lang === 'zh' ? alternates.zh : alternates.en) :
     <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
     <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
     {description && <meta name="description" content={description} />}
+    <meta name="author" content="SSPCZ" />
     {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SSPCZ" />
+    <meta property="og:locale" content={languageTag} />
+    {alternates?.[lang === 'zh' ? 'en' : 'zh'] && <meta property="og:locale:alternate" content={alternateLanguageTag} />}
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={DEFAULT_SHARE_IMAGE.url} />
+    <meta property="og:image:width" content={String(DEFAULT_SHARE_IMAGE.width)} />
+    <meta property="og:image:height" content={String(DEFAULT_SHARE_IMAGE.height)} />
+    <meta property="og:image:alt" content={DEFAULT_SHARE_IMAGE.alt[lang]} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={DEFAULT_SHARE_IMAGE.url} />
+    <meta name="twitter:image:alt" content={DEFAULT_SHARE_IMAGE.alt[lang]} />
     {
       alternates && (
         <>
-          <link rel="alternate" hreflang="zh-CN" href={alternates.zh} />
-          <link rel="alternate" hreflang="en" href={alternates.en} />
-          <link rel="alternate" hreflang="x-default" href={alternates.zh} />
+          {alternates.zh && <link rel="alternate" hreflang="zh-CN" href={alternates.zh} />}
+          {alternates.en && <link rel="alternate" hreflang="en" href={alternates.en} />}
+          {alternates.zh && <link rel="alternate" hreflang="x-default" href={alternates.zh} />}
         </>
       )
     }
+    {structuredData && <script is:inline type="application/ld+json" set:html={serializeJsonLd(structuredData)} />}
   </head>
   <body>
     <slot />

@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import ResourceDocumentPage from '../../templates/ResourceDocumentPage.astro';
+
+export async function getStaticPaths() {
+  const documents = await getCollection('documents');
+  return documents
+    .filter((entry) => entry.data.lang === 'zh' && entry.data.type !== 'link')
+    .map((entry) => ({
+      params: { slug: entry.id.replace(/\.zh$/, '') },
+      props: { entryId: entry.id },
+    }));
+}
+
+const { entryId } = Astro.props;
+---
+
+<ResourceDocumentPage locale="zh" entryId={entryId} />

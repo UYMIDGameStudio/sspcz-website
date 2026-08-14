@@ -35,9 +35,9 @@ export default {
 
   home: {
     heroLead:
-      '为对哲学充满热情的初高中学生提供开放的学术交流平台——学生论文讲演、嘉宾讲座、哲学黑客马拉松，一场思想碰撞与知识交流的盛会。让年轻的心灵在哲学的海洋中自由翱翔。',
+      '浙江中学生哲学大会（SSPCZ）创立于 2022 年，是由学生组织、面向初高中学生的哲学学术共同体。大会在杭州举办，主要形式包括学生论文讲演、学者讲座与哲学黑客马拉松。',
     coverKicker: 'Secondary School Philosophy Conference of Zhejiang',
-    tagline: '面向初高中学生的哲学学术共同体',
+    tagline: '创立于 2022 年 · 学生组织 · 面向初高中学生 · 杭州',
     currentTitle: '当前会议',
     archiveTitle: '会议档案',
     currentMark: '进行中',
@@ -54,7 +54,26 @@ export default {
     organizersTitle: '主办与支持',
     morePending: '（更多待定）',
     letterTitle: '组委寄语',
-    facts: { period: '会期', location: '地点', audience: '对象', auditors: '旁听' },
+    facts: {
+      period: '会期',
+      location: '地点',
+      audience: '对象',
+      auditors: '旁听',
+      submissionDeadline: '投稿截止',
+      registration: '报名',
+    },
+    registrationStatus: { open: '开放中', closed: '已关闭', pending: '待开放' },
+    faqTitle: '常见问题',
+    faq: {
+      whoQuestion: '谁可以参加浙江中学生哲学大会？',
+      whenQuestion: '第三届大会何时、在哪里举行？',
+      submitQuestion: '第三届大会何时截止投稿？',
+      registerQuestion: '如何报名，参会费用是多少？',
+      venueQuestion: '第三届大会的具体会场是否已经确认？',
+      submitContact: '投稿与合作问题可联系组委会邮箱',
+      registerContact: '报名由活动行处理；如报名页无法打开，可联系组委会邮箱',
+      registrationLink: '打开活动行报名页',
+    },
   },
 
   program: {
@@ -107,9 +126,10 @@ export default {
   register: {
     lead: '大会在杭州举行，面向初高中学生开放报名，大学生与教师可以旁听身份参与。报名成功后，组委会将通过你留下的联系方式发送参会通知。',
     cfpNote: '想在大会上讲演论文？请先阅读征稿启事。',
-    serviceNote: '报名通道由活动行提供；如页面未加载，请直接打开报名页。',
+    serviceNote: '报名由活动行平台承载。为避免在本站预加载第三方内容，请前往活动行完成报名。',
     openExternal: '在活动行中打开报名页',
     contactLabel: '组委会联络',
+    dataNote: '报名信息在活动行平台提交并由其处理，组委会将使用你提供的联系方式发送参会通知。提交前请阅读报名页展示的平台规则与隐私说明。',
     fields: {
       name: '姓名',
       school: '学校',
@@ -153,10 +173,13 @@ export default {
     empty: '暂无内容。',
     doc: {
       preview: '预览',
+      readPage: '阅读独立页面',
       download: '下载',
       openLink: '打开链接',
       version: '版本',
       updated: '更新于',
+      publisher: '发布机构',
+      format: '资源格式',
     },
     typeLabels: {
       pdf: 'PDF',
@@ -172,6 +195,18 @@ export default {
         slide: '演示',
       },
     },
+  },
+
+  policies: {
+    statusLabel: '文件状态',
+    statusProvisional: '暂行摘要',
+    versionLabel: '版本',
+    updatedLabel: '最后更新',
+    responsibleLabel: '责任机构',
+    responsibleValue: '第三届大会组委会学术组',
+    sourceLabel: '依据版本',
+    sourceValue: '第二届大会论文审核政策',
+    effectNote: '本页用于第三届投稿准备，不构成第三届正式章程；正式文件发布后将替代本摘要。',
   },
 
   closing: {

@@ -35,9 +35,9 @@ export default {
 
   home: {
     heroLead:
-      'An open academic forum for middle and high school students passionate about philosophy — student paper presentations, guest lectures and a philosophy hackathon. A festival of ideas, where young minds roam free in the ocean of philosophy.',
+      'Founded in 2022, the Secondary School Philosophy Conference of Zhejiang (SSPCZ) is a student-organized academic philosophy community for middle and high school students. Held in Hangzhou, it combines student paper presentations, scholar lectures and a philosophy hackathon.',
     coverKicker: 'SSPCZ · Since 2022',
-    tagline: 'A philosophical academic community for secondary school students',
+    tagline: 'Founded 2022 · Student-organized · Secondary students · Hangzhou',
     currentTitle: 'Current Conference',
     archiveTitle: 'Archive',
     currentMark: 'Current',
@@ -54,7 +54,26 @@ export default {
     organizersTitle: 'Hosts & Support',
     morePending: '(more to be announced)',
     letterTitle: 'Organizers’ Letter',
-    facts: { period: 'Dates', location: 'Location', audience: 'For', auditors: 'Auditors' },
+    facts: {
+      period: 'Dates',
+      location: 'Location',
+      audience: 'For',
+      auditors: 'Auditors',
+      submissionDeadline: 'Submission deadline',
+      registration: 'Registration',
+    },
+    registrationStatus: { open: 'Open', closed: 'Closed', pending: 'Pending' },
+    faqTitle: 'Frequently Asked Questions',
+    faq: {
+      whoQuestion: 'Who may attend the SSPCZ?',
+      whenQuestion: 'When and where will Issue III take place?',
+      submitQuestion: 'When is the Issue III submission deadline?',
+      registerQuestion: 'How do I register, and what does attendance cost?',
+      venueQuestion: 'Has the exact Issue III venue been confirmed?',
+      submitContact: 'For submission and partnership questions, contact the committee at',
+      registerContact: 'Registration is handled by Huodongxing. If the page is unavailable, contact the committee at',
+      registrationLink: 'Open Huodongxing registration',
+    },
   },
 
   program: {
@@ -109,9 +128,10 @@ export default {
   register: {
     lead: 'The conference takes place in Hangzhou. Registration is open to middle and high school students; university students and teachers may attend as auditors. After you register, the committee will send conference updates via the contact you leave.',
     cfpNote: 'Want to present a paper? Read the Call for Papers first.',
-    serviceNote: 'Registration is handled on Huodongxing; if the widget fails to load, open the page directly.',
+    serviceNote: 'Registration is hosted on Huodongxing. To avoid preloading third-party content here, continue to Huodongxing to register.',
     openExternal: 'Open the registration page on Huodongxing',
     contactLabel: 'Committee contact',
+    dataNote: 'Registration details are submitted to and processed on Huodongxing. The committee uses the contact you provide to send conference notices. Before submitting, read the platform rules and privacy notice shown on the registration page.',
     fields: {
       name: 'Name',
       school: 'School',
@@ -155,10 +175,13 @@ export default {
     empty: 'Nothing here yet.',
     doc: {
       preview: 'Preview',
+      readPage: 'Read canonical page',
       download: 'Download',
       openLink: 'Open link',
       version: 'Version',
       updated: 'Updated',
+      publisher: 'Publisher',
+      format: 'Resource format',
     },
     typeLabels: {
       pdf: 'PDF',
@@ -174,6 +197,18 @@ export default {
         slide: 'Slides',
       },
     },
+  },
+
+  policies: {
+    statusLabel: 'Document status',
+    statusProvisional: 'Provisional summary',
+    versionLabel: 'Version',
+    updatedLabel: 'Last updated',
+    responsibleLabel: 'Responsible body',
+    responsibleValue: 'Academic Team, SSPCZ Issue III Organizing Committee',
+    sourceLabel: 'Source policy',
+    sourceValue: 'Issue II paper review policy',
+    effectNote: 'This page supports Issue III submission preparation but is not the final Issue III charter. The formal document will supersede this summary when published.',
   },
 
   closing: {

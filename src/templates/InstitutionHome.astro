@@ -33,7 +33,9 @@ const dict = t(locale);
 /* Current edition — resolved dynamically via the institutional pointer. */
 const current = getIssueBundle(currentIssueId);
 
-const title = `${dict.siteName} · ${dict.siteNameLatin}`;
+const title = locale === 'zh'
+  ? `${dict.siteName}（SSPCZ）`
+  : 'SSPCZ | Student Philosophy Conference in Zhejiang';
 ---
 
 <LandingLayout

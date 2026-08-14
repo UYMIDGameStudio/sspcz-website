@@ -16,6 +16,7 @@ import {
   dateRange,
   issueMark,
   issueTitle,
+  monthYear,
   paddedIssue,
   quotedTheme,
   sessionLabel,
@@ -48,10 +49,54 @@ const facts = [
   { label: ci.facts.location, value: `${pick(locale, issue.location.city)} · ${pick(locale, issue.location.venue.note)}` },
   { label: ci.facts.audience, value: pick(locale, issue.audience.primary) },
   { label: ci.facts.auditors, value: pick(locale, issue.audience.auditors) },
+  { label: ci.facts.submissionDeadline, value: monthYear(issue.cfp.deadline, locale) },
+  ...(issue.registration
+    ? [{
+        label: ci.facts.registration,
+        value: `${ci.registrationStatus[issue.registration.status]} · ${pick(locale, issue.registration.feeNote)}`,
+      }]
+    : []),
 ];
+
+const stop = locale === 'zh' ? '。' : '.';
+const comma = locale === 'zh' ? '，' : ', ';
+const semicolon = locale === 'zh' ? '；' : '; ';
+const faqs = [
+  {
+    question: ci.faq.whoQuestion,
+    answer: `${pick(locale, issue.audience.primary)}${stop} ${pick(locale, issue.audience.auditors)}${stop}`,
+  },
+  {
+    question: ci.faq.whenQuestion,
+    answer: `${dateRange(issue.dates.start, issue.dates.end, locale)}${comma}${pick(locale, issue.location.city)}${semicolon}${pick(locale, issue.location.venue.note)}${stop}`,
+  },
+  {
+    question: ci.faq.submitQuestion,
+    answer: `${monthYear(issue.cfp.deadline, locale)}${stop} ${ci.faq.submitContact} ${issue.contact.email}${stop}`,
+  },
+  ...(issue.registration
+    ? [{
+        question: ci.faq.registerQuestion,
+        answer: `${ci.registrationStatus[issue.registration.status]}${stop} ${pick(locale, issue.registration.feeNote)}${stop} ${ci.faq.registerContact} ${issue.contact.email}${stop}`,
+        href: issue.registration.page,
+      }]
+    : []),
+  {
+    question: ci.faq.venueQuestion,
+    answer: `${pick(locale, issue.location.venue.note)}${stop}`,
+  },
+];
+const faqItems = faqs.map(({ question, answer }) => ({ question, answer }));
 ---
 
-<LandingLayout locale={locale} route="issue" issueId={issueId} title={title} description={description}>
+<LandingLayout
+  locale={locale}
+  route="issue"
+  issueId={issueId}
+  title={title}
+  description={description}
+  faqItems={faqItems}
+>
   <section class="cover">
     <div class="cover__index">
       <p class="cover__kicker">{sessionLabel(issue.issue, locale)}</p>
@@ -118,6 +163,31 @@ const facts = [
       }
     </ol>
   </Marginalia>
+
+  <div class="band band--secondary">
+    <Marginalia>
+      <Fragment slot="margin">
+        <SectionCounter label="FAQ" />
+        <h2>{ci.faqTitle}</h2>
+        <p class="margin-sub">Direct Answers</p>
+      </Fragment>
+      <dl class="faq">
+        {
+          faqs.map((item) => (
+            <div class="faq__item">
+              <dt class="faq__question">{item.question}</dt>
+              <dd class="faq__answer">
+                {item.answer}
+                {'href' in item && item.href && (
+                  <a class="faq__link" href={item.href}>{ci.faq.registrationLink} →</a>
+                )}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </Marginalia>
+  </div>
 
   <Marginalia>
     <Fragment slot="margin">
@@ -425,6 +495,43 @@ const facts = [
 
   .margin-note a {
     color: var(--color-text-muted);
+    text-decoration: underline;
+  }
+
+  .faq {
+    margin: 0;
+  }
+
+  .faq__item {
+    padding: var(--space-6) 0;
+    border-top: 1px solid var(--color-line-strong);
+  }
+
+  .faq__item:last-child {
+    border-bottom: 1px solid var(--color-line-strong);
+  }
+
+  .faq__question {
+    font-family: var(--font-serif-cjk);
+    font-size: var(--type-heading-sub);
+    color: var(--color-ink);
+  }
+
+  :global(html:lang(en)) .faq__question {
+    font-family: var(--font-serif-latin);
+  }
+
+  .faq__answer {
+    max-width: var(--measure);
+    margin: var(--space-3) 0 0;
+    color: var(--color-text);
+    line-height: var(--leading-loose);
+  }
+
+  .faq__link {
+    display: block;
+    margin-top: var(--space-2);
+    color: var(--color-accent-deep);
     text-decoration: underline;
   }
 

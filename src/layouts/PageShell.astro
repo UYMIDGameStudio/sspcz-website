@@ -14,6 +14,7 @@ import { t } from '../i18n';
 import { getIssueBundle, institution, type Locale } from '../lib/issueData';
 import { issueMark } from '../lib/format';
 import { path, switchLocale, withBase, type RouteKey } from '../lib/routes';
+import { buildStructuredData, type CreativeWorkMetadata, type FaqItem } from '../lib/seo';
 
 export type LayoutMode = 'institution' | 'publication' | 'data' | 'landing';
 
@@ -24,9 +25,22 @@ interface Props {
   title: string;
   description: string;
   mode: LayoutMode;
+  alternatePaths?: Partial<Record<Locale, string>>;
+  creativeWork?: CreativeWorkMetadata;
+  faqItems?: FaqItem[];
 }
 
-const { locale, route, issueId, title, description, mode } = Astro.props;
+const {
+  locale,
+  route,
+  issueId,
+  title,
+  description,
+  mode,
+  alternatePaths,
+  creativeWork,
+  faqItems,
+} = Astro.props;
 const dict = t(locale);
 const bundle = getIssueBundle(issueId);
 
@@ -70,14 +84,69 @@ const brand =
     : { primary: 'SSPCZ', secondary: dict.siteName };
 
 const alternates = Astro.site
-  ? {
-      zh: new URL(path('zh', route, issueId), Astro.site).href,
-      en: new URL(path('en', route, issueId), Astro.site).href,
-    }
+  ? alternatePaths
+    ? Object.fromEntries(
+        Object.entries(alternatePaths).map(([lang, pathname]) => [lang, new URL(pathname, Astro.site).href]),
+      )
+    : {
+        zh: new URL(path('zh', route, issueId), Astro.site).href,
+        en: new URL(path('en', route, issueId), Astro.site).href,
+      }
+  : undefined;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const routeCanonicalPath = path(locale, route, issueId);
+const isResourceDetail = route === 'resources' && Astro.url.pathname !== routeCanonicalPath;
+
+const routeLabel: Record<RouteKey, string> = {
+  home: dict.siteName,
+  about: dict.nav.home,
+  archive: dict.nav.archive,
+  resources: dict.nav.resources,
+  issue: dict.nav.currentIssue,
+  cfp: dict.nav.cfp,
+  program: dict.nav.program,
+  committee: dict.nav.committee,
+  policies: dict.nav.policies,
+  register: dict.nav.register,
+};
+const institutionalRoutes: RouteKey[] = ['home', 'about', 'archive', 'resources'];
+const breadcrumbItems = canonical
+  ? [
+      { name: dict.siteName, url: new URL(path(locale, 'home'), Astro.site).href },
+      ...(isResourceDetail
+        ? [{ name: dict.nav.resources, url: new URL(routeCanonicalPath, Astro.site).href }]
+        : []),
+      ...(!institutionalRoutes.includes(route)
+        ? [{ name: issueMark(bundle.issue.issue, locale), url: new URL(path(locale, 'issue', issueId), Astro.site).href }]
+        : []),
+      ...(route !== 'home'
+        ? [{ name: isResourceDetail ? title.split(' · ')[0] : routeLabel[route], url: canonical }]
+        : []),
+    ]
+  : [];
+const structuredData = canonical
+  ? buildStructuredData({
+      locale,
+      route,
+      bundle,
+      pageUrl: canonical,
+      title,
+      description,
+      breadcrumbs: breadcrumbItems,
+      creativeWork,
+      faqItems,
+    })
   : undefined;
 ---
 
-<BaseLayout title={title} description={description} lang={locale} alternates={alternates}>
+<BaseLayout
+  title={title}
+  description={description}
+  lang={locale}
+  alternates={alternates}
+  canonical={canonical}
+  structuredData={structuredData}
+>
   <EditorialGrid>
     <RunningHeader
       primary={brand.primary}
@@ -168,7 +237,9 @@ const alternates = Astro.site
   }
 
   .nav-link {
-    display: inline-block;
+    display: inline-flex;
+    min-height: var(--target-min);
+    align-items: center;
     padding: var(--space-2) 0;
     color: var(--color-text-muted);
   }
@@ -184,7 +255,9 @@ const alternates = Astro.site
 
   /* L3 actions read as tasks, not links (ADR-002 §1). */
   .nav-action {
-    display: inline-block;
+    display: inline-flex;
+    min-height: var(--target-min);
+    align-items: center;
     padding: var(--space-2) var(--space-4);
     color: var(--color-ink);
     border: 1px solid var(--color-line-strong);
@@ -208,6 +281,9 @@ const alternates = Astro.site
   }
 
   .nav-switch {
+    display: inline-flex;
+    min-height: var(--target-min);
+    align-items: center;
     padding: var(--space-2) 0;
     color: var(--color-text-muted);
   }

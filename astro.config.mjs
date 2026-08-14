@@ -8,6 +8,31 @@ import yaml from '@rollup/plugin-yaml';
 const SITE = 'https://sspcz.org';
 const BASE = '';
 
+// Page-specific editorial dates. These are intentionally content dates, not
+// build dates: a deploy must not make every URL look newly revised.
+const LASTMOD_BY_PATH = new Map([
+  ['/', '2026-08-14'],
+  ['/en/', '2026-08-14'],
+  ['/about/', '2026-08-14'],
+  ['/en/about/', '2026-08-14'],
+  ['/archive/', '2026-08-14'],
+  ['/en/archive/', '2026-08-14'],
+  ['/resources/', '2026-07-11'],
+  ['/en/resources/', '2026-07-11'],
+  ['/resources/paper-template/', '2026-07-11'],
+  ['/en/resources/paper-template/', '2026-07-11'],
+  ['/resources/paper-sample/', '2026-07-11'],
+  ['/en/resources/paper-sample/', '2026-07-11'],
+  ['/resources/theme-explanation/', '2026-04-19'],
+  ['/resources/phil-hackathon/', '2026-04-19'],
+  ['/issue-003/', '2026-08-14'],
+  ['/en/issue-003/', '2026-08-14'],
+  ['/issue-003/cfp/', '2026-07-11'],
+  ['/en/issue-003/cfp/', '2026-07-11'],
+  ['/issue-003/policies/', '2026-08-14'],
+  ['/en/issue-003/policies/', '2026-08-14'],
+]);
+
 /** Legacy static-site URLs → permanent archival homes (ADR-001 Phase 4).
  *  These map to issue-003 specifically (not "current"): the legacy pages
  *  WERE the third session, so the mapping never changes. */
@@ -40,8 +65,16 @@ export default defineConfig({
   redirects: LEGACY_REDIRECTS,
   integrations: [
     sitemap({
-      // The /b/ bookmark landing pages are noindex print companions.
-      filter: (page) => !page.includes('/b/'),
+      // Bookmark print companions and the legacy /cfp/ redirect are noindex;
+      // neither belongs in a sitemap of canonical pages.
+      filter: (page) => {
+        const pathname = new URL(page).pathname;
+        return !pathname.startsWith('/b/') && pathname !== '/cfp/';
+      },
+      serialize: (item) => {
+        const lastmod = LASTMOD_BY_PATH.get(new URL(item.url).pathname);
+        return lastmod ? { ...item, lastmod } : item;
+      },
       i18n: {
         defaultLocale: 'zh',
         locales: { zh: 'zh-CN', en: 'en' },
