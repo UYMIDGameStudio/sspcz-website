@@ -6,7 +6,7 @@ import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import { t } from '../i18n';
 import { getIssueBundle, type Locale } from '../lib/issueData';
-import { dateRange, issueMark, monthYear, quotedTheme } from '../lib/format';
+import { cfpDate, dateRange, issueMark, monthYear, quotedTheme } from '../lib/format';
 import { path } from '../lib/routes';
 
 interface Props {
@@ -27,7 +27,7 @@ const title = `${entry.data.title} · ${dict.siteName}`;
 
 const dates = [
   { tag: 'Submissions Open', label: dict.cfpMeta.open, value: monthYear(issue.cfp.open, locale) },
-  { tag: 'Submissions Close', label: dict.cfpMeta.deadline, value: monthYear(issue.cfp.deadline, locale) },
+  { tag: 'Submissions Close', label: dict.cfpMeta.deadline, value: cfpDate(issue.cfp.deadline, locale) },
   {
     tag: 'Presentations',
     label: dict.cfpMeta.presentations,

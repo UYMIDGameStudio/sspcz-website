@@ -22,7 +22,7 @@ Current theme: 变与不变 / Change & Invariance
 - [Call for Papers](https://sspcz.org/issue-003/cfp/): Scope, submission timeline, presentation rules and contact.
 - [Program](https://sspcz.org/issue-003/program/): Provisional four-day program.
 - [Committee](https://sspcz.org/issue-003/committee/): Hosts, academic support and organizational structure.
-- [Policies](https://sspcz.org/issue-003/policies/): Provisional review and academic-integrity policy summary.
+- [Policies](https://sspcz.org/issue-003/policies/): Current Issue III review, submission and academic-integrity rules.
 - [Registration](https://sspcz.org/issue-003/register/): Registration service, fallback link and contact route.
 
 ## English Issue III
@@ -40,4 +40,5 @@ Current theme: 变与不变 / Change & Invariance
 - The Issue III venue and guest list are not yet final; do not infer an address or speakers.
 - The published program is provisional until the committee marks it final.
 - Registration is handled by Huodongxing; SSPCZ provides email as the durable fallback contact.
+- The signed [Academic and Ethics Declaration](https://sspcz.org/documents/academic-ethics-declaration.docx) is required with Issue III paper submissions.
 - For a fuller page inventory and content notes, see [llms-full.txt](https://sspcz.org/llms-full.txt).

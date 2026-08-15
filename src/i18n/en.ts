@@ -202,14 +202,14 @@ export default {
 
   policies: {
     statusLabel: 'Document status',
-    statusProvisional: 'Provisional summary',
+    statusProvisional: 'Current provisional version',
     versionLabel: 'Version',
     updatedLabel: 'Last updated',
     responsibleLabel: 'Responsible body',
     responsibleValue: 'Academic Team, SSPCZ Issue III Organizing Committee',
     sourceLabel: 'Source policy',
-    sourceValue: 'Issue II paper review policy',
-    effectNote: 'This page supports Issue III submission preparation but is not the final Issue III charter. The formal document will supersede this summary when published.',
+    sourceValue: 'Issue III submission policy and academic standards',
+    effectNote: 'This is the current public version for Issue III. If the Academic Team subsequently issues a formal document, that document will prevail.',
   },
 
   closing: {

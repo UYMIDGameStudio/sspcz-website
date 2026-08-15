@@ -6,30 +6,51 @@ year: 2026
 kind: policies
 order: 3
 status: provisional
-version: "2.0-summary"
-dateModified: 2026-08-14
-sourceEdition: 2
+version: "3.0"
+dateModified: 2026-08-15
+sourceEdition: 3
 ---
 
-This document is an English summary of the paper review policy of the 2nd SSPCZ, provided for submitters. The official charter of the 3rd session will be issued by the committee's academic team; the Chinese version prevails.
+This page sets out the currently applicable submission policy, review criteria, academic standards and AI requirements for the 3rd SSPCZ (SSPCZ 2026). If the Academic Team subsequently issues a formal document, that document will prevail.
 
-## On Review
+## Submission Deadline and Required Document
 
-1. AI may not be an author or co-author of a conference paper; the authors of citations, notes and references may not be AI either.
-2. If AI-assisted technology forms part of the research or of the writing, this must be stated in the cover letter and in the acknowledgements, with full details disclosed in the methods section: the complete prompts used, the AI tools and their versions.
-3. Scope of AI use — permitted: language polishing, translation assistance, reference management; restricted: no more than 15% of the main text may be AI-generated.
-4. Papers with an AI-generated share above 15% but below 30% may be revised and resubmitted; papers above 30% are rejected outright.
-5. Submissions must be original, unpublished in any form and not under review by any other publication or electronic medium; otherwise the academic team may return the paper and decline to accept it.
-6. Content is reviewed first. Criteria: argumentation (persuasiveness, logic, sound citation), thesis (fit with the theme, scholarly value, staying on topic) and originality (novelty). Papers passing content review still undergo a risk review; where formatting requires revision, the academic team issues a revision notice with a deadline — acceptance is withdrawn if no revised manuscript arrives in time.
-7. Where the academic team finds risky content, a notice is issued and the paper returned; the submitter may remove the content and resubmit.
-8. Authors may request updates to accepted manuscripts, but correction requests that significantly affect the paper or impede readers' understanding (e.g. spelling or grammar errors) will not be considered.
-9. The academic team keeps all details of submitted manuscripts confidential and does not comment externally on manuscripts under consideration or on their rejection.
-10. Papers containing incitement, hate speech, disinformation, or content violating national policy may be rejected and returned outright.
+- Submission deadline: 20 September 2026 (Sunday), 23:59, subject to formal notice.
+- Revision cut-off: papers submitted on or before 15 September may enter revision and re-review if the reviewers request changes. Papers submitted from 16 September onward have no revision stage, and the review decision takes immediate effect.
+- A signed [Academic and Ethics Declaration](/documents/academic-ethics-declaration.docx) must accompany every submission. Submissions without the declaration, or with a false declaration, will not be accepted. The declaration is currently available in Chinese.
 
-## On Academic Misconduct
+## Review Criteria (50 points total)
 
-1. Published content is final and cannot be modified.
-2. All accepted papers must pass anti-AI and academic-integrity screening; in cases of plagiarism, self-plagiarism, duplicate submission or fabricated citation (including but not limited to the above), the academic team issues a warning and a retraction notice.
-3. Co-authorship must be based on actual contribution; improper authorship is not permitted.
+Intellectual substance and quality of argument are the primary considerations. Papers are assessed across six dimensions:
 
-> Summarized from the 2nd session's policy; any updates for the 3rd session will be announced by the academic team.
+1. Argumentation (persuasiveness, logic and internally coherent citation) — 12 points
+2. Theory, including fit with the selected topic (alignment with the theme and scholarly value) — 12 points
+3. Originality (novelty and independent contribution) — 10 points
+4. Use of concepts — 6 points
+5. Academic standards (citation: 4 points; formatting: 2 points) — 6 points
+6. Language and expression — 4 points
+
+## Selection
+
+Selection is made on overall merit. After submissions close, papers are ranked by final review score to determine presenting and attending papers. There is no fixed quota for each recommended direction. The number of presenting and attending papers will be announced once venue and programme arrangements are confirmed.
+
+## Originality and AI Use
+
+1. Submissions must be the authors' original, unpublished work and must not be under review or in a publication process with another conference, journal or electronic medium.
+2. AI may not be listed as an author or co-author; AI may not be named as the author of citations, notes or references.
+3. Authors who use AI assistance, including content generation, language polishing or translation, must disclose it in all three places: the cover letter, acknowledgements and methods section. The disclosure must include the complete prompts, AI tools and versions used. Authors who did not use AI need only submit a declaration of non-use.
+4. AI may be used for language polishing, translation assistance and reference management. No more than 15% of the main text may be AI-generated. Papers in the 15%–30% range must be revised and resubmitted and will be rejected if they still exceed the limit on re-review; papers above 30% are rejected outright.
+
+## Academic Misconduct and Authorship
+
+1. Papers must pass AI-use and academic-integrity screening.
+2. Plagiarism, self-plagiarism, duplicate submission, fabricated citations and similar misconduct will result in a warning and retraction. Authors may appeal in the manner and within the period announced by the Academic Team.
+3. Authorship must be based on actual contribution; improper authorship is not permitted.
+4. Once accepted and published, a paper's content is final and cannot be changed.
+
+## Risk Review and Confidentiality
+
+Papers containing incitement, hateful or discriminatory content, disinformation, material that violates national policy or law, or other ideologically sensitive content will be rejected and returned outright.
+
+The Academic Team keeps all manuscripts and review information confidential and does not disclose manuscript content or author identities to third parties.
+

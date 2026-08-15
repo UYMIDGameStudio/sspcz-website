@@ -85,6 +85,23 @@ export function monthYear(v: { year: number; month: number }, locale: Locale): s
     : `${EN_MONTHS_FULL[v.month - 1]} ${v.year}`;
 }
 
+/** CFP date marker; supports month-only announcements and exact deadlines. */
+export function cfpDate(
+  v: { year: number; month: number; day?: number; time?: string },
+  locale: Locale,
+): string {
+  if (!v.day) return monthYear(v, locale);
+
+  const weekday = new Date(Date.UTC(v.year, v.month - 1, v.day)).getUTCDay();
+  const zhWeekdays = ['日', '一', '二', '三', '四', '五', '六'];
+  const enWeekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const time = v.time ? (locale === 'zh' ? ` ${v.time}` : `, ${v.time}`) : '';
+
+  return locale === 'zh'
+    ? `${v.year}年${v.month}月${v.day}日（周${zhWeekdays[weekday]}）${time}`
+    : `${v.day} ${EN_MONTHS_FULL[v.month - 1]} ${v.year} (${enWeekdays[weekday]})${time}`;
+}
+
 export function sessionLabel(n: number, locale: Locale): string {
   return locale === 'zh'
     ? `第${CN_NUMERALS[n - 1]}届`
