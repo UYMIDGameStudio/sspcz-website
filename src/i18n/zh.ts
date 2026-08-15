@@ -200,14 +200,14 @@ export default {
 
   policies: {
     statusLabel: '文件状态',
-    statusProvisional: '暂行摘要',
+    statusProvisional: '暂行公开版本',
     versionLabel: '版本',
     updatedLabel: '最后更新',
     responsibleLabel: '责任机构',
     responsibleValue: '第三届大会组委会学术组',
     sourceLabel: '依据版本',
-    sourceValue: '第二届大会论文审核政策',
-    effectNote: '本页用于第三届投稿准备，不构成第三届正式章程；正式文件发布后将替代本摘要。',
+    sourceValue: '第三届大会投稿政策与学术规范',
+    effectNote: '本页为第三届大会当前公开版本；如后续学术组发布正式文件，以正式文件为准。',
   },
 
   closing: {

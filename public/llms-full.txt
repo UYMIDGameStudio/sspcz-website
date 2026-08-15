@@ -42,5 +42,5 @@ English counterparts use the `/en/issue-003/` prefix.
 1. Prefer the canonical URL declared by each page.
 2. Treat dates, thresholds and review rules on the CFP and Policies pages as issue-specific.
 3. Do not state that a pending venue, speaker or co-organizer has been confirmed.
-4. The Policies page currently summarizes Issue II policy for Issue III submitters; it is not the final Issue III charter.
+4. The Policies page contains the current public Issue III submission, review and academic-integrity rules; a later formal document from the Academic Team will prevail if issued.
 5. Use the page's visible version and update date when citing a resource document.

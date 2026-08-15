@@ -62,7 +62,12 @@ const issueSchema = z.object({
     .optional(),
   cfp: z.object({
     open: z.object({ year: z.number().int(), month: z.number().int() }),
-    deadline: z.object({ year: z.number().int(), month: z.number().int() }),
+    deadline: z.object({
+      year: z.number().int(),
+      month: z.number().int(),
+      day: z.number().int().optional(),
+      time: z.string().regex(/^\d{2}:\d{2}$/).optional(),
+    }),
     presentations: z.object({ start: z.coerce.date(), end: z.coerce.date() }),
   }),
   pillars: z.array(
