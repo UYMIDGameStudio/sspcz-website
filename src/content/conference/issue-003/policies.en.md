@@ -38,7 +38,7 @@ Selection is made on overall merit. After submissions close, papers are ranked b
 
 1. Submissions must be the authors' original, unpublished work and must not be under review or in a publication process with another conference, journal or electronic medium.
 2. AI may not be listed as an author or co-author; AI may not be named as the author of citations, notes or references.
-3. Authors who use AI assistance, including content generation, language polishing or translation, must disclose it in all three places: the cover letter, acknowledgements and methods section. The disclosure must include the complete prompts, AI tools and versions used. Authors who did not use AI need only submit a declaration of non-use.
+3. Authors who use AI assistance, including content generation, language polishing or translation, must disclose it in all three places: the cover letter, acknowledgements and methods section. The disclosure must include the complete prompts, AI tools and versions used.
 4. AI may be used for language polishing, translation assistance and reference management. No more than 15% of the main text may be AI-generated. Papers in the 15%–30% range must be revised and resubmitted and will be rejected if they still exceed the limit on re-review; papers above 30% are rejected outright.
 
 ## Academic Misconduct and Authorship
