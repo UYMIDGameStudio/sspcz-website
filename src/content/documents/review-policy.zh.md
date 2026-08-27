@@ -1,10 +1,10 @@
 ---
-title: 论文审核政策
-description: 论文审核标准、AI 使用规范与学术不端处理办法。
+title: 投稿论文评审准则
+description: SSPCZ 2026 匿名评审流程、50 分评分标准、四档结论、AI 合规审查、红线审查与保密要求（DOCX）。
 lang: zh
-type: link
-fileUrl: /issue-003/policies/
-version: "3.0"
-updatedDate: 2026-08-15
+type: docx
+fileUrl: /documents/paper-review-guidelines.docx
+version: "1.0"
+updatedDate: 2026-08-28
 order: 3
 ---

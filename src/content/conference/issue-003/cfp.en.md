@@ -19,12 +19,12 @@ Topics should engage the theme "Change & Invariance": in a life-world of constan
 
 ## Review Criteria (50 points total)
 
-1. Argumentation (persuasiveness, logic and internally coherent citation) — 12 points
-2. Theory, including fit with the selected topic (alignment with the theme and scholarly value) — 12 points
-3. Originality (novelty and independent contribution) — 10 points
-4. Use of concepts — 6 points
-5. Academic standards (citation: 4 points; formatting: 2 points) — 6 points
-6. Language and expression — 4 points
+1. Argumentation (claims, evidence, logic and persuasiveness) — 12 points
+2. Theoretical depth and reflection on conclusions — 12 points
+3. Originality and independent thinking — 10 points
+4. Conceptual understanding and philosophical literacy — 6 points
+5. Academic standards (accurate citation: 4 points; formatting compliance: 2 points) — 6 points
+6. Language and expression (diction, register and clarity) — 4 points
 
 ## Awards
 
@@ -32,11 +32,11 @@ Four prizes are conferred: Best Writing, Best Presentation, Best Theme and Best 
 
 ## Originality
 
-Papers must be original, unpublished in any form and not under review elsewhere; they must pass academic-integrity screening, with authorship based on actual contribution.
+Papers must be the author's original, unpublished work. They must not be under simultaneous submission to another conference, journal or academic body, or already in another review process. Authorship must reflect actual contribution.
 
 ## AI Policy
 
-AI may not be an author or co-author, and no more than 15% of the main text may be AI-generated. Authors who use AI must disclose the prompts, tools and versions in all three places: the cover letter, acknowledgements and methods section. Authors who did not use AI need only submit a declaration of non-use.
+AI may assist with language polishing, translation, reference management and similar work, but it may not replace the author's core thinking or argument and may not be listed as an author or co-author. Authors who use AI must make consistent disclosures in the cover letter, acknowledgements and methods section, identifying the tool and version, its exact use and the complete prompts. Main-text AI content up to 15% receives normal review; 15%–30% requires revision and resubmission; above 30% is normally rejected outright.
 
 ## Deadline and Submission
 
@@ -44,5 +44,4 @@ The submission deadline is 20 September 2026 (Sunday), 23:59, subject to formal 
 
 For submissions and partnership, contact the committee by email with your abstract, full paper and signed Academic and Ethics Declaration.
 
-> Detailed rules follow the official document issued by the committee's Academic Team; full review and integrity requirements are in the Conference Policies.
-
+> For the complete rules, see the [Submission Policy, Academic Standards and AI Requirements](/documents/submission-policy-and-ai-requirements.docx) and [Paper Review Guidelines](/documents/paper-review-guidelines.docx), currently available in Chinese. A later formal notice from the Academic Team prevails.
