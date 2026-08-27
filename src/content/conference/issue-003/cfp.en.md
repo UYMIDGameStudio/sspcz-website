@@ -44,4 +44,4 @@ The submission deadline is 20 September 2026 (Sunday), 23:59, subject to formal 
 
 For submissions and partnership, contact the committee by email with your abstract, full paper and signed Academic and Ethics Declaration.
 
-> For the complete rules, see the [Submission Policy, Academic Standards and AI Requirements](/documents/submission-policy-and-ai-requirements.docx) and [Paper Review Guidelines](/documents/paper-review-guidelines.docx), currently available in Chinese. A later formal notice from the Academic Team prevails.
+> The complete submission and academic-integrity rules appear in Conference Policies. The [Paper Review Guidelines](/documents/paper-review-guidelines.docx) are currently available in Chinese. A later formal notice from the Academic Team prevails.

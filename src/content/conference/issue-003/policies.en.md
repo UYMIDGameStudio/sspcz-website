@@ -11,7 +11,7 @@ dateModified: 2026-08-28
 sourceEdition: 3
 ---
 
-This page summarises the current submission, review, academic-integrity and AI-use rules for the 3rd SSPCZ (SSPCZ 2026). Download the [Submission Policy, Academic Standards and AI Requirements](/documents/submission-policy-and-ai-requirements.docx), [Paper Review Guidelines](/documents/paper-review-guidelines.docx), and the required [Academic Integrity and Ethics Declaration](/documents/academic-ethics-declaration.docx). These documents are currently available in Chinese. If the Academic Team issues a later formal notice, the latest notice prevails.
+This page summarises the current submission, review, academic-integrity and AI-use rules for the 3rd SSPCZ (SSPCZ 2026). The resources library provides the [Paper Review Guidelines](/documents/paper-review-guidelines.docx) and the required [Academic Integrity and Ethics Declaration](/documents/academic-ethics-declaration.docx), currently available in Chinese. If the Academic Team issues a later formal notice, the latest notice prevails.
 
 ## Deadline and Required Materials
 
@@ -75,4 +75,3 @@ Verified plagiarism, self-plagiarism, duplicate submission, fabricated citations
 Papers must not incite hatred, violence or unlawful activity; target a group with discriminatory or insulting material; deliberately fabricate or spread false information; or violate applicable law and policy. A paper that triggers risk review will normally be rejected and returned.
 
 The Academic Team and reviewers must keep papers, author identities, reviews and the review process confidential. They may not disclose them to a third party without authorisation.
-

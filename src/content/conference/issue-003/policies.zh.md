@@ -11,7 +11,7 @@ dateModified: 2026-08-28
 sourceEdition: 3
 ---
 
-本页汇总第三届浙江中学生哲学大会（SSPCZ 2026）现行的投稿、评审、学术诚信和 AI 使用规则。可下载[《投稿政策与学术规范及 AI 使用要求》](/documents/submission-policy-and-ai-requirements.docx)、[《投稿论文评审准则》](/documents/paper-review-guidelines.docx)和投稿必交的[《学术诚信与伦理声明》](/documents/academic-ethics-declaration.docx)。如学术组后续发布正式通知，以最新通知为准。
+本页汇总第三届浙江中学生哲学大会（SSPCZ 2026）现行的投稿、评审、学术诚信和 AI 使用规则。资源库提供[《投稿论文评审准则》](/documents/paper-review-guidelines.docx)和投稿必交的[《学术诚信与伦理声明》](/documents/academic-ethics-declaration.docx)。如学术组后续发布正式通知，以最新通知为准。
 
 ## 投稿时间与材料
 
@@ -75,4 +75,3 @@ sourceEdition: 3
 论文不得煽动仇恨、暴力或非法活动，不得包含针对特定群体的歧视或侮辱性内容，不得故意编造、传播虚假信息，也不得违反国家法律法规及相关政策。触发风险内容审查的稿件，原则上直接否决退回。
 
 学术组和评审人员对论文、作者身份、评审意见及审核过程负有保密义务，未经授权不得向第三方披露。
-

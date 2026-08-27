@@ -41,5 +41,5 @@ Current theme: 变与不变 / Change & Invariance
 - The published program is provisional until the committee marks it final.
 - Registration is handled by Huodongxing; SSPCZ provides email as the durable fallback contact.
 - The signed [Academic Integrity and Ethics Declaration](https://sspcz.org/documents/academic-ethics-declaration.docx) is required with Issue III paper submissions.
-- The Chinese-language [Submission Policy, Academic Standards and AI Requirements](https://sspcz.org/documents/submission-policy-and-ai-requirements.docx) and [Paper Review Guidelines](https://sspcz.org/documents/paper-review-guidelines.docx) set out the current detailed rules.
+- The Chinese-language [Paper Review Guidelines](https://sspcz.org/documents/paper-review-guidelines.docx) set out the detailed review rules; submission and AI requirements appear on the Conference Policies page.
 - For a fuller page inventory and content notes, see [llms-full.txt](https://sspcz.org/llms-full.txt).

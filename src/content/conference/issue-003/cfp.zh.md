@@ -44,4 +44,4 @@ AI 可以用于语言润色、翻译、文献管理等辅助工作，但不能�
 
 投稿与合作请联络组委会邮箱，提交论文摘要、全文及已签署的《学术与伦理声明》。
 
-> 完整规则见[《投稿政策与学术规范及 AI 使用要求》](/documents/submission-policy-and-ai-requirements.docx)和[《投稿论文评审准则》](/documents/paper-review-guidelines.docx)；如学术组另行发布正式通知，以最新通知为准。
+> 完整投稿与学术规范见「会议政策」，评审细则见[《投稿论文评审准则》](/documents/paper-review-guidelines.docx)；如学术组另行发布正式通知，以最新通知为准。
