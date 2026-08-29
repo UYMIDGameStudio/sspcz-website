@@ -73,9 +73,18 @@ const href = fileUrl ? withBase(fileUrl) : undefined;
 
     {
       type === 'docx' && href && (
-        <a class="publication__btn" href={href} download>
-          {d.doc.download}
-        </a>
+        <>
+          <a
+            class="publication__btn"
+            href={href}
+            target="_blank"
+            rel="noopener"
+            type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          >
+            {d.doc.openFile}
+          </a>
+          <p class="publication__hint">{d.doc.downloadHint}</p>
+        </>
       )
     }
 
@@ -141,6 +150,14 @@ const href = fileUrl ? withBase(fileUrl) : undefined;
     gap: var(--space-3);
     align-items: flex-start;
     margin-top: var(--space-4);
+  }
+
+  .publication__hint {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: var(--text-xs);
+    line-height: var(--leading-loose);
+    color: var(--color-text-muted);
   }
 
   .publication__btn {

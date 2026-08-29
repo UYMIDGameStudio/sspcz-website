@@ -128,7 +128,7 @@ export default {
   register: {
     lead: 'The conference takes place in Hangzhou. Registration is open to middle and high school students; university students and teachers may attend as auditors. After you register, the committee will send conference updates via the contact you leave.',
     cfpNote: 'Want to present a paper? Read the Call for Papers first.',
-    serviceNote: 'Use the button above to load Huodongxing here; if the widget fails to load, open the page directly.',
+    serviceNote: 'Registration is handled on Huodongxing; if the widget fails to load, open the page directly.',
     showEmbed: 'Show the embedded registration page',
     openExternal: 'Open the registration page on Huodongxing',
     contactLabel: 'Committee contact',
@@ -178,6 +178,8 @@ export default {
       preview: 'Preview',
       readPage: 'Read canonical page',
       download: 'Download',
+      openFile: 'Open / download',
+      downloadHint: 'If an in-app browser cannot save the file, open it first and then choose “Open in browser” from the menu.',
       openLink: 'Open link',
       version: 'Version',
       updated: 'Updated',

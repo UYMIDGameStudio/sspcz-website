@@ -95,12 +95,29 @@ const creativeWork = {
       {entry.data.type === 'md' && <div class="prose"><Content /></div>}
 
       {
-        href && (
+        href && entry.data.type !== 'docx' && (
           <p class="resource-document__action">
             <a class="button button--primary" href={href} download={entry.data.type !== 'pdf'}>
               {entry.data.type === 'pdf' ? d.doc.preview : d.doc.download}
             </a>
           </p>
+        )
+      }
+
+      {
+        href && entry.data.type === 'docx' && (
+          <div class="resource-document__action">
+            <a
+              class="button button--primary"
+              href={href}
+              target="_blank"
+              rel="noopener"
+              type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            >
+              {d.doc.openFile}
+            </a>
+            <p class="resource-document__hint">{d.doc.downloadHint}</p>
+          </div>
         )
       }
 
@@ -138,6 +155,14 @@ const creativeWork = {
 
   .resource-document__action {
     margin-top: var(--space-8);
+  }
+
+  .resource-document__hint {
+    max-width: var(--measure);
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-loose);
+    color: var(--color-text-muted);
   }
 
   .resource-document__preview {
