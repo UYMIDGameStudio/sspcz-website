@@ -289,3 +289,87 @@ a:hover {
      where muted grey drops below the 4.5:1 AA ratio for small text. */
   color: var(--color-text);
 }
+
+/* Editorial data tables — compact enough to stay inside the publication
+   measure, but with a clear header, stable label columns and readable rows. */
+.prose table {
+  width: 100%;
+  margin-block: var(--space-6);
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--leading-normal);
+  border-block: 1px solid var(--color-line-strong);
+}
+
+.prose thead {
+  background: var(--surface-tertiary);
+}
+
+.prose th,
+.prose td {
+  padding: var(--space-3) var(--space-2);
+  overflow-wrap: break-word;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.prose th {
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink);
+}
+
+.prose th:first-child,
+.prose td:first-child {
+  min-width: 4.5rem;
+  color: var(--color-ink);
+  font-weight: var(--weight-semibold);
+}
+
+.prose th:nth-child(2),
+.prose td:nth-child(2) {
+  min-width: 3.75rem;
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (width <= 56.25em) {
+  /* A table keeps its semantic rows and columns on small screens. The table
+     itself becomes the scroll region, so the rest of the article never
+     acquires a horizontal scrollbar or crushed one-character columns. */
+  .prose table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+
+  .prose th,
+  .prose td {
+    min-width: 7rem;
+  }
+
+  .prose th:nth-child(2),
+  .prose td:nth-child(2) {
+    min-width: 10rem;
+  }
+
+  .prose th:nth-child(n + 3),
+  .prose td:nth-child(n + 3) {
+    min-width: 16rem;
+  }
+
+  .prose table:has(th:nth-child(2):last-child) th:first-child,
+  .prose table:has(th:nth-child(2):last-child) td:first-child {
+    min-width: 12rem;
+  }
+
+  .prose table:has(th:nth-child(2):last-child) th:last-child,
+  .prose table:has(th:nth-child(2):last-child) td:last-child {
+    min-width: 22rem;
+  }
+}
