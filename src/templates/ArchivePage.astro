@@ -121,7 +121,7 @@ const title = `${dict.nav.archive} · ${dict.siteName}`;
               </p>
             )}
             {e.summary && <p class="edition__summary">{e.summary}</p>}
-            {e.rows.map((r) => (
+            {e.rows.filter((r) => r.value).map((r) => (
               <RecordRow label={r.label}>{r.value}</RecordRow>
             ))}
             {e.href && (

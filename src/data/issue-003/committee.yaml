@@ -12,10 +12,7 @@ hosts:
       zh: "未竟计划"
       en: "Weijing Initiative"
 
-coOrganizers:
-  - name:
-      zh: "杭州全球青年人才中心"
-      en: "Hangzhou Global Youth Talent Center"
+coOrganizers: []
 coOrganizersPending: true
 
 academicSupport:
