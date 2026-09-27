@@ -6,7 +6,7 @@ days:
     date: 2026-10-02
     sessions:
       - timeStart: "09:00"
-        timeEnd: "09:15"
+        timeEnd: "09:40"
         kind: opening
         kindLabel:
           zh: "开幕"
@@ -17,8 +17,8 @@ days:
         abstract:
           zh: "大会开幕与主题介绍。"
           en: "Opening and introduction to the conference theme."
-      - timeStart: "09:15"
-        timeEnd: "09:55"
+      - timeStart: "09:40"
+        timeEnd: "10:20"
         kind: lecture
         kindLabel:
           zh: "讲座（录像）"
@@ -29,8 +29,8 @@ days:
         abstract:
           zh: "讲座录像播放。"
           en: "Screening of a prerecorded lecture."
-      - timeStart: "10:25"
-        timeEnd: "11:15"
+      - timeStart: "13:45"
+        timeEnd: "14:30"
         kind: papers
         kindLabel:
           zh: "论文"
@@ -41,8 +41,8 @@ days:
         abstract:
           zh: "含论文发言、点评与讨论。"
           en: "Includes the presentation, comments and discussion."
-      - timeStart: "13:45"
-        timeEnd: "14:30"
+      - timeStart: "14:30"
+        timeEnd: "15:25"
         kind: papers
         kindLabel:
           zh: "论文"
@@ -53,8 +53,8 @@ days:
         abstract:
           zh: "含论文发言、点评与讨论。"
           en: "Includes the presentation, comments and discussion."
-      - timeStart: "14:30"
-        timeEnd: "15:25"
+      - timeStart: "15:50"
+        timeEnd: "16:45"
         kind: papers
         kindLabel:
           zh: "论文"
@@ -65,18 +65,6 @@ days:
         abstract:
           zh: "含论文发言、点评与讨论。"
           en: "Includes the presentation, comments and discussion."
-      - timeStart: "15:50"
-        timeEnd: "16:45"
-        kind: papers
-        kindLabel:
-          zh: "论文"
-          en: "Paper"
-        title:
-          zh: "学生论文讲演（4）"
-          en: "Student Paper Presentation 4"
-        abstract:
-          zh: "含论文发言、点评与讨论。"
-          en: "Includes the presentation, comments and discussion."
       - timeStart: "16:45"
         timeEnd: "17:30"
         kind: papers
@@ -84,8 +72,8 @@ days:
           zh: "论文"
           en: "Paper"
         title:
-          zh: "学生论文讲演（5）"
-          en: "Student Paper Presentation 5"
+          zh: "学生论文讲演（4）"
+          en: "Student Paper Presentation 4"
         abstract:
           zh: "含论文发言、点评与讨论。"
           en: "Includes the presentation, comments and discussion."
@@ -111,8 +99,8 @@ days:
           zh: "论文"
           en: "Paper"
         title:
-          zh: "学生论文讲演（6）"
-          en: "Student Paper Presentation 6"
+          zh: "学生论文讲演（5）"
+          en: "Student Paper Presentation 5"
         abstract:
           zh: "含论文发言、点评与讨论。"
           en: "Includes the presentation, comments and discussion."
@@ -123,8 +111,8 @@ days:
           zh: "论文"
           en: "Paper"
         title:
-          zh: "学生论文讲演（7）"
-          en: "Student Paper Presentation 7"
+          zh: "学生论文讲演（6）"
+          en: "Student Paper Presentation 6"
         abstract:
           zh: "含论文发言、点评与讨论。"
           en: "Includes the presentation, comments and discussion."
@@ -140,6 +128,18 @@ days:
         abstract:
           zh: "嘉宾专题讲座与交流。"
           en: "A guest lecture followed by discussion."
+      - timeStart: "15:10"
+        timeEnd: "16:00"
+        kind: papers
+        kindLabel:
+          zh: "论文"
+          en: "Paper"
+        title:
+          zh: "学生论文讲演（7）"
+          en: "Student Paper Presentation 7"
+        abstract:
+          zh: "含论文发言、点评与讨论。"
+          en: "Includes the presentation, comments and discussion."
   - day: 3
     date: 2026-10-04
     sessions:
