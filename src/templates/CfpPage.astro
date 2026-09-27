@@ -110,17 +110,20 @@ const dates = [
   .cross-ref a {
     color: var(--color-accent-deep);
     text-decoration: underline;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
   }
 
   /* 3-column date grid with hairline separators. */
   .dates {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    min-width: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     border: 1px solid var(--color-line);
+    overflow-wrap: anywhere;
   }
 
   .dates__cell {
+    min-width: 0;
     padding: var(--space-6);
     border-left: 1px solid var(--color-line);
   }
@@ -157,6 +160,7 @@ const dates = [
   /* Dark submission bar. */
   .submit {
     display: flex;
+    min-width: 0;
     flex-wrap: wrap;
     gap: var(--space-6);
     align-items: center;
@@ -168,7 +172,9 @@ const dates = [
   }
 
   .submit__body {
+    min-width: 0;
     max-width: 34em;
+    overflow-wrap: anywhere;
   }
 
   .submit__tag {
@@ -187,21 +193,35 @@ const dates = [
   .submit__email {
     color: var(--color-text-on-dark);
     text-decoration: underline;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
   }
 
-  @media (width <= 56.25em) {
+  .submit .button {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  @container reading-page (width <= 56.25rem) {
     .dates {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .dates__cell {
+      padding: var(--space-4);
       border-left: 0;
       border-top: 1px solid var(--color-line);
     }
 
     .dates__cell:first-child {
       border-top: 0;
+    }
+
+    .submit {
+      padding: var(--space-4);
+    }
+
+    .submit .button {
+      padding-inline: var(--space-4);
     }
   }
 </style>

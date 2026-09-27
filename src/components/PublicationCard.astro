@@ -191,19 +191,19 @@ const href = fileUrl ? withBase(fileUrl) : undefined;
     border-color: var(--color-ink);
   }
 
-  /* display:contents lets the summary sit inline with the other action
-     buttons while the expanded panel wraps full-width beneath them. */
+  /* Keep native details layout: its browser-managed content wrapper is not
+     a flex item, so display:contents would shrink the PDF to its default width. */
   .preview {
-    display: contents;
+    display: block;
   }
 
-  .preview > summary {
-    order: 0;
+  .preview[open] {
+    flex-basis: 100%;
+    order: 2;
   }
 
   .preview__frame {
-    order: 2;
-    flex-basis: 100%;
+    display: block;
     width: 100%;
     height: 60vh;
     margin-top: var(--space-2);

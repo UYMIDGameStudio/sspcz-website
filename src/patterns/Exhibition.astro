@@ -80,7 +80,7 @@ const d = t(locale).resources.exhibition;
      Marginalia side-track. */
   .exhibit {
     display: grid;
-    grid-template-columns: 1fr var(--margin-track);
+    grid-template-columns: minmax(0, 1fr) minmax(0, var(--margin-track));
     gap: var(--space-6);
     margin: 0;
     align-items: start;
@@ -125,7 +125,7 @@ const d = t(locale).resources.exhibition;
     line-height: var(--leading-loose);
   }
 
-  @media (width <= 56.25em) {
+  @container reading-page (width <= 56.25rem) {
     .exhibit {
       grid-template-columns: 1fr;
       gap: var(--space-4);

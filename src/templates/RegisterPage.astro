@@ -186,8 +186,9 @@ const embedLauncher = bundle.issue.registration
 </DataLayout>
 
 <style>
-  /* The hosted registration frame loads the provider on user activation, with
-     a direct link immediately below it when the provider cannot load. */
+  /* The registration provider loads on explicit user activation. */
+  /* Rounded corners by owner request — matching the widget's own card
+     radius; the rest of the site keeps its square hairline grammar. */
   .hosted {
     padding: var(--space-4);
     overflow: hidden;
@@ -212,16 +213,19 @@ const embedLauncher = bundle.issue.registration
   }
 
   .hosted__fallback a {
-    margin-left: var(--space-2);
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: var(--space-2);
     color: var(--color-accent-deep);
     text-decoration: underline;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
   }
 
   .hosted__data-note {
     padding: var(--space-3) var(--space-2) var(--space-1);
     font-size: var(--type-marginalia);
-    color: var(--color-text-muted);
+    color: var(--color-text);
     line-height: var(--leading-loose);
     border-top: 1px solid var(--color-line);
   }

@@ -9,6 +9,7 @@
  */
 import type { Locale } from '../lib/issueData';
 import { paddedIssue, issueMark, sessionLabel } from '../lib/format';
+import { t } from '../i18n';
 
 interface Props {
   n: number;
@@ -25,12 +26,13 @@ interface Props {
 const { n, locale, href, theme, year, title, cta } = Astro.props;
 const themePrimary = locale === 'zh' ? theme.zh : theme.en;
 const themeSecondary = locale === 'zh' ? theme.en : theme.zh;
+const dict = t(locale);
 ---
 
 <a class="edition-card" href={href}>
   <div class="edition-card__grid">
     <div class="edition-card__index">
-      <p class="edition-card__label">Current Issue</p>
+      <p class="edition-card__label">{dict.home.currentTitle}</p>
       <p class="edition-card__numeral">
         <span aria-hidden="true">{paddedIssue(n)}</span>
         <span class="edition-card__numeral-label">{issueMark(n, locale)}</span>
@@ -38,12 +40,12 @@ const themeSecondary = locale === 'zh' ? theme.en : theme.zh;
       <p class="edition-card__session">{sessionLabel(n, locale)} · {year}</p>
     </div>
     <div class="edition-card__theme">
-      <p class="edition-card__label">Theme</p>
-      <p class="edition-card__theme-primary">{themePrimary}</p>
-      <p class="edition-card__theme-secondary">{themeSecondary}</p>
+      <p class="edition-card__label">{dict.currentIssue.themeLabel}</p>
+      <h2 class="edition-card__theme-primary">{themePrimary}</h2>
+      <p class="edition-card__theme-secondary" lang={locale === 'zh' ? 'en' : 'zh-CN'}>{themeSecondary}</p>
       <p class="edition-card__enter">
         <span class="edition-card__enter-title">{title}</span>
-        <span class="edition-card__enter-cue">{cta} →</span>
+        <span class="edition-card__enter-cue">{cta}<span class="edition-card__arrow" aria-hidden="true">↗</span></span>
       </p>
     </div>
   </div>
@@ -52,46 +54,57 @@ const themeSecondary = locale === 'zh' ? theme.en : theme.zh;
 <style>
   .edition-card {
     display: block;
-    margin-top: var(--space-24);
+    margin-top: var(--space-12);
     background: var(--surface-secondary);
-    border: 1px solid var(--color-line-strong);
+    border: 1px solid var(--surface-secondary);
+    color: var(--color-ink);
   }
 
-  .edition-card:hover {
-    border-color: var(--color-accent);
+  .edition-card:hover,
+  .edition-card:focus-visible {
+    border-color: var(--color-accent-deep);
   }
 
   .edition-card__grid {
     display: grid;
-    grid-template-columns: 20rem 1fr;
+    grid-template-columns: var(--edition-track) minmax(0, 1fr);
   }
 
   .edition-card__index {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-4);
     padding: var(--space-12) var(--space-8);
-    border-right: 1px solid var(--color-line-strong);
+    background: var(--color-ink);
   }
 
   .edition-card__theme {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: var(--space-12) var(--space-8);
+    min-width: 0;
+    padding: var(--space-10) var(--space-12);
   }
 
   .edition-card__label {
-    font-family: var(--font-serif-latin);
+    font-family: var(--font-sans-cjk);
     font-size: var(--type-marginalia);
-    letter-spacing: var(--tracking-wider);
+    letter-spacing: normal;
     color: var(--color-accent-deep);
     text-transform: uppercase;
   }
 
+  .edition-card__index .edition-card__label {
+    color: var(--color-text-on-dark-muted);
+  }
+
   .edition-card__numeral {
-    margin-top: var(--space-3);
-    font-family: var(--font-serif-latin);
+    margin-top: 0;
+    font-family: var(--font-numeral);
     font-size: var(--text-numeral);
     line-height: var(--leading-none);
-    color: var(--color-ink);
+    color: var(--surface-secondary);
   }
 
   .edition-card__numeral-label {
@@ -103,11 +116,11 @@ const themeSecondary = locale === 'zh' ? theme.en : theme.zh;
   }
 
   .edition-card__session {
-    margin-top: var(--space-2);
-    font-family: var(--font-serif-cjk);
+    margin-top: 0;
+    font-family: var(--font-sans-cjk);
     font-size: var(--type-metadata);
-    letter-spacing: var(--tracking-wide);
-    color: var(--color-ink);
+    letter-spacing: normal;
+    color: var(--color-text-on-dark);
   }
 
   :global(html:lang(en)) .edition-card__session {
@@ -117,18 +130,20 @@ const themeSecondary = locale === 'zh' ? theme.en : theme.zh;
   .edition-card__theme-primary {
     margin-top: var(--space-3);
     font-family: var(--font-serif-cjk);
-    font-weight: var(--weight-black);
-    font-size: var(--text-2xl);
-    letter-spacing: var(--tracking-wide);
+    font-weight: var(--weight-bold);
+    font-size: var(--type-theme);
+    line-height: var(--leading-tight);
+    letter-spacing: normal;
     color: var(--color-ink);
   }
 
   :global(html:lang(en)) .edition-card__theme-primary {
     font-family: var(--font-serif-latin);
+    letter-spacing: var(--tracking-tight);
   }
 
   .edition-card__theme-secondary {
-    margin-top: var(--space-2);
+    margin-top: var(--space-3);
     font-family: var(--font-serif-latin);
     font-style: italic;
     font-size: var(--text-md);
@@ -144,14 +159,16 @@ const themeSecondary = locale === 'zh' ? theme.en : theme.zh;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-4);
-    align-items: baseline;
+    align-items: center;
+    justify-content: space-between;
     margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-line-control);
     font-size: var(--type-metadata);
-    letter-spacing: var(--tracking-wide);
   }
 
   .edition-card__enter-title {
-    font-family: var(--font-serif-cjk);
+    font-family: var(--font-sans-cjk);
     color: var(--color-ink);
   }
 
@@ -160,22 +177,76 @@ const themeSecondary = locale === 'zh' ? theme.en : theme.zh;
   }
 
   .edition-card__enter-cue {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-4);
+    font-weight: var(--weight-semibold);
     color: var(--color-accent-deep);
   }
 
+  .edition-card__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--target-min);
+    height: var(--target-min);
+    border: 1px solid var(--color-line-control);
+    font-family: var(--font-sans-cjk);
+    font-size: var(--type-heading-sub);
+    transition: color var(--duration-hover) var(--ease-standard),
+      background-color var(--duration-hover) var(--ease-standard);
+  }
+
+  .edition-card:hover .edition-card__arrow,
+  .edition-card:focus-visible .edition-card__arrow {
+    color: var(--surface-primary);
+    background: var(--color-ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .edition-card__arrow {
+      transition: none;
+    }
+  }
+
   @media (width <= 56.25em) {
+    .edition-card {
+      margin-top: var(--space-8);
+    }
+
     .edition-card__grid {
       grid-template-columns: 1fr;
     }
 
     .edition-card__index {
-      border-right: 0;
-      border-bottom: 1px solid var(--color-line-strong);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: var(--space-1) var(--space-4);
+      padding: var(--space-6);
     }
 
-    .edition-card__index,
+    .edition-card__numeral {
+      grid-column: 2;
+      grid-row: 1 / 3;
+      font-size: var(--type-display);
+    }
+
+    .edition-card__session {
+      grid-column: 1;
+    }
+
     .edition-card__theme {
-      padding: var(--space-8) var(--page-gutter-narrow);
+      padding: var(--space-8) var(--space-6) var(--space-6);
+    }
+
+    .edition-card__enter {
+      gap: var(--space-4);
+      margin-top: var(--space-6);
+    }
+
+    .edition-card__enter-title {
+      flex-basis: 100%;
     }
   }
 </style>

@@ -6,6 +6,44 @@
  * institutional API; components consume tokens/roles, never raw values.
  */
 
+/* Numeric glyphs use the user's Times New Roman choice, including digits
+   mixed into Chinese/English copy. Local fonts only, with no download. */
+@font-face {
+  font-family: "SSPCZ Numerals";
+  src: local("Times New Roman");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
+
+@font-face {
+  font-family: "SSPCZ Numerals";
+  src: local("Times New Roman Bold");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
+
+@font-face {
+  font-family: "SSPCZ Numerals";
+  src: local("Times New Roman Italic");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
+
+@font-face {
+  font-family: "SSPCZ Numerals";
+  src: local("Times New Roman Bold Italic");
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
+
 :root {
   /* ---- Paper System (ADR-003 §3.8) ----
      Surfaces are semantic paper layers, not hues — imitating academic
@@ -58,25 +96,26 @@
   --color-alert-line: #d0a396;
 
   /* ---- typography ---- */
-  --font-serif-latin: "Times New Roman", times, serif;
-  --font-serif-cjk: "Noto Serif SC", "Songti SC", simsun, serif;
-  --font-sans-cjk: "Noto Sans SC", system-ui, sans-serif;
-  --text-xs: 0.8125rem;
-  --text-sm: 0.9063rem;
+  --font-numeral: "Times New Roman", times, serif;
+  --font-serif-latin: "SSPCZ Numerals", georgia, "Times New Roman", times, serif;
+  --font-serif-cjk: "SSPCZ Numerals", "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", simsun, serif;
+  --font-sans-cjk: "SSPCZ Numerals", system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --text-xs: 0.875rem;
+  --text-sm: 0.9375rem;
   --text-base: 1rem;
   --text-md: 1.1875rem;
-  --text-lg: 1.875rem;
-  --text-xl: 2.125rem;
-  --text-2xl: 3.25rem;
+  --text-lg: clamp(1.5rem, 1.3rem + 0.6vw, 1.875rem);
+  --text-xl: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+  --text-2xl: clamp(2.25rem, 1.75rem + 2vw, 3.25rem);
   --text-hero: 4.75rem;
 
   /* display scale — thematic titles and edition numerals (ADR-002 §4) */
-  --text-display: 5.5rem;
-  --text-numeral: 8.5rem;
+  --text-display: clamp(3rem, 2rem + 3vw, 4.5rem);
+  --text-numeral: clamp(4.5rem, 3rem + 5vw, 8rem);
   --leading-none: 0.9;
   --leading-tight: 1.2;
-  --leading-normal: 1.6;
-  --leading-loose: 2;
+  --leading-normal: 1.65;
+  --leading-loose: 1.85;
   --tracking-tight: -0.01em;
   --tracking-wide: 0.125em;
   --tracking-wider: 0.25em;
@@ -96,6 +135,11 @@
   --type-body: var(--text-base);       /* long-form reading (65–75ch measure) */
   --type-metadata: var(--text-sm);     /* dates, locations, credits */
   --type-marginalia: var(--text-xs);   /* annotations, archival info */
+  --type-cover: clamp(2.25rem, 1.5rem + 3.4vw, 4.5rem);
+  --type-theme: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  --type-control: 0.9375rem;
+  --type-brand: 1.0625rem;
+  --brand-min: 12rem;
 
   /* ---- spacing scale ---- */
   --space-1: 0.25rem;
@@ -104,18 +148,33 @@
   --space-4: 1rem;
   --space-6: 1.5rem;
   --space-8: 2rem;
+  --space-10: 2.5rem;
   --space-12: 3rem;
   --space-16: 4rem;
+  --space-20: 5rem;
   --space-24: 6rem;
 
   /* ---- layout ---- */
   --measure: 40rem;
   --page-max: 73.75rem; /* centered content column for cover plates (1180px) */
-  --margin-track: 21.25rem;
-  --page-gutter: 2.25rem;
-  --page-gutter-narrow: 1.25rem;
+  --margin-track: 18rem;
+  --page-gutter: 2.5rem;
+  --page-gutter-narrow: 1.5rem;
   --breakpoint-compact: 56.25em;
   --target-min: 2.75rem; /* 44px minimum for primary interactive targets */
+  --control-min: 3rem;
+  --section-space: clamp(3rem, 2rem + 3vw, 5rem);
+  --edition-track: 15.5rem;
+  --measure-label: 7.5rem;
+
+  /* Interaction roles adapted from the supplied September 2026 research.
+     Color feedback only: the publication never moves or hides its content. */
+  --color-line-control: #728594;
+  --duration-hover: 160ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --focus-width: 3px;
+  --focus-gap: 4px;
+  --header-offset: 6rem;
 
   /* ---- stacking ---- */
   --z-header: 20;

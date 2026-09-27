@@ -18,7 +18,7 @@
 <style>
   .marginalia {
     display: grid;
-    grid-template-columns: var(--margin-track) 1fr;
+    grid-template-columns: minmax(0, var(--margin-track)) minmax(0, 1fr);
     gap: var(--space-12);
     max-width: var(--page-max);
     margin-inline: auto;
@@ -30,7 +30,13 @@
     max-width: var(--measure);
   }
 
-  @media (width <= 56.25em) {
+  .marginalia__margin,
+  .marginalia__body {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  @container reading-page (width <= 56.25rem) {
     .marginalia {
       grid-template-columns: 1fr;
       gap: var(--space-6);

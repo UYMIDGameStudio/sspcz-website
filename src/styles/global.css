@@ -9,6 +9,7 @@
 html {
   /* Sectional numbering (RFC-300 §2.2) counts from the document root. */
   counter-reset: section;
+  scroll-padding-top: var(--header-offset);
 }
 
 body {
@@ -18,6 +19,17 @@ body {
   font-family: var(--font-sans-cjk);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
+  overflow-wrap: break-word;
+}
+
+::selection {
+  color: var(--color-ink);
+  background: var(--surface-secondary);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 h1,
@@ -44,10 +56,49 @@ p {
 a {
   color: var(--color-ink);
   text-decoration: none;
+  text-underline-offset: 0.22em;
+  transition: color var(--duration-hover) var(--ease-standard),
+    background-color var(--duration-hover) var(--ease-standard),
+    border-color var(--duration-hover) var(--ease-standard);
 }
 
 a:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-deep);
+}
+
+:where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--focus-width) solid var(--color-accent-deep);
+  outline-offset: var(--focus-gap);
+}
+
+:where(h1, h2, h3, [id]) {
+  scroll-margin-top: var(--header-offset);
+}
+
+:where(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+summary {
+  cursor: pointer;
+}
+
+/* Reading grids respond to available space and the reader's font size.
+   Container rem units also reflow columns during text-only enlargement. */
+.page {
+  container: reading-page / inline-size;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  :where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+    outline-color: Highlight;
+  }
 }
 
 /* ---------- masthead (page opening) ---------- */
@@ -99,10 +150,10 @@ a:hover {
 }
 
 .masthead__kicker {
-  font-family: var(--font-serif-latin);
+  font-family: var(--font-sans-cjk);
   font-size: var(--type-marginalia);
   letter-spacing: var(--tracking-wider);
-  color: var(--color-text-muted);
+  color: var(--color-accent-deep);
   text-transform: uppercase;
 }
 
@@ -153,8 +204,8 @@ a:hover {
   max-width: 16em;
   margin-top: var(--space-6);
   font-size: var(--type-display);
-  letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-none);
+  letter-spacing: normal;
+  line-height: var(--leading-tight);
 }
 
 .page--institution .masthead__theme {
@@ -164,6 +215,10 @@ a:hover {
 .page--publication .masthead__title,
 .page--data .masthead__title {
   font-size: var(--type-heading);
+}
+
+:lang(en) .page--institution .masthead__title {
+  letter-spacing: var(--tracking-tight);
 }
 
 /* Publication: hold every reading region to one measure (65–75 ch). */
@@ -191,19 +246,23 @@ a:hover {
    on paper; inverted variants sit on the ink bands. */
 .button {
   display: inline-flex;
-  min-height: var(--target-min);
+  min-height: var(--control-min);
+  max-width: 100%;
   align-items: center;
   justify-content: center;
   padding: var(--space-3) var(--space-8);
-  font-size: var(--type-metadata);
-  letter-spacing: var(--tracking-wide);
-  border: 1px solid var(--color-line-strong);
+  font-size: var(--type-control);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-normal);
+  text-align: center;
+  border: 1px solid var(--color-line-control);
   color: var(--color-ink);
 }
 
 .button:hover {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+  color: var(--color-accent-deep);
+  border-color: var(--color-accent-deep);
+  background: var(--surface-tertiary);
 }
 
 .button--primary {
@@ -214,8 +273,8 @@ a:hover {
 
 .button--primary:hover {
   color: var(--color-text-on-dark);
-  background: var(--color-accent);
-  border-color: var(--color-accent);
+  background: var(--color-accent-deep);
+  border-color: var(--color-accent-deep);
 }
 
 /* On ink bands: a light solid and a hairline ghost. */
@@ -233,12 +292,17 @@ a:hover {
 
 .button--ghost-ink {
   color: var(--color-text-on-dark);
-  border-color: var(--color-ink-raised);
+  border-color: var(--color-text-on-dark-muted);
 }
 
 .button--ghost-ink:hover {
   color: var(--color-text-on-dark);
   border-color: var(--color-accent-bright);
+  background: var(--color-ink-raised);
+}
+
+.band--ink :where(a, button):focus-visible {
+  outline-color: var(--color-text-on-dark);
 }
 
 /* ---------- prose (rendered editorial documents) ---------- */
@@ -251,6 +315,12 @@ a:hover {
 
 .prose > * + * {
   margin-top: var(--space-4);
+}
+
+.prose a {
+  color: var(--color-accent-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
 }
 
 .prose h2 {

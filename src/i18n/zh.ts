@@ -34,6 +34,7 @@ export default {
   },
 
   home: {
+    titleParts: ['浙江中学生', '哲学大会'],
     heroLead:
       '浙江中学生哲学大会（SSPCZ）创立于 2022 年，是由学生组织、面向初高中学生的哲学学术共同体。大会在杭州举办，主要形式包括学生论文讲演、学者讲座与哲学黑客马拉松。',
     coverKicker: 'Secondary School Philosophy Conference of Zhejiang',

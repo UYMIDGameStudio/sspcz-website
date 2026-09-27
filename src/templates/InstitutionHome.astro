@@ -48,7 +48,9 @@ const title = locale === 'zh'
   <section class="cover">
     <div class="cover__masthead">
       <p class="cover__kicker">{dict.home.coverKicker}</p>
-      <h1 class="cover__title">{dict.siteName}</h1>
+      <h1 class="cover__title">
+        {dict.home.titleParts.map((part, index) => <Fragment>{index > 0 && (locale === 'en' ? ' ' : '')}<span>{part}</span></Fragment>)}
+      </h1>
       <p class="cover__identity">
         <span class="cover__est">EST. {institution.founded}</span>
         <span class="cover__rule" aria-hidden="true"></span>
@@ -68,16 +70,16 @@ const title = locale === 'zh'
 
     <nav class="cover__portals" aria-label={dict.home.currentTitle}>
       <a class="cover__portal" href={path(locale, 'about')}>
-        <span class="cover__portal-tag">About</span>
-        <span class="cover__portal-label">{dict.nav.home} →</span>
+        <span class="cover__portal-tag"><span aria-hidden="true">01 / </span>About</span>
+        <span class="cover__portal-label">{dict.nav.home}<span class="cover__portal-arrow" aria-hidden="true">↗</span></span>
       </a>
       <a class="cover__portal" href={path(locale, 'archive')}>
-        <span class="cover__portal-tag">Archive</span>
-        <span class="cover__portal-label">{dict.nav.archive} →</span>
+        <span class="cover__portal-tag"><span aria-hidden="true">02 / </span>Archive</span>
+        <span class="cover__portal-label">{dict.nav.archive}<span class="cover__portal-arrow" aria-hidden="true">↗</span></span>
       </a>
       <a class="cover__portal" href={path(locale, 'register', currentIssueId)}>
-        <span class="cover__portal-tag">Register</span>
-        <span class="cover__portal-label">{dict.nav.register} →</span>
+        <span class="cover__portal-tag"><span aria-hidden="true">03 / </span>Register</span>
+        <span class="cover__portal-label">{dict.nav.register}<span class="cover__portal-arrow" aria-hidden="true">↗</span></span>
       </a>
     </nav>
   </section>
@@ -87,30 +89,46 @@ const title = locale === 'zh'
   .cover {
     max-width: var(--page-max);
     margin: 0 auto;
-    padding: var(--space-24) var(--page-gutter);
+    padding: var(--section-space) var(--page-gutter);
+  }
+
+  .cover__masthead {
+    padding-top: var(--space-6);
+    border-top: 2px solid var(--color-ink);
   }
 
   /* --- masthead: institutional identity --- */
   .cover__kicker {
-    font-family: var(--font-serif-latin);
+    font-family: var(--font-sans-cjk);
     font-size: var(--type-marginalia);
-    letter-spacing: var(--tracking-wider);
-    color: var(--color-text-muted);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-accent-deep);
     text-transform: uppercase;
   }
 
   .cover__title {
-    max-width: 11em;
+    max-width: 100%;
     margin-top: var(--space-6);
     font-family: var(--font-serif-cjk);
     font-weight: var(--weight-bold);
-    font-size: var(--type-display);
-    line-height: var(--leading-none);
+    font-size: var(--type-cover);
+    line-height: var(--leading-tight);
+    letter-spacing: normal;
     color: var(--color-ink);
+  }
+
+  .cover__title span {
+    display: inline-block;
   }
 
   :global(html:lang(en)) .cover__title {
     font-family: var(--font-serif-latin);
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  :global(html:lang(en)) .cover__title span {
+    display: inline;
   }
 
   .cover__identity {
@@ -118,7 +136,7 @@ const title = locale === 'zh'
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-4) var(--space-6);
-    margin-top: var(--space-8);
+    margin-top: var(--space-6);
     color: var(--color-text-muted);
   }
 
@@ -129,7 +147,7 @@ const title = locale === 'zh'
   }
 
   .cover__rule {
-    width: 7.5rem;
+    width: var(--space-16);
     height: 1px;
     background: var(--color-line-strong);
   }
@@ -144,68 +162,100 @@ const title = locale === 'zh'
 
   /* --- portals: minimal navigation to the institution's other surfaces --- */
   .cover__portals {
-    display: flex;
-    margin-top: var(--space-16);
-    border-top: 1px solid var(--color-line);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: var(--space-10);
+    border-block: 1px solid var(--color-line-strong);
   }
 
   .cover__portal {
-    flex: 1;
-    padding: var(--space-8) var(--space-8) 0 var(--space-8);
+    min-width: 0;
+    padding: var(--space-6) var(--space-8);
     border-left: 1px solid var(--color-line);
   }
 
   .cover__portal:first-child {
-    padding-left: 0;
     border-left: 0;
   }
 
   .cover__portal-tag {
     display: block;
-    font-family: var(--font-serif-latin);
+    font-family: var(--font-sans-cjk);
     font-size: var(--type-marginalia);
-    letter-spacing: var(--tracking-wider);
+    letter-spacing: var(--tracking-wide);
     color: var(--color-text-muted);
     text-transform: uppercase;
   }
 
   .cover__portal-label {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
     margin-top: var(--space-3);
     font-family: var(--font-serif-cjk);
     font-size: var(--type-heading-sub);
     color: var(--color-ink);
   }
 
+  .cover__portal-arrow {
+    font-family: var(--font-sans-cjk);
+    color: var(--color-accent-deep);
+  }
+
   :global(html:lang(en)) .cover__portal-label {
     font-family: var(--font-serif-latin);
   }
 
+  .cover__portal:hover,
+  .cover__portal:focus-visible {
+    background: var(--surface-tertiary);
+  }
+
   .cover__portal:hover .cover__portal-label {
-    color: var(--color-accent);
+    color: var(--color-accent-deep);
   }
 
   @media (width <= 56.25em) {
     .cover {
-      padding: var(--space-16) var(--page-gutter-narrow);
+      padding: var(--space-10) var(--page-gutter-narrow);
     }
 
-    .cover__title {
-      font-size: var(--text-2xl);
+    .cover__kicker {
+      font-size: var(--type-marginalia);
+      letter-spacing: normal;
+      max-width: var(--measure);
+    }
+
+    .cover__identity {
+      gap: var(--space-3);
+    }
+
+    .cover__tagline {
+      flex-basis: 100%;
     }
 
     .cover__portals {
-      flex-direction: column;
+      grid-template-columns: 1fr;
+      margin-top: var(--space-8);
     }
 
     .cover__portal {
-      padding: var(--space-6) 0 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--measure-label)), 1fr));
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-6) 0;
       border-left: 0;
     }
 
     .cover__portal + .cover__portal {
-      margin-top: var(--space-6);
       border-top: 1px solid var(--color-line);
+    }
+
+    .cover__portal-label {
+      margin-top: 0;
+      overflow-wrap: anywhere;
     }
   }
 </style>

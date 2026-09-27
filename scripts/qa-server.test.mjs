@@ -28,6 +28,18 @@ test('serves files from dist', async () => {
   assert.equal((await fetch(`${ORIGIN}/`)).status, 200);
 });
 
+test('serves readable PDF and Word downloads with the correct media types', async () => {
+  const pdf = await fetch(`${ORIGIN}/documents/paper-template.pdf`);
+  assert.equal(pdf.status, 200);
+  assert.equal(pdf.headers.get('content-type'), 'application/pdf');
+  assert.equal(Buffer.from(await pdf.arrayBuffer()).subarray(0, 5).toString(), '%PDF-');
+
+  const docx = await fetch(`${ORIGIN}/documents/submission-originality-responsibility-confirmation.docx`);
+  assert.equal(docx.status, 200);
+  assert.equal(docx.headers.get('content-type'), 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+  assert.equal(Buffer.from(await docx.arrayBuffer()).readUInt32LE(0), 0x04034b50);
+});
+
 test('rejects encoded traversal outside dist', async () => {
   const paths = [
     '/..%2fpackage.json',

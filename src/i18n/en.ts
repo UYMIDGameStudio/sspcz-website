@@ -34,6 +34,7 @@ export default {
   },
 
   home: {
+    titleParts: ['Secondary School Philosophy', 'Conference of Zhejiang'],
     heroLead:
       'Founded in 2022, the Secondary School Philosophy Conference of Zhejiang (SSPCZ) is a student-organized academic philosophy community for middle and high school students. Held in Hangzhou, it combines student paper presentations, scholar lectures and a philosophy hackathon.',
     coverKicker: 'SSPCZ · Since 2022',

@@ -38,22 +38,29 @@ const { sessions, locale } = Astro.props;
 
 <style>
   .timeline {
+    min-width: 0;
     margin: 0;
     padding: 0 0 0 var(--space-6);
     list-style: none;
     border-left: 1px solid var(--color-line-strong);
+    overflow-wrap: anywhere;
   }
 
   .timeline__item {
     position: relative;
     display: grid;
-    grid-template-columns: 9.375rem 1fr;
+    grid-template-columns: minmax(0, 9.375rem) minmax(0, 1fr);
     gap: var(--space-8);
     padding-bottom: var(--space-8);
   }
 
   .timeline__item:last-child {
     padding-bottom: 0;
+  }
+
+  .timeline__meta,
+  .timeline__body {
+    min-width: 0;
   }
 
   /* Node marker straddling the spine. */
@@ -69,7 +76,7 @@ const { sessions, locale } = Astro.props;
   }
 
   .timeline__time {
-    font-family: var(--font-serif-latin);
+    font-family: var(--font-numeral);
     font-size: var(--type-metadata);
     letter-spacing: var(--tracking-wide);
     color: var(--color-accent-deep);
@@ -99,9 +106,9 @@ const { sessions, locale } = Astro.props;
     line-height: var(--leading-loose);
   }
 
-  @media (width <= 56.25em) {
+  @container reading-page (width <= 56.25rem) {
     .timeline__item {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--space-2);
     }
   }
