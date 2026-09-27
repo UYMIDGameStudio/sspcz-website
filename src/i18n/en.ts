@@ -77,9 +77,9 @@ export default {
   },
 
   program: {
-    lead: 'Four days of student paper presentations, guest lectures and the philosophy hackathon. The framework below is provisional; speakers and sessions will be confirmed by official notice from the committee.',
+    lead: 'The conference takes place entirely online on 2–5 October 2026, with student paper presentations, guest lectures and a philosophy hackathon. All times are Beijing time (UTC+8).',
     provisionalNote:
-      'Provisional framework; the final program will be announced on site.',
+      'Paper sessions include presentations, comments and discussion. The schedule is provisional and subject to the organizing committee’s final notice.',
   },
 
   about: {

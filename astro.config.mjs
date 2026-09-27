@@ -32,6 +32,8 @@ const LASTMOD_BY_PATH = new Map([
   ['/resources/theme-explanation/', '2026-04-19'],
   ['/resources/phil-hackathon/', '2026-04-19'],
   ['/issue-003/', '2026-09-18'],
+  ['/issue-003/program/', '2026-09-27'],
+  ['/en/issue-003/program/', '2026-09-27'],
   ['/en/issue-003/', '2026-09-18'],
   ['/issue-003/committee/', '2026-09-18'],
   ['/en/issue-003/committee/', '2026-09-18'],
