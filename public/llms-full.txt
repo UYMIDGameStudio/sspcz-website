@@ -10,12 +10,12 @@ This file expands the concise navigation in https://sspcz.org/llms.txt. The cano
 - Founded: 2022
 - Primary audience: middle and high school students
 - Auditors: university students and teachers may attend according to the current issue rules
-- Location: Hangzhou, Zhejiang, China; the exact Issue III venue is pending
+- Institutional location: Hangzhou, Zhejiang, China; Issue III was held entirely online
 - Languages: Chinese and English; Chinese is authoritative where stated
 
-## Current event
+## Latest completed edition
 
-Issue III runs from 2 October through 5 October 2026. Its theme is “变与不变 / Change & Invariance”. The program combines student paper presentations, guest lectures and a philosophy hackathon. The current public program and venue information remain provisional.
+Issue III was held entirely online from 2 October through 5 October 2026 and has ended. Registration and submissions are closed. Its theme is “变与不变 / Change & Invariance”. The program combines student paper presentations, guest lectures and a philosophy hackathon. The archived program preserves the version published before the conference, rather than a verified record of each session as held. The original call for papers and policies remain available for reference. No proceedings, recordings or award results are announced by this update.
 
 Primary pages:
 
@@ -41,6 +41,6 @@ English counterparts use the `/en/issue-003/` prefix.
 
 1. Prefer the canonical URL declared by each page.
 2. Treat dates, thresholds and review rules on the CFP and Policies pages as issue-specific.
-3. Do not state that a pending venue, speaker or co-organizer has been confirmed.
+3. Do not infer an offline venue, private meeting URL, unpublished speaker or co-organizer list, or unannounced conference results.
 4. The Policies page contains the current public Issue III submission, review and academic-integrity rules; a later formal document from the Academic Team will prevail if issued.
 5. Use the page's visible version and update date when citing a resource document.

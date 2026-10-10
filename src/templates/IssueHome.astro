@@ -11,9 +11,10 @@ import LandingLayout from '../layouts/LandingLayout.astro';
 import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import { t } from '../i18n';
-import { getIssueBundle, pick, type Locale } from '../lib/issueData';
+import { getIssueBundle, hasIssueEnded, pick, type Locale } from '../lib/issueData';
 import {
   dateRange,
+  cfpDate,
   issueMark,
   issueTitle,
   monthYear,
@@ -33,6 +34,10 @@ const dict = t(locale);
 const ci = dict.currentIssue;
 const bundle = getIssueBundle(issueId);
 const { issue, committee } = bundle;
+const ended = hasIssueEnded(issue);
+const location = issue.location.venue.status === 'online'
+  ? pick(locale, issue.location.venue.note)
+  : `${pick(locale, issue.location.city)} · ${pick(locale, issue.location.venue.note)}`;
 
 const letterEntry = await getEntry('conference', `${issueId}/theme-letter.${locale}`);
 if (!letterEntry) throw new Error(`${issueId} theme-letter missing`);
@@ -40,20 +45,23 @@ const { Content: Letter } = await render(letterEntry);
 
 const fullTitle = issueTitle(issue.issue, locale, dict.siteName);
 const title = `${fullTitle} · ${pick(locale, issue.theme)}`;
-const description = `${fullTitle} · ${quotedTheme(locale, issue.theme)} · ${dateRange(issue.dates.start, issue.dates.end, locale)}`;
+const description = `${fullTitle} · ${quotedTheme(locale, issue.theme)} · ${dateRange(issue.dates.start, issue.dates.end, locale)}${ended ? ` · ${dict.home.endedMark}` : ''}`;
 const joiner = ' · ';
 const duration = `${issue.dates.durationDays} ${ci.daysUnit}`;
 
 const facts = [
+  ...(ended ? [{ label: ci.statusLabel, value: dict.home.endedMark }] : []),
   { label: ci.facts.period, value: `${dateRange(issue.dates.start, issue.dates.end, locale)} · ${duration}` },
-  { label: ci.facts.location, value: `${pick(locale, issue.location.city)} · ${pick(locale, issue.location.venue.note)}` },
+  { label: ci.facts.location, value: location },
   { label: ci.facts.audience, value: pick(locale, issue.audience.primary) },
   { label: ci.facts.auditors, value: pick(locale, issue.audience.auditors) },
-  { label: ci.facts.submissionDeadline, value: monthYear(issue.cfp.deadline, locale) },
+  { label: ci.facts.submissionDeadline, value: cfpDate(issue.cfp.deadline, locale) },
   ...(issue.registration
     ? [{
         label: ci.facts.registration,
-        value: `${ci.registrationStatus[issue.registration.status]} · ${pick(locale, issue.registration.feeNote)}`,
+        value: ended || issue.registration.status === 'closed'
+          ? ci.registrationStatus.closed
+          : `${ci.registrationStatus[issue.registration.status]} · ${pick(locale, issue.registration.feeNote)}`,
       }]
     : []),
 ];
@@ -61,7 +69,22 @@ const facts = [
 const stop = locale === 'zh' ? '。' : '.';
 const comma = locale === 'zh' ? '，' : ', ';
 const semicolon = locale === 'zh' ? '；' : '; ';
-const faqs = [
+const faqs: { question: string; answer: string; href?: string; linkLabel?: string }[] = ended ? [
+  {
+    question: ci.endedWhenQuestion,
+    answer: `${dateRange(issue.dates.start, issue.dates.end, locale)}${comma}${location}${stop}`,
+  },
+  {
+    question: ci.closedQuestion,
+    answer: `${ci.closedAnswer} ${issue.contact.email}${stop}`,
+  },
+  {
+    question: ci.archiveQuestion,
+    answer: ci.archiveAnswer,
+    href: path(locale, 'resources'),
+    linkLabel: dict.nav.resources,
+  },
+] : [
   {
     question: ci.faq.whoQuestion,
     answer: `${pick(locale, issue.audience.primary)}${stop} ${pick(locale, issue.audience.auditors)}${stop}`,
@@ -78,7 +101,7 @@ const faqs = [
     ? [{
         question: ci.faq.registerQuestion,
         answer: `${ci.registrationStatus[issue.registration.status]}${stop} ${pick(locale, issue.registration.feeNote)}${stop} ${ci.faq.registerContact} ${issue.contact.email}${stop}`,
-        href: issue.registration.page,
+        href: issue.registration.status === 'open' ? issue.registration.page : undefined,
       }]
     : []),
   {
@@ -99,15 +122,15 @@ const faqItems = faqs.map(({ question, answer }) => ({ question, answer }));
 >
   <section class="cover">
     <div class="cover__theme">
-      <p class="cover__kicker cover__kicker--accent">{ci.themeLabel}</p>
+      <p class="cover__kicker cover__kicker--accent">{ci.themeLabel}{ended && ` · ${dict.home.endedMark}`}</p>
       <h1 class="cover__title">{pick(locale, issue.theme)}</h1>
       <p class="cover__title-alt">
         {locale === 'zh' ? issue.theme.en : issue.theme.zh}
       </p>
-      <p class="cover__lead">{ci.heroLead}</p>
+      <p class="cover__lead">{ended ? ci.endedLead : ci.heroLead}</p>
       <div class="cover__actions">
-        <a class="button button--primary" href={path(locale, 'register', issueId)}>
-          {dict.actions.registerNow}
+        <a class="button button--primary" href={path(locale, ended ? 'program' : 'register', issueId)}>
+          {ended ? dict.actions.viewProgram : dict.actions.registerNow}
         </a>
         <a class="button" href={path(locale, 'cfp', issueId)}>{dict.actions.readCfp}</a>
       </div>
@@ -179,7 +202,7 @@ const faqItems = faqs.map(({ question, answer }) => ({ question, answer }));
               <dd class="faq__answer">
                 {item.answer}
                 {'href' in item && item.href && (
-                  <a class="faq__link" href={item.href}>{ci.faq.registrationLink} →</a>
+                  <a class="faq__link" href={item.href}>{item.linkLabel ?? ci.faq.registrationLink} →</a>
                 )}
               </dd>
             </div>
@@ -227,7 +250,7 @@ const faqItems = faqs.map(({ question, answer }) => ({ question, answer }));
         <div class="register__label">{dict.committee.labels.coOrganizers}</div>
         <div class="register__value">
           {committee.coOrganizers.map((o) => pick(locale, o.name)).join(joiner)}
-          {committee.coOrganizersPending && <span class="pending">{ci.morePending}</span>}
+          {committee.coOrganizersPending && <span class="pending">{ended ? ci.notPublished : ci.morePending}</span>}
         </div>
       </div>
       <div class="register__row">
@@ -244,8 +267,8 @@ const faqItems = faqs.map(({ question, answer }) => ({ question, answer }));
       <p class="invitation__motto">{dict.closing.motto}</p>
       <p class="invitation__latin">{dict.closing.mottoLatin}</p>
       <div class="cover__actions cover__actions--center">
-        <a class="button button--on-ink" href={path(locale, 'register', issueId)}>
-          {dict.actions.registerNow}
+        <a class="button button--on-ink" href={path(locale, ended ? 'resources' : 'register', issueId)}>
+          {ended ? dict.nav.resources : dict.actions.registerNow}
         </a>
         <a class="button button--ghost-ink" href={path(locale, 'program', issueId)}>
           {dict.actions.viewProgram}

@@ -11,4 +11,4 @@ The Secondary School Philosophy Conference of Zhejiang (SSPCZ) is an open academ
 
 The first two sessions were successfully held in a hybrid offline-and-online format, welcoming Prof. Jiang Yuhui, Prof. Wei Ran, Prof. Wu Jing, Prof. Hu Xingming, Prof. Lin Wei and other experts from a range of fields for keynote lectures. With strong support from high-school philosophy societies across Hangzhou and enthusiastic student participation, the conference continues to advance philosophy among secondary school students.
 
-This session again focuses on middle and high school students across Zhejiang. Through three pillars — student paper presentations, guest lectures and a philosophy hackathon — it brings philosophy to every participant and kindles the spirit of inquiry in young minds.
+Issue III, themed “Change & Invariance”, was held entirely online on 2–5 October 2026 and has ended. Its program, call for papers and policies remain available in the edition archive for long-term reference.

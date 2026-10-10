@@ -18,10 +18,10 @@ location:
     zh: "杭州"
     en: "Hangzhou"
   venue:
-    status: pending
+    status: online
     note:
-      zh: "具体地点待公布"
-      en: "Venue to be announced"
+      zh: "全程线上举行"
+      en: "Held entirely online"
 
 audience:
   primary:
@@ -34,7 +34,7 @@ audience:
 registration:
   embed: "https://www.huodongxing.com/event/8868555534200?view=tickets&embedded=3e7ca6"
   page: "https://www.huodongxing.com/event/8868555534200"
-  status: open
+  status: closed
   feeNote:
     zh: "票种与费用以活动行报名页面的当期显示为准"
     en: "Ticket types and fees are shown on the current Huodongxing registration page"

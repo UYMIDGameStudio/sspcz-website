@@ -21,9 +21,10 @@ interface Props {
   title: string;
   /** Localized call to enter the edition, e.g. 查看详情. */
   cta: string;
+  ended?: boolean;
 }
 
-const { n, locale, href, theme, year, title, cta } = Astro.props;
+const { n, locale, href, theme, year, title, cta, ended = false } = Astro.props;
 const themePrimary = locale === 'zh' ? theme.zh : theme.en;
 const themeSecondary = locale === 'zh' ? theme.en : theme.zh;
 const dict = t(locale);
@@ -32,12 +33,12 @@ const dict = t(locale);
 <a class="edition-card" href={href}>
   <div class="edition-card__grid">
     <div class="edition-card__index">
-      <p class="edition-card__label">{dict.home.currentTitle}</p>
+      <p class="edition-card__label">{ended ? dict.home.latestTitle : dict.home.currentTitle}</p>
       <p class="edition-card__numeral">
         <span aria-hidden="true">{paddedIssue(n)}</span>
         <span class="edition-card__numeral-label">{issueMark(n, locale)}</span>
       </p>
-      <p class="edition-card__session">{sessionLabel(n, locale)} · {year}</p>
+      <p class="edition-card__session">{sessionLabel(n, locale)} · {year}{ended && ` · ${dict.home.endedMark}`}</p>
     </div>
     <div class="edition-card__theme">
       <p class="edition-card__label">{dict.currentIssue.themeLabel}</p>

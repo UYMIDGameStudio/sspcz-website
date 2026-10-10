@@ -210,6 +210,12 @@ export function getIssueBundle(id: string): IssueBundle {
 export const currentIssueId = institution.currentIssue;
 export const currentIssue = getIssueBundle(currentIssueId);
 
+/** Editions end at midnight after their final day, in Beijing time. */
+export function hasIssueEnded(issue: Issue, asOf = new Date()): boolean {
+  const endDay = issue.dates.end.toISOString().slice(0, 10);
+  return asOf.getTime() > new Date(`${endDay}T23:59:59.999+08:00`).getTime();
+}
+
 export function issueIdFor(n: number): string {
   return `issue-${String(n).padStart(3, '0')}`;
 }

@@ -10,7 +10,7 @@ import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import Timeline from '../components/Timeline.astro';
 import { t } from '../i18n';
-import { getIssueBundle, type Locale } from '../lib/issueData';
+import { getIssueBundle, hasIssueEnded, type Locale } from '../lib/issueData';
 import { issueMark, shortDate } from '../lib/format';
 
 interface Props {
@@ -21,6 +21,7 @@ interface Props {
 const { locale, issueId } = Astro.props;
 const dict = t(locale);
 const bundle = getIssueBundle(issueId);
+const ended = hasIssueEnded(bundle.issue);
 const title = `${dict.nav.program} · ${dict.siteName}`;
 ---
 
@@ -28,7 +29,7 @@ const title = `${dict.nav.program} · ${dict.siteName}`;
   <section class="masthead">
     <p class="masthead__kicker">Program · {issueMark(bundle.issue.issue, locale)}</p>
     <h1 class="masthead__title">{dict.nav.program}</h1>
-    <p class="masthead__lead">{dict.program.lead}</p>
+    <p class="masthead__lead">{ended ? dict.program.archivedLead : dict.program.lead}</p>
   </section>
 
   {
@@ -41,7 +42,7 @@ const title = `${dict.nav.program} · ${dict.siteName}`;
         <div>
           <Timeline sessions={day.sessions} locale={locale} />
           {day.day === bundle.schedule.days.length && bundle.schedule.provisional && (
-            <p class="provisional">{dict.program.provisionalNote}</p>
+            <p class="provisional">{ended ? dict.program.archivedNote : dict.program.provisionalNote}</p>
           )}
         </div>
       </Marginalia>

@@ -17,6 +17,7 @@ import {
   currentIssue,
   currentIssueId,
   getIssueBundle,
+  hasIssueEnded,
   institution,
   issueIds,
   pick,
@@ -42,6 +43,7 @@ interface Edition {
   n: number;
   year: number;
   current: boolean;
+  ended?: boolean;
   href?: string;
   theme?: { zh: string; en: string };
   summary?: string;
@@ -58,6 +60,7 @@ const platformEditions: Edition[] = issueIds.map((id) => {
     n: b.issue.issue,
     year: b.issue.year,
     current: id === currentIssueId,
+    ended: hasIssueEnded(b.issue),
     href: path(locale, 'issue', id),
     theme: b.issue.theme,
     rows: [
@@ -126,7 +129,7 @@ const title = `${dict.nav.archive} · ${dict.siteName}`;
             ))}
             {e.href && (
               <p class="edition__enter">
-                {e.current && <span class="edition__mark">{dict.home.currentMark}</span>}
+                {(e.current || e.ended) && <span class="edition__mark">{e.ended ? dict.home.endedMark : dict.home.currentMark}</span>}
                 <a href={e.href}>{dict.actions.viewDetails} →</a>
               </p>
             )}

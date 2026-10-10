@@ -11,7 +11,7 @@ import BaseLayout from './BaseLayout.astro';
 import EditorialGrid from '../patterns/EditorialGrid.astro';
 import RunningHeader from '../patterns/RunningHeader.astro';
 import { t } from '../i18n';
-import { getIssueBundle, institution, type Locale } from '../lib/issueData';
+import { getIssueBundle, hasIssueEnded, institution, type Locale } from '../lib/issueData';
 import { issueMark } from '../lib/format';
 import { path, switchLocale, withBase, type RouteKey } from '../lib/routes';
 import { buildStructuredData, type CreativeWorkMetadata, type FaqItem } from '../lib/seo';
@@ -43,6 +43,7 @@ const {
 } = Astro.props;
 const dict = t(locale);
 const bundle = getIssueBundle(issueId);
+const ended = hasIssueEnded(bundle.issue);
 
 interface NavItem {
   href: string;
@@ -64,13 +65,15 @@ const level1: NavItem[] = [
   item('resources', dict.nav.resources),
 ];
 const level2: NavItem[] = [
-  item('issue', dict.nav.currentIssue),
+  item('issue', ended ? dict.currentIssue.archiveLabel : dict.nav.currentIssue),
   item('program', dict.nav.program),
   item('cfp', dict.nav.cfp),
   item('committee', dict.nav.committee),
   item('policies', dict.nav.policies),
 ];
-const level3: NavItem[] = [
+const level3: NavItem[] = ended ? [
+  item('register', dict.register.closedTitle),
+] : [
   { href: path(locale, 'cfp', issueId), label: dict.nav.submit, active: false },
   item('register', dict.nav.register),
 ];

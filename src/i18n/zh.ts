@@ -34,6 +34,8 @@ export default {
   },
 
   home: {
+    latestTitle: '最近一届',
+    endedMark: '已结束',
     titleParts: ['浙江中学生', '哲学大会'],
     heroLead:
       '浙江中学生哲学大会（SSPCZ）创立于 2022 年，是由学生组织、面向初高中学生的哲学学术共同体。大会在杭州举办，主要形式包括学生论文讲演、学者讲座与哲学黑客马拉松。',
@@ -45,6 +47,15 @@ export default {
   },
 
   currentIssue: {
+    endedLead: '本届大会已结束。感谢每一位参与者的思考、交流与协作。议程、征稿启事与会议政策在此保留，供长期查阅。',
+    endedWhenQuestion: '本届大会何时、以何种方式举行？',
+    archiveLabel: '本届档案',
+    statusLabel: '大会状态',
+    notPublished: '（名单未公开）',
+    archiveQuestion: '大会结束后，可以查阅哪些资料？',
+    archiveAnswer: '可查阅本届议程、征稿启事、会议政策与资源库中的公开文档。',
+    closedQuestion: '还可以报名或投稿吗？',
+    closedAnswer: '本届大会已结束，报名与征稿均已关闭。会后事宜请联系组委会邮箱',
     heroLead:
       '本届大会继续聚焦浙江地区的高中生和初中生，以学生论文讲演、嘉宾讲座、哲学黑客马拉松三大板块，向所有与会者传播哲学知识，激发中学生的精神探索。',
     themeLabel: '本届主题',
@@ -78,6 +89,8 @@ export default {
   },
 
   program: {
+    archivedLead: '本届大会已结束。以下保留会前公布的四天线上议程，供查阅；时间均为北京时间。',
+    archivedNote: '本页保存会前公布的议程版本，不作为逐项核实的实际执行记录。',
     lead: '大会于2026年10月2日至5日全程线上举行，包含学生论文讲演、嘉宾讲座与哲学黑客松。以下时间均为北京时间。',
     provisionalNote: '论文时段包含发言、点评与讨论。议程为暂定安排，最终以组委会通知为准。',
   },
@@ -101,6 +114,8 @@ export default {
   },
 
   cfp: {
+    closedNote: '本届征稿已结束。以下保留原征稿启事与评议要求，供查阅。',
+    archivedContact: '会后事宜请联络组委会邮箱 ',
     scopeTitle: '对象与主题',
     timelineTitle: '时间与投稿',
     submitLead: '投稿与合作请联络组委会邮箱 ',
@@ -125,6 +140,10 @@ export default {
   },
 
   register: {
+    closedTitle: '报名已结束',
+    closedLead: '本届大会已结束，报名通道已关闭。感谢你的关注与参与。',
+    closedNote: '本页保留为会后联络入口。可继续查阅本届议程与资源库；如需咨询会后事宜，请联系组委会。',
+    closedMeta: '浙江中学生哲学大会本届报名已结束，查看大会档案与会后联络方式。',
     lead: '大会在杭州举行，面向初高中学生开放报名，大学生与教师可以旁听身份参与。报名成功后，组委会将通过你留下的联系方式发送参会通知。',
     cfpNote: '想在大会上讲演论文？请先阅读征稿启事。',
     serviceNote: '报名通道由活动行提供；如页面未加载，请直接打开报名页。',

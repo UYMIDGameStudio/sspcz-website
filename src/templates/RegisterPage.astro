@@ -12,7 +12,7 @@ import Marginalia from '../patterns/Marginalia.astro';
 import SectionCounter from '../components/SectionCounter.astro';
 import RegistrationCommunity from '../components/RegistrationCommunity.astro';
 import { t } from '../i18n';
-import { getIssueBundle, pick, type Locale } from '../lib/issueData';
+import { getIssueBundle, hasIssueEnded, pick, type Locale } from '../lib/issueData';
 import { dateRange, issueMark, quotedTheme } from '../lib/format';
 import { path } from '../lib/routes';
 
@@ -25,14 +25,18 @@ const { locale, issueId } = Astro.props;
 const dict = t(locale);
 const bundle = getIssueBundle(issueId);
 const r = dict.register;
-const title = `${dict.nav.register} · ${dict.siteName}`;
+const ended = hasIssueEnded(bundle.issue);
+const closed = ended || bundle.issue.registration?.status === 'closed';
+const registrationOpen = !ended && bundle.issue.registration?.status === 'open';
+const heading = closed ? r.closedTitle : dict.nav.register;
+const title = `${heading} · ${dict.siteName}`;
 const escapeHtml = (value: string) =>
   value
     .replaceAll('&', '&amp;')
     .replaceAll('"', '&quot;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;');
-const embedLauncher = bundle.issue.registration
+const embedLauncher = registrationOpen && bundle.issue.registration
   ? `<!doctype html>
 <html lang="${locale}">
   <head>
@@ -50,23 +54,23 @@ const embedLauncher = bundle.issue.registration
   : '';
 ---
 
-<DataLayout locale={locale} route="register" issueId={issueId} title={title} description={dict.meta.register}>
+<DataLayout locale={locale} route="register" issueId={issueId} title={title} description={closed ? r.closedMeta : dict.meta.register}>
   <section class="masthead">
     <p class="masthead__kicker">Registration · {issueMark(bundle.issue.issue, locale)}</p>
-    <h1 class="masthead__title">{dict.nav.register}</h1>
+    <h1 class="masthead__title">{heading}</h1>
     <p class="masthead__theme">
       {dateRange(bundle.issue.dates.start, bundle.issue.dates.end, locale)} ·
       {quotedTheme(locale, bundle.issue.theme)}
     </p>
-    <p class="masthead__lead">{r.lead}</p>
+    <p class="masthead__lead">{closed ? r.closedLead : r.lead}</p>
   </section>
 
   <Marginalia>
     <Fragment slot="margin">
       <SectionCounter label="Registration" />
-      <h2>{dict.nav.register}</h2>
+      <h2>{heading}</h2>
       <p class="margin-note">
-        {r.cfpNote}
+        {!closed && r.cfpNote}
         <a href={path(locale, 'cfp', issueId)}>{dict.nav.cfp}</a>
       </p>
       <p class="margin-note">
@@ -76,7 +80,14 @@ const embedLauncher = bundle.issue.registration
     </Fragment>
 
     {
-      bundle.issue.registration && (
+      closed ? (
+        <div class="prose">
+          <p>{r.closedNote}</p>
+          <p><a href={path(locale, 'program', issueId)}>{dict.actions.viewProgram} →</a></p>
+          <p><a href={path(locale, 'resources')}>{dict.nav.resources} →</a></p>
+          <p>{r.contactLabel} · <a href={`mailto:${bundle.issue.contact.email}`}>{bundle.issue.contact.email}</a></p>
+        </div>
+      ) : registrationOpen && bundle.issue.registration && (
         <div class="hosted">
           <iframe
             class="hosted__frame"
@@ -94,7 +105,7 @@ const embedLauncher = bundle.issue.registration
       )
     }
 
-    {!bundle.issue.registration && (
+    {!closed && !bundle.issue.registration && (
     <form class="register-form" method="post" action="/api/register">
       <input type="hidden" name="lang" value={locale} />
 
@@ -169,7 +180,7 @@ const embedLauncher = bundle.issue.registration
     )}
 
     {
-      bundle.issue.registration?.community && (
+      registrationOpen && bundle.issue.registration?.community && (
         <RegistrationCommunity
           image={bundle.issue.registration.community.image}
           eyebrow={pick(locale, bundle.issue.registration.community.eyebrow)}

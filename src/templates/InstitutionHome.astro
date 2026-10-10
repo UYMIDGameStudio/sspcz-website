@@ -17,6 +17,7 @@ import { t } from '../i18n';
 import {
   currentIssueId,
   getIssueBundle,
+  hasIssueEnded,
   institution,
   type Locale,
 } from '../lib/issueData';
@@ -32,6 +33,7 @@ const dict = t(locale);
 
 /* Current edition — resolved dynamically via the institutional pointer. */
 const current = getIssueBundle(currentIssueId);
+const ended = hasIssueEnded(current.issue);
 
 const title = locale === 'zh'
   ? `${dict.siteName}（SSPCZ）`
@@ -66,6 +68,7 @@ const title = locale === 'zh'
       year={current.issue.year}
       title={issueTitle(current.issue.issue, locale, dict.siteName)}
       cta={dict.actions.viewDetails}
+      ended={ended}
     />
 
     <nav class="cover__portals" aria-label={dict.home.currentTitle}>
@@ -77,9 +80,9 @@ const title = locale === 'zh'
         <span class="cover__portal-tag"><span aria-hidden="true">02 / </span>Archive</span>
         <span class="cover__portal-label">{dict.nav.archive}<span class="cover__portal-arrow" aria-hidden="true">↗</span></span>
       </a>
-      <a class="cover__portal" href={path(locale, 'register', currentIssueId)}>
-        <span class="cover__portal-tag"><span aria-hidden="true">03 / </span>Register</span>
-        <span class="cover__portal-label">{dict.nav.register}<span class="cover__portal-arrow" aria-hidden="true">↗</span></span>
+      <a class="cover__portal" href={path(locale, ended ? 'resources' : 'register', currentIssueId)}>
+        <span class="cover__portal-tag"><span aria-hidden="true">03 / </span>{ended ? 'Resources' : 'Register'}</span>
+        <span class="cover__portal-label">{ended ? dict.nav.resources : dict.nav.register}<span class="cover__portal-arrow" aria-hidden="true">↗</span></span>
       </a>
     </nav>
   </section>

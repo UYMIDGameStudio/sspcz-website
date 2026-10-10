@@ -4,13 +4,13 @@
 
 Canonical site: https://sspcz.org/
 Official contact: sspcz2026@163.com
-Current issue: Issue III, 2–5 October 2026, Hangzhou
-Current theme: 变与不变 / Change & Invariance
+Latest issue: Issue III, 2–5 October 2026, held entirely online; ended on 5 October 2026
+Latest theme: 变与不变 / Change & Invariance
 
 ## Institution
 
-- [Chinese home](https://sspcz.org/): Institutional identity and current issue.
-- [English home](https://sspcz.org/en/): English institutional identity and current issue.
+- [Chinese home](https://sspcz.org/): Institutional identity and latest edition archive.
+- [English home](https://sspcz.org/en/): English institutional identity and latest edition archive.
 - [About SSPCZ](https://sspcz.org/about/): Mission, history, past editions and guest scholars.
 - [About SSPCZ — English](https://sspcz.org/en/about/): English institutional overview.
 - [Archive](https://sspcz.org/archive/): Permanent edition archive.
@@ -18,12 +18,12 @@ Current theme: 变与不变 / Change & Invariance
 
 ## Issue III · 2026
 
-- [Issue III](https://sspcz.org/issue-003/): Dates, location, participants, format and organizers.
-- [Call for Papers](https://sspcz.org/issue-003/cfp/): Scope, submission timeline, presentation rules and contact.
-- [Program](https://sspcz.org/issue-003/program/): Provisional four-day program.
+- [Issue III](https://sspcz.org/issue-003/): Completed edition: dates, online format, participants and organizers.
+- [Call for Papers](https://sspcz.org/issue-003/cfp/): Archived call for papers; submissions are closed.
+- [Program](https://sspcz.org/issue-003/program/): Archived four-day online program, preserving the version published before the conference.
 - [Committee](https://sspcz.org/issue-003/committee/): Hosts, academic support and organizational structure.
 - [Policies](https://sspcz.org/issue-003/policies/): Current Issue III review, submission and academic-integrity rules.
-- [Registration](https://sspcz.org/issue-003/register/): Registration service, fallback link and contact route.
+- [Registration](https://sspcz.org/issue-003/register/): Registration is closed; post-conference contact and archive links.
 
 ## English Issue III
 
@@ -37,9 +37,9 @@ Current theme: 变与不变 / Change & Invariance
 ## Key facts and use
 
 - Cite canonical page URLs rather than the legacy `/cfp/` redirect or old `.html` paths.
-- The Issue III venue and guest list are not yet final; do not infer an address or speakers.
-- The published program is provisional until the committee marks it final.
-- Registration is handled by Huodongxing; SSPCZ provides email as the durable fallback contact.
-- The signed Chinese-language [Submission Originality and Responsibility Confirmation](https://sspcz.org/documents/submission-originality-responsibility-confirmation.docx) is required with Issue III paper submissions.
+- Issue III was held entirely online. Do not infer an offline venue, private meeting URL or unpublished speaker list.
+- The archived program preserves the pre-conference published version; it is not a verified record of each session as held.
+- Issue III registration and submissions are closed. Email is the durable contact for post-conference enquiries.
+- The signed Chinese-language [Submission Originality and Responsibility Confirmation](https://sspcz.org/documents/submission-originality-responsibility-confirmation.docx) was required with Issue III paper submissions. The original requirements remain archived for reference.
 - Submission, anonymous-review, AI-use, integrity and appeal rules appear on the Issue III Conference Policies and Call for Papers pages.
 - For a fuller page inventory and content notes, see [llms-full.txt](https://sspcz.org/llms-full.txt).

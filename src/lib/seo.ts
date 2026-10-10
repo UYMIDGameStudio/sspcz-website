@@ -1,5 +1,5 @@
 import type { Locale, IssueBundle } from './issueData';
-import { pick } from './issueData';
+import { hasIssueEnded, pick } from './issueData';
 import { dateRange, issueTitle } from './format';
 import type { RouteKey } from './routes';
 
@@ -167,10 +167,16 @@ export function buildStructuredData({
       startDate: bundle.issue.dates.start.toISOString().slice(0, 10),
       endDate: bundle.issue.dates.end.toISOString().slice(0, 10),
       eventStatus: 'https://schema.org/EventScheduled',
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      eventAttendanceMode: bundle.issue.location.venue.status === 'online'
+        ? 'https://schema.org/OnlineEventAttendanceMode'
+        : 'https://schema.org/OfflineEventAttendanceMode',
       inLanguage: ['zh-CN', 'en'],
       image: { '@id': SEO_IDS.image },
-      location: {
+      location: bundle.issue.location.venue.status === 'online' ? {
+        '@type': 'VirtualLocation',
+        url: issueUrl,
+        name: pick(locale, bundle.issue.location.venue.note),
+      } : {
         '@type': 'Place',
         name: `${pick(locale, bundle.issue.location.city)} · ${pick(locale, bundle.issue.location.venue.note)}`,
         address: {
@@ -185,7 +191,7 @@ export function buildStructuredData({
         '@type': 'Audience',
         audienceType: pick(locale, bundle.issue.audience.primary),
       },
-      ...(bundle.issue.registration && {
+      ...(bundle.issue.registration?.status === 'open' && !hasIssueEnded(bundle.issue) && {
         sameAs: bundle.issue.registration.page,
         offers: {
           '@type': 'Offer',

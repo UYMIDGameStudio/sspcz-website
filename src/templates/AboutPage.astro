@@ -18,6 +18,7 @@ import { t } from '../i18n';
 import {
   currentIssue,
   currentIssueId,
+  hasIssueEnded,
   pick,
   speakerName,
   type Locale,
@@ -114,7 +115,7 @@ const title = `${dict.nav.home} · ${dict.siteName}`;
                     {e.description && <span class="editions__desc">{e.description}</span>}
                   </span>
                   <span class="editions__status editions__status--current">
-                    {dict.home.currentMark} →
+                    {hasIssueEnded(currentIssue.issue) ? dict.home.endedMark : dict.home.currentMark} →
                   </span>
                 </a>
               ) : (

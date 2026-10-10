@@ -34,6 +34,8 @@ export default {
   },
 
   home: {
+    latestTitle: 'Latest Edition',
+    endedMark: 'Ended',
     titleParts: ['Secondary School Philosophy', 'Conference of Zhejiang'],
     heroLead:
       'Founded in 2022, the Secondary School Philosophy Conference of Zhejiang (SSPCZ) is a student-organized academic philosophy community for middle and high school students. Held in Hangzhou, it combines student paper presentations, scholar lectures and a philosophy hackathon.',
@@ -45,6 +47,15 @@ export default {
   },
 
   currentIssue: {
+    endedLead: 'This edition has ended. Thank you to everyone who contributed through inquiry, discussion and collaboration. The program, call for papers and policies remain available for long-term reference.',
+    endedWhenQuestion: 'When and how was this edition held?',
+    archiveLabel: 'Edition Archive',
+    statusLabel: 'Conference status',
+    notPublished: '(list not published)',
+    archiveQuestion: 'What can I read after the conference?',
+    archiveAnswer: 'The program, call for papers, policies and public documents in Resources remain available.',
+    closedQuestion: 'Can I still register or submit a paper?',
+    closedAnswer: 'This edition has ended. Registration and submissions are closed. For post-conference enquiries, contact the committee at',
     heroLead:
       'This session again focuses on middle and high school students across Zhejiang. Through three pillars — student paper presentations, guest lectures and a philosophy hackathon — it brings philosophy to every participant and kindles the spirit of inquiry in young minds.',
     themeLabel: "This year's theme",
@@ -78,6 +89,8 @@ export default {
   },
 
   program: {
+    archivedLead: 'This edition has ended. The four-day online program published before the conference is preserved below for reference. All times are Beijing time (UTC+8).',
+    archivedNote: 'This page preserves the program published before the conference; it is not a verified record of each session as held.',
     lead: 'The conference takes place entirely online on 2–5 October 2026, with student paper presentations, guest lectures and a philosophy hackathon. All times are Beijing time (UTC+8).',
     provisionalNote:
       'Paper sessions include presentations, comments and discussion. The schedule is provisional and subject to the organizing committee’s final notice.',
@@ -103,6 +116,8 @@ export default {
   },
 
   cfp: {
+    closedNote: 'Submissions for this edition are closed. The original call for papers and review requirements are preserved below for reference.',
+    archivedContact: 'For post-conference enquiries, contact the committee at ',
     scopeTitle: 'Scope & Theme',
     timelineTitle: 'Timeline & Submission',
     submitLead: 'For submissions and partnership, write to the committee at ',
@@ -127,6 +142,10 @@ export default {
   },
 
   register: {
+    closedTitle: 'Registration Closed',
+    closedLead: 'This edition has ended and registration is closed. Thank you for your interest and participation.',
+    closedNote: 'This page remains a contact point after the conference. You can read the program and Resources, or contact the committee with post-conference enquiries.',
+    closedMeta: 'Registration for this SSPCZ edition has closed. View the edition archive and post-conference contact details.',
     lead: 'The conference takes place in Hangzhou. Registration is open to middle and high school students; university students and teachers may attend as auditors. After you register, the committee will send conference updates via the contact you leave.',
     cfpNote: 'Want to present a paper? Read the Call for Papers first.',
     serviceNote: 'Registration is handled on Huodongxing; if the widget fails to load, open the page directly.',
